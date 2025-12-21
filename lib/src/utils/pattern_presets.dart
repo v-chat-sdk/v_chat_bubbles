@@ -16,6 +16,7 @@ class VPatternPresets {
     r'[\+]?[0-9]{1,4}?[-.\s]?\(?[0-9]{1,3}\)?[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,4}[-.\s]?[0-9]{1,9}',
   );
   static final _mentionRegex = RegExp(r'@[a-zA-Z0-9_]+');
+  static final _mentionWithIdRegex = RegExp(r'\[(@[^:]+):([^\]]+)\]');
   static final _hashtagRegex = RegExp(r'#[a-zA-Z0-9_]+');
   static final _boldRegex = RegExp(r'\*([^*]+?)\*');
   static final _italicRegex = RegExp(r'_([^_]+?)_');
@@ -75,6 +76,78 @@ class VPatternPresets {
         style: style,
         valueTransformer: (text) => text.substring(1), // Remove @ prefix
       );
+
+  /// Mention with ID pattern ([@username:userId] -> displays @username)
+  ///
+  /// Use this when you need to embed user IDs in mentions but display only the username.
+  /// - Display: `@username`
+  /// - `matchedText` in callback: `@username`
+  /// - `rawText` in callback: `[@username:userId]` (extract ID from here)
+  ///
+  /// Example: `Hey [@John:user_123]!` displays as `Hey @John!`
+  ///
+  /// To extract userId in callback, use [extractMentionId]:
+  /// ```dart
+  /// onPatternTap: (match) {
+  ///   if (match.patternId == 'mention_with_id') {
+  ///     final userId = VPatternPresets.extractMentionId(match.rawText);
+  ///     // Navigate to user profile...
+  ///   }
+  /// }
+  /// ```
+  static VCustomPattern mentionWithId({required TextStyle style}) =>
+      VCustomPattern(
+        id: 'mention_with_id',
+        pattern: _mentionWithIdRegex,
+        style: style,
+        valueTransformer: (text) {
+          // Extract @username from [@username:userId]
+          final match = _mentionWithIdRegex.firstMatch(text);
+          return match?.group(1) ?? text;
+        },
+      );
+
+  /// Extract userId from mention with ID raw text.
+  ///
+  /// Example:
+  /// ```dart
+  /// final userId = VPatternPresets.extractMentionId('[@John:user_123]');
+  /// print(userId); // 'user_123'
+  /// ```
+  static String? extractMentionId(String rawText) {
+    final match = _mentionWithIdRegex.firstMatch(rawText);
+    return match?.group(2);
+  }
+
+  /// Extract username from mention with ID raw text (without @ prefix).
+  ///
+  /// Example:
+  /// ```dart
+  /// final username = VPatternPresets.extractMentionUsername('[@John:user_123]');
+  /// print(username); // 'John'
+  /// ```
+  static String? extractMentionUsername(String rawText) {
+    final match = _mentionWithIdRegex.firstMatch(rawText);
+    final withAt = match?.group(1); // @John
+    return withAt?.substring(1); // John (remove @)
+  }
+
+  /// Extract both username and userId from mention with ID raw text.
+  ///
+  /// Example:
+  /// ```dart
+  /// final data = VPatternPresets.extractMentionData('[@John:user_123]');
+  /// print(data); // {username: 'John', userId: 'user_123'}
+  /// ```
+  static ({String? username, String? userId}) extractMentionData(
+      String rawText) {
+    final match = _mentionWithIdRegex.firstMatch(rawText);
+    final withAt = match?.group(1);
+    return (
+      username: withAt?.substring(1),
+      userId: match?.group(2),
+    );
+  }
 
   /// Hashtag pattern (#tag)
   static VCustomPattern hashtag({required TextStyle style}) => VCustomPattern(

@@ -91,23 +91,33 @@ class VFileBubble extends BaseBubble {
                       BubbleSpacing.vGapXS,
                       Row(
                         children: [
-                          if (fileSize > 0)
-                            Text(
-                              formatFileSize(fileSize),
-                              style: theme.timeTextStyle
-                                  .copyWith(color: secondaryColor),
+                          Flexible(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (fileSize > 0)
+                                  Flexible(
+                                    child: Text(
+                                      formatFileSize(fileSize),
+                                      style: theme.timeTextStyle
+                                          .copyWith(color: secondaryColor),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                if (extension.isNotEmpty) ...[
+                                  Text(' • ',
+                                      style: theme.timeTextStyle
+                                          .copyWith(color: secondaryColor)),
+                                  Text(
+                                    extension.toUpperCase(),
+                                    style: theme.timeTextStyle
+                                        .copyWith(color: secondaryColor),
+                                  ),
+                                ],
+                              ],
                             ),
-                          if (extension.isNotEmpty) ...[
-                            Text(' • ',
-                                style: theme.timeTextStyle
-                                    .copyWith(color: secondaryColor)),
-                            Text(
-                              extension.toUpperCase(),
-                              style: theme.timeTextStyle
-                                  .copyWith(color: secondaryColor),
-                            ),
-                          ],
-                          const Spacer(),
+                          ),
+                          BubbleSpacing.gapS,
                           buildMeta(context),
                         ],
                       ),
@@ -135,7 +145,7 @@ class VFileBubble extends BaseBubble {
         onTap: isSelectionMode
             ? null
             : () {
-                callbacks.onMediaTransferAction?.call(
+                callbacks.onTransferStateChanged?.call(
                   messageId,
                   VMediaTransferAction.cancel,
                 );
@@ -183,7 +193,7 @@ class VFileBubble extends BaseBubble {
           ? null
           : () {
               if (action != null) {
-                callbacks.onMediaTransferAction?.call(messageId, action);
+                callbacks.onTransferStateChanged?.call(messageId, action);
               } else if (transferState == VTransferState.completed) {
                 callbacks.onMediaTap?.call(VMediaTapData(messageId: messageId));
               }

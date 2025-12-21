@@ -2,6 +2,63 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.0
+
+### Breaking Changes - Callback Renames
+
+The following callbacks have been renamed for improved clarity:
+
+| Old Name | New Name | Reason |
+|----------|----------|--------|
+| `onSelect` | `onSelectionChanged` | Better reflects state change semantics |
+| `onReplyTap` | `onReplyPreviewTap` | Clarifies it's for tapping the reply preview widget |
+| `onReactionInfoTap` | `onReactionTap` | Simplified, clearer naming |
+| `onMenuItemTap` | `onMenuItemSelected` | More semantic - item is "selected" not just "tapped" |
+| `onMediaTransferAction` | `onTransferStateChanged` | Reflects state change pattern |
+
+**VReplyData** now requires `originalMessageId` field (for navigating to original message when tapping reply preview).
+
+### Migration Guide
+
+Update your `VBubbleCallbacks` usage:
+
+```dart
+// Before (1.0.0)
+VBubbleCallbacks(
+  onSelect: (messageId, isSelected) { },
+  onReplyTap: (originalMessageId) { },
+  onReactionInfoTap: (messageId, emoji, position) { },
+  onMenuItemTap: (messageId, item) { },
+  onMediaTransferAction: (messageId, action) { },
+)
+
+// After (1.1.0)
+VBubbleCallbacks(
+  onSelectionChanged: (messageId, isSelected) { },
+  onReplyPreviewTap: (originalMessageId) { },
+  onReactionTap: (messageId, emoji, position) { },
+  onMenuItemSelected: (messageId, item) { },
+  onTransferStateChanged: (messageId, action) { },
+)
+
+// VReplyData now requires originalMessageId
+VReplyData(
+  originalMessageId: 'msg_123',  // NEW - required
+  senderId: 'user_1',
+  senderName: 'John',
+  previewText: 'Original message text',
+)
+```
+
+### Other Changes
+
+- Fixed: CupertinoContextMenu animation lifecycle error when tapping reactions
+- Fixed: RenderFlex overflow issues in file, call, and poll bubbles
+- Fixed: `onLongPress` callback now properly replaces built-in context menu when set
+- Removed: `customBubbleBuilders` and `menuItems` parameters from `VBubbleScope` (use `menuItemsBuilder` instead)
+
+---
+
 ## 1.0.0
 
 Initial stable release of v_chat_bubbles.

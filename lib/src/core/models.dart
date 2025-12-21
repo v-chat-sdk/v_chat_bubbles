@@ -194,6 +194,8 @@ class VDefaultMenuItems {
 /// Reply preview data
 @immutable
 class VReplyData {
+  /// The original message ID that this message is replying to
+  final String originalMessageId;
   final String senderId;
   final String senderName;
   final Color? senderColor;
@@ -201,6 +203,7 @@ class VReplyData {
   final VPlatformFile? previewImage;
   final VMessageType originalType;
   const VReplyData({
+    required this.originalMessageId,
     required this.senderId,
     required this.senderName,
     this.senderColor,
@@ -209,6 +212,7 @@ class VReplyData {
     this.originalType = VMessageType.text,
   });
   VReplyData copyWith({
+    String? originalMessageId,
     String? senderId,
     String? senderName,
     Object? senderColor = _sentinel,
@@ -217,6 +221,7 @@ class VReplyData {
     VMessageType? originalType,
   }) {
     return VReplyData(
+      originalMessageId: originalMessageId ?? this.originalMessageId,
       senderId: senderId ?? this.senderId,
       senderName: senderName ?? this.senderName,
       senderColor:
@@ -233,6 +238,7 @@ class VReplyData {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is VReplyData &&
+        other.originalMessageId == originalMessageId &&
         other.senderId == senderId &&
         other.senderName == senderName &&
         other.senderColor == senderColor &&
@@ -243,6 +249,7 @@ class VReplyData {
 
   @override
   int get hashCode => Object.hash(
+        originalMessageId,
         senderId,
         senderName,
         senderColor,

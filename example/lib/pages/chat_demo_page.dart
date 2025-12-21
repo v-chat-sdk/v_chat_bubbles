@@ -124,10 +124,10 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
         debugPrint('Tapped: $messageId');
       },
 
-      onMediaTransferAction: (messageId, action) {
-        debugPrint('onMediaTransferAction: $messageId on $action');
+      onTransferStateChanged: (messageId, action) {
+        debugPrint('onTransferStateChanged: $messageId on $action');
       },
-      onReactionInfoTap: (messageId, emoji, position) {
+      onReactionTap: (messageId, emoji, position) {
         debugPrint('Reaction info: $emoji on $messageId');
         _showSnackBar('Tapped reaction: $emoji');
       },
@@ -135,23 +135,23 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
         debugPrint('Swipe reply: $messageId');
         _showSnackBar('Reply to message: $messageId');
       },
-      onSelect: _onMessageSelect,
+      onSelectionChanged: _onMessageSelect,
       onAvatarTap: (senderId) {
         debugPrint('Avatar tap: $senderId');
         _showSnackBar('Tapped avatar of: $senderId');
       },
-      onReplyTap: (originalMessageId) {
+      onReplyPreviewTap: (originalMessageId) {
         debugPrint('Reply tap: $originalMessageId');
         _showSnackBar('Navigating to original message: $originalMessageId');
       },
       onReaction: (messageId, emoji, action) {
         debugPrint('Reaction: $emoji ($action) on $messageId');
       },
-      onMenuItemTap: (messageId, item) {
+      onMenuItemSelected: (messageId, item) {
         debugPrint('Menu item: ${item.id} (${item.label}) on $messageId');
         _showSnackBar('${item.label} on message: $messageId');
         if (item.id == "select") {
-          print("selectselectselectselectselect");
+          debugPrint("selectselectselectselectselect");
           _onMessageSelect(messageId, true);
         }
       },
@@ -240,6 +240,10 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
             ),
             isTappable: true,
           ),
+          // Mention with ID pattern: [@username:userId] -> displays @username
+          VPatternPresets.mentionWithId(
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );
@@ -291,26 +295,6 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
           callbacks: _buildCallbacks(),
           isSelectionMode: _isSelectionMode,
           selectedIds: _selectedIds,
-          customBubbleBuilders: {
-            // Example: Product bubble builder
-            'product': (context, messageId, isMeSender, time, data, props) {
-              final productData = data as VProductData;
-              return VProductBubble(
-                messageId: messageId,
-                isMeSender: isMeSender,
-                time: time,
-                productData: productData,
-                status: props.status,
-                isSameSender: props.isSameSender,
-                avatar: props.avatar,
-                senderName: props.senderName,
-                senderColor: props.senderColor,
-                onActionTap: () {
-                  _showSnackBar('View product: ${productData.name}');
-                },
-              );
-            },
-          },
           menuItemsBuilder: (messageId, messageType, isMeSender) {
             return [...VDefaultMenuItems.textDefaults];
           },

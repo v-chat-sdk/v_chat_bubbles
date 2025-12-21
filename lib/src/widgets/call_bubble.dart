@@ -41,7 +41,6 @@ class VCallBubble extends BaseBubble {
   @override
   Widget buildContent(BuildContext context) {
     final theme = context.bubbleTheme;
-    final callbacks = context.bubbleCallbacks;
     final textColor = selectTextColor(theme);
     final secondaryColor = selectSecondaryTextColor(theme);
     final linkColor = selectLinkColor(theme);
@@ -55,55 +54,41 @@ class VCallBubble extends BaseBubble {
         children: [
           if (header != null) header,
           Row(
-            mainAxisSize: MainAxisSize.min,
             children: [
               _buildCallIcon(context, linkColor, secondaryColor),
               BubbleSpacing.gapXL,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    _getCallTitle(context),
-                    style: theme.messageTextStyle.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  BubbleSpacing.vGapXS,
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildStatusIcon(context, secondaryColor),
-                      BubbleSpacing.gapS,
-                      Text(
-                        _getCallSubtitle(context),
-                        style:
-                            theme.timeTextStyle.copyWith(color: secondaryColor),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _getCallTitle(context),
+                      style: theme.messageTextStyle.copyWith(
+                        color: textColor,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              BubbleSpacing.gapXXL,
-              // Callback button
-              GestureDetector(
-                onTap: context.bubbleScope.isSelectionMode
-                    ? null
-                    : () => callbacks.onTap?.call(messageId),
-                child: Container(
-                  padding: BubbleSpacing.standardPadding,
-                  decoration: BoxDecoration(
-                    color: linkColor.withValues(alpha: 0.15),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    callData.type == VCallType.video
-                        ? Icons.videocam
-                        : Icons.call,
-                    color: linkColor,
-                    size: BubbleSizes.iconDefault,
-                  ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    BubbleSpacing.vGapXS,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildStatusIcon(context, secondaryColor),
+                        BubbleSpacing.gapS,
+                        Flexible(
+                          child: Text(
+                            _getCallSubtitle(context),
+                            style: theme.timeTextStyle
+                                .copyWith(color: secondaryColor),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],

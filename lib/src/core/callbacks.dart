@@ -21,13 +21,13 @@ class VBubbleCallbacks {
   final void Function(String messageId)? onSwipeReply;
 
   /// Called when selection state changes
-  final void Function(String messageId, bool isSelected)? onSelect;
+  final void Function(String messageId, bool isSelected)? onSelectionChanged;
 
   /// Called when avatar is tapped
   final void Function(String senderId)? onAvatarTap;
 
   /// Called when reply preview is tapped (jump to original)
-  final void Function(String originalMessageId)? onReplyTap;
+  final void Function(String originalMessageId)? onReplyPreviewTap;
 
   // ===== GROUPED CALLBACKS =====
 
@@ -38,7 +38,7 @@ class VBubbleCallbacks {
   /// Called when a reaction pill is tapped on the bubble
   /// Use this to show who reacted with this emoji (e.g., display a popup)
   final void Function(String messageId, String emoji, Offset position)?
-      onReactionInfoTap;
+      onReactionTap;
 
   /// Called for any pattern tap (supports custom patterns)
   final void Function(VPatternMatch match)? onPatternTap;
@@ -48,7 +48,8 @@ class VBubbleCallbacks {
 
   /// Called when custom menu item is tapped
   /// Provides the full VBubbleMenuItem object for easy handling
-  final void Function(String messageId, VBubbleMenuItem item)? onMenuItemTap;
+  final void Function(String messageId, VBubbleMenuItem item)?
+      onMenuItemSelected;
 
   // ===== TYPE-SPECIFIC CALLBACKS =====
 
@@ -66,7 +67,7 @@ class VBubbleCallbacks {
   /// Called when media transfer action is triggered (download, cancel, retry)
   /// Used by file, image, video, voice bubbles for download state management
   final void Function(String messageId, VMediaTransferAction action)?
-      onMediaTransferAction;
+      onTransferStateChanged;
 
   // ===== MEDIA VIEWER CALLBACKS =====
 
@@ -81,21 +82,21 @@ class VBubbleCallbacks {
     this.onTap,
     this.onLongPress,
     this.onSwipeReply,
-    this.onSelect,
+    this.onSelectionChanged,
     this.onAvatarTap,
-    this.onReplyTap,
+    this.onReplyPreviewTap,
     // Grouped
     this.onReaction,
-    this.onReactionInfoTap,
+    this.onReactionTap,
     this.onPatternTap,
     this.onMediaTap,
-    this.onMenuItemTap,
+    this.onMenuItemSelected,
     // Type-specific
     this.onPollVote,
     this.onExpandToggle,
     this.onQuotedContentTap,
     // Transfer
-    this.onMediaTransferAction,
+    this.onTransferStateChanged,
     // Media viewer
     this.onDownload,
     this.onShare,
@@ -106,21 +107,21 @@ class VBubbleCallbacks {
     void Function(String messageId)? onTap,
     void Function(String messageId, Offset position)? onLongPress,
     void Function(String messageId)? onSwipeReply,
-    void Function(String messageId, bool isSelected)? onSelect,
+    void Function(String messageId, bool isSelected)? onSelectionChanged,
     void Function(String senderId)? onAvatarTap,
-    void Function(String originalMessageId)? onReplyTap,
+    void Function(String originalMessageId)? onReplyPreviewTap,
     void Function(String messageId, String emoji, VReactionAction action)?
         onReaction,
     void Function(String messageId, String emoji, Offset position)?
-        onReactionInfoTap,
+        onReactionTap,
     void Function(VPatternMatch match)? onPatternTap,
     void Function(VMediaTapData data)? onMediaTap,
-    void Function(String messageId, VBubbleMenuItem item)? onMenuItemTap,
+    void Function(String messageId, VBubbleMenuItem item)? onMenuItemSelected,
     void Function(String messageId, String optionId)? onPollVote,
     void Function(String messageId, bool isExpanded)? onExpandToggle,
     void Function(String messageId, String? contentId)? onQuotedContentTap,
     void Function(String messageId, VMediaTransferAction action)?
-        onMediaTransferAction,
+        onTransferStateChanged,
     void Function(String messageId)? onDownload,
     void Function(String messageId)? onShare,
   }) {
@@ -128,19 +129,19 @@ class VBubbleCallbacks {
       onTap: onTap ?? this.onTap,
       onLongPress: onLongPress ?? this.onLongPress,
       onSwipeReply: onSwipeReply ?? this.onSwipeReply,
-      onSelect: onSelect ?? this.onSelect,
+      onSelectionChanged: onSelectionChanged ?? this.onSelectionChanged,
       onAvatarTap: onAvatarTap ?? this.onAvatarTap,
-      onReplyTap: onReplyTap ?? this.onReplyTap,
+      onReplyPreviewTap: onReplyPreviewTap ?? this.onReplyPreviewTap,
       onReaction: onReaction ?? this.onReaction,
-      onReactionInfoTap: onReactionInfoTap ?? this.onReactionInfoTap,
+      onReactionTap: onReactionTap ?? this.onReactionTap,
       onPatternTap: onPatternTap ?? this.onPatternTap,
       onMediaTap: onMediaTap ?? this.onMediaTap,
-      onMenuItemTap: onMenuItemTap ?? this.onMenuItemTap,
+      onMenuItemSelected: onMenuItemSelected ?? this.onMenuItemSelected,
       onPollVote: onPollVote ?? this.onPollVote,
       onExpandToggle: onExpandToggle ?? this.onExpandToggle,
       onQuotedContentTap: onQuotedContentTap ?? this.onQuotedContentTap,
-      onMediaTransferAction:
-          onMediaTransferAction ?? this.onMediaTransferAction,
+      onTransferStateChanged:
+          onTransferStateChanged ?? this.onTransferStateChanged,
       onDownload: onDownload ?? this.onDownload,
       onShare: onShare ?? this.onShare,
     );
@@ -153,19 +154,19 @@ class VBubbleCallbacks {
       onTap: other.onTap ?? onTap,
       onLongPress: other.onLongPress ?? onLongPress,
       onSwipeReply: other.onSwipeReply ?? onSwipeReply,
-      onSelect: other.onSelect ?? onSelect,
+      onSelectionChanged: other.onSelectionChanged ?? onSelectionChanged,
       onAvatarTap: other.onAvatarTap ?? onAvatarTap,
-      onReplyTap: other.onReplyTap ?? onReplyTap,
+      onReplyPreviewTap: other.onReplyPreviewTap ?? onReplyPreviewTap,
       onReaction: other.onReaction ?? onReaction,
-      onReactionInfoTap: other.onReactionInfoTap ?? onReactionInfoTap,
+      onReactionTap: other.onReactionTap ?? onReactionTap,
       onPatternTap: other.onPatternTap ?? onPatternTap,
       onMediaTap: other.onMediaTap ?? onMediaTap,
-      onMenuItemTap: other.onMenuItemTap ?? onMenuItemTap,
+      onMenuItemSelected: other.onMenuItemSelected ?? onMenuItemSelected,
       onPollVote: other.onPollVote ?? onPollVote,
       onExpandToggle: other.onExpandToggle ?? onExpandToggle,
       onQuotedContentTap: other.onQuotedContentTap ?? onQuotedContentTap,
-      onMediaTransferAction:
-          other.onMediaTransferAction ?? onMediaTransferAction,
+      onTransferStateChanged:
+          other.onTransferStateChanged ?? onTransferStateChanged,
       onDownload: other.onDownload ?? onDownload,
       onShare: other.onShare ?? onShare,
     );

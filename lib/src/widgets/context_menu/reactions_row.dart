@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/constants.dart';
@@ -81,7 +82,12 @@ class ReactionsRow extends StatelessWidget {
     if (enableHapticFeedback) {
       HapticFeedback.lightImpact();
     }
-    Navigator.of(context).pop();
+    // Delay pop to allow CupertinoContextMenu animation to complete
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    });
     // Update internal state manager
     VReactionAction action;
     if (reactionStateManager != null) {

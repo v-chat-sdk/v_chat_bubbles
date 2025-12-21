@@ -133,7 +133,8 @@ class VBubbleHeader extends StatelessWidget {
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () => callbacks?.onReplyTap?.call(replyTo!.senderId),
+      onTap: () =>
+          callbacks?.onReplyPreviewTap?.call(replyTo!.originalMessageId),
       child: Container(
         margin: EdgeInsets.only(bottom: BubbleSpacing.inlineM),
         padding: EdgeInsets.all(BubbleSpacing.inlineM),

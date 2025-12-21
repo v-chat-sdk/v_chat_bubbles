@@ -82,17 +82,22 @@ class VPollBubble extends BaseBubble {
           BubbleSpacing.vGapL,
           // Footer
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '${pollData.totalVotes} vote${pollData.totalVotes == 1 ? '' : 's'}',
-                style: theme.timeTextStyle.copyWith(color: secondaryColor),
+              Flexible(
+                child: Text(
+                  '${pollData.totalVotes} vote${pollData.totalVotes == 1 ? '' : 's'}',
+                  style: theme.timeTextStyle.copyWith(color: secondaryColor),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              if (pollData.isClosed)
+              if (pollData.isClosed) ...[
+                BubbleSpacing.gapS,
                 Text(
                   'Final results',
                   style: theme.timeTextStyle.copyWith(color: secondaryColor),
                 ),
+              ],
+              BubbleSpacing.gapS,
               buildMeta(context),
             ],
           ),

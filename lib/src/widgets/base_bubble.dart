@@ -355,7 +355,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTapUp: (details) {
-                  callbacks.onReactionInfoTap?.call(
+                  callbacks.onReactionTap?.call(
                     messageId,
                     reaction.emoji,
                     details.globalPosition,
@@ -572,24 +572,32 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
         child: bubbleContent,
       );
     }
-    // Wrap with iOS-style context menu for long press
-    final menuEnabled =
-        config.gestures.enableLongPress && config.contextMenu.enableBuiltInMenu;
+    // Check if user provided custom onLongPress callback
+    final hasCustomLongPress = callbacks.onLongPress != null;
+    // Use built-in menu only if enabled AND no custom callback provided
+    final useBuiltInMenu = config.gestures.enableLongPress &&
+        config.contextMenu.enableBuiltInMenu &&
+        !hasCustomLongPress;
     Widget child = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => _handleTap(context),
       onDoubleTap: config.gestures.enableDoubleTapToReact
           ? () => _handleDoubleTap(context)
           : null,
+      // Use custom onLongPress if provided
+      onLongPressStart: hasCustomLongPress && config.gestures.enableLongPress
+          ? (details) =>
+              callbacks.onLongPress!(messageId, details.globalPosition)
+          : null,
       child: bubbleContent,
     );
-    if (menuEnabled) {
+    if (useBuiltInMenu) {
       child = BubbleContextMenuWrapper(
         messageId: messageId,
         messageType: messageType,
         isMeSender: isMeSender,
         currentReactions: reactions,
-        enabled: menuEnabled,
+        enabled: useBuiltInMenu,
         child: child,
       );
     }
@@ -600,7 +608,8 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     final scope = context.bubbleScope;
     if (scope.isSelectionMode) {
       final isCurrentlySelected = scope.isSelected(messageId);
-      context.bubbleCallbacks.onSelect?.call(messageId, !isCurrentlySelected);
+      context.bubbleCallbacks.onSelectionChanged
+          ?.call(messageId, !isCurrentlySelected);
     } else {
       context.bubbleCallbacks.onTap?.call(messageId);
     }

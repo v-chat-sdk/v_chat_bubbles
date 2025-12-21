@@ -211,6 +211,7 @@ class VGalleryBubble extends BaseBubble {
     double height,
   ) {
     final theme = context.bubbleTheme;
+    final config = context.bubbleConfig;
     final shimmerColors = VShimmerHelper.getShimmerColors(theme, isMeSender);
     return GestureDetector(
       onTap: () => _onItemTap(context, item, index),
@@ -223,6 +224,7 @@ class VGalleryBubble extends BaseBubble {
             item.file,
             fit: BoxFit.cover,
             config: VImageRenderConfig.gallery,
+            cacheNetworkImages: config.media.cacheNetworkImages,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return VShimmerLoading.gallery(

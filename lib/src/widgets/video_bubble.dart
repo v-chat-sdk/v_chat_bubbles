@@ -127,6 +127,7 @@ class VVideoBubble extends BaseBubble {
 
   Widget _buildThumbnail(BuildContext context) {
     final theme = context.bubbleTheme;
+    final config = context.bubbleConfig;
     final shimmerColors = VShimmerHelper.getShimmerColors(theme, isMeSender);
     // If no thumbnail, show placeholder
     if (thumbnailFile == null) {
@@ -147,6 +148,7 @@ class VVideoBubble extends BaseBubble {
       thumbnailFile!,
       fit: BoxFit.cover,
       config: VImageRenderConfig.thumbnail,
+      cacheNetworkImages: config.media.cacheNetworkImages,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return VShimmerLoading.video(
@@ -166,8 +168,9 @@ class VVideoBubble extends BaseBubble {
 
   Widget _buildPlayButton(BuildContext context) {
     final isSelectionMode = context.bubbleScope.isSelectionMode;
-    if (transferState != VTransferState.completed)
+    if (transferState != VTransferState.completed) {
       return const SizedBox.shrink();
+    }
     return Positioned.fill(
       child: Center(
         child: GestureDetector(
@@ -218,19 +221,19 @@ class VVideoBubble extends BaseBubble {
       progress: progress,
       onCancel: isSelectionMode
           ? null
-          : () => callbacks.onMediaTransferAction?.call(
+          : () => callbacks.onTransferStateChanged?.call(
                 messageId,
                 VMediaTransferAction.cancel,
               ),
       onRetry: isSelectionMode
           ? null
-          : () => callbacks.onMediaTransferAction?.call(
+          : () => callbacks.onTransferStateChanged?.call(
                 messageId,
                 VMediaTransferAction.retry,
               ),
       onDownload: isSelectionMode
           ? null
-          : () => callbacks.onMediaTransferAction?.call(
+          : () => callbacks.onTransferStateChanged?.call(
                 messageId,
                 VMediaTransferAction.download,
               ),

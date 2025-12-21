@@ -674,6 +674,9 @@ class VMediaConfig {
   final double videoMaxHeight;
   final double voiceMessageWidth;
   final double fileMessageWidth;
+
+  /// Enable disk caching for network images using cached_network_image
+  final bool cacheNetworkImages;
   const VMediaConfig({
     this.cornerRadius = 12,
     this.gallerySpacing = 2,
@@ -681,6 +684,7 @@ class VMediaConfig {
     this.videoMaxHeight = 300,
     this.voiceMessageWidth = 240,
     this.fileMessageWidth = 260,
+    this.cacheNetworkImages = true,
   });
 
   /// Default media sizing
@@ -712,6 +716,7 @@ class VMediaConfig {
     double? videoMaxHeight,
     double? voiceMessageWidth,
     double? fileMessageWidth,
+    bool? cacheNetworkImages,
   }) =>
       VMediaConfig(
         cornerRadius: cornerRadius ?? this.cornerRadius,
@@ -720,6 +725,7 @@ class VMediaConfig {
         videoMaxHeight: videoMaxHeight ?? this.videoMaxHeight,
         voiceMessageWidth: voiceMessageWidth ?? this.voiceMessageWidth,
         fileMessageWidth: fileMessageWidth ?? this.fileMessageWidth,
+        cacheNetworkImages: cacheNetworkImages ?? this.cacheNetworkImages,
       );
   @override
   bool operator ==(Object other) =>
@@ -731,7 +737,8 @@ class VMediaConfig {
           imageMaxHeight == other.imageMaxHeight &&
           videoMaxHeight == other.videoMaxHeight &&
           voiceMessageWidth == other.voiceMessageWidth &&
-          fileMessageWidth == other.fileMessageWidth;
+          fileMessageWidth == other.fileMessageWidth &&
+          cacheNetworkImages == other.cacheNetworkImages;
   @override
   int get hashCode => Object.hash(
         cornerRadius,
@@ -740,6 +747,7 @@ class VMediaConfig {
         videoMaxHeight,
         voiceMessageWidth,
         fileMessageWidth,
+        cacheNetworkImages,
       );
 }
 

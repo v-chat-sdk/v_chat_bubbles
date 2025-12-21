@@ -135,11 +135,13 @@ class VImageBubble extends BaseBubble {
 
   Widget _buildImage(BuildContext context) {
     final theme = context.bubbleTheme;
+    final config = context.bubbleConfig;
     final shimmerColors = VShimmerHelper.getShimmerColors(theme, isMeSender);
     final imageWidget = VPlatformImageBuilder.build(
       imageFile,
       fit: BoxFit.cover,
       config: VImageRenderConfig.fullImage,
+      cacheNetworkImages: config.media.cacheNetworkImages,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         final progressValue = loadingProgress.expectedTotalBytes != null
@@ -223,19 +225,19 @@ class VImageBubble extends BaseBubble {
       progress: progress,
       onCancel: isSelectionMode
           ? null
-          : () => callbacks.onMediaTransferAction?.call(
+          : () => callbacks.onTransferStateChanged?.call(
                 messageId,
                 VMediaTransferAction.cancel,
               ),
       onRetry: isSelectionMode
           ? null
-          : () => callbacks.onMediaTransferAction?.call(
+          : () => callbacks.onTransferStateChanged?.call(
                 messageId,
                 VMediaTransferAction.retry,
               ),
       onDownload: isSelectionMode
           ? null
-          : () => callbacks.onMediaTransferAction?.call(
+          : () => callbacks.onTransferStateChanged?.call(
                 messageId,
                 VMediaTransferAction.download,
               ),

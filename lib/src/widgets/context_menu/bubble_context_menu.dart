@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/callbacks.dart';
@@ -133,13 +134,11 @@ class BubbleContextMenuWrapper extends StatelessWidget {
             theme: theme,
             config: config,
             callbacks: callbacks,
-            menuItems: scope.menuItems,
             menuItemsBuilder: scope.menuItemsBuilder,
             isSelectionMode: scope.isSelectionMode,
             selectedIds: scope.selectedIds,
             expandStateManager: scope.expandStateManager,
             reactionStateManager: reactionStateManager,
-            customBubbleBuilders: scope.customBubbleBuilders,
             child: child,
           ),
         );
@@ -205,7 +204,7 @@ class BubbleContextMenuWrapper extends StatelessWidget {
           item: item,
           theme: theme,
           enableHapticFeedback: config.gestures.enableHapticFeedback,
-          onTap: callbacks.onMenuItemTap,
+          onTap: callbacks.onMenuItemSelected,
           messageId: messageId,
         ),
       );
@@ -238,7 +237,12 @@ class _ContextMenuItem extends StatelessWidget {
         if (enableHapticFeedback) {
           HapticFeedback.selectionClick();
         }
-        Navigator.of(context).pop();
+        // Delay pop to allow CupertinoContextMenu animation to complete
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+        });
         onTap?.call(messageId, item);
       },
       isDestructiveAction: isDestructive,
@@ -285,13 +289,11 @@ class BubbleContextMenuSheet extends StatelessWidget {
         theme: scope.theme,
         config: scope.config,
         callbacks: scope.callbacks,
-        menuItems: scope.menuItems,
         menuItemsBuilder: scope.menuItemsBuilder,
         isSelectionMode: scope.isSelectionMode,
         selectedIds: scope.selectedIds,
         expandStateManager: scope.expandStateManager,
         reactionStateManager: scope.reactionStateManager,
-        customBubbleBuilders: scope.customBubbleBuilders,
         child: BubbleContextMenuSheet(
           messageId: messageId,
           messageType: messageType,
@@ -336,7 +338,7 @@ class BubbleContextMenuSheet extends StatelessWidget {
                     HapticFeedback.selectionClick();
                   }
                   Navigator.of(context).pop();
-                  callbacks.onMenuItemTap?.call(messageId, item);
+                  callbacks.onMenuItemSelected?.call(messageId, item);
                 },
                 isDestructiveAction: item.isDestructive,
                 child: Row(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:v_platform/v_platform.dart';
 
@@ -78,6 +79,10 @@ class VPlatformImageBuilder {
   const VPlatformImageBuilder._();
 
   /// Builds an optimized Image widget from VPlatformFile
+  ///
+  /// When [cacheNetworkImages] is true (default), network images are cached
+  /// to disk using cached_network_image package with [VPlatformFile.getCachedUrlKey]
+  /// as the cache key.
   static Widget build(
     VPlatformFile platformFile, {
     BoxFit fit = BoxFit.cover,
@@ -86,6 +91,7 @@ class VPlatformImageBuilder {
     double? width,
     double? height,
     VImageRenderConfig config = const VImageRenderConfig(),
+    bool cacheNetworkImages = true,
   }) {
     // Frame builder for fade-in animation
     Widget frameBuilder(
@@ -132,6 +138,45 @@ class VPlatformImageBuilder {
       );
     }
     if (platformFile.isFromUrl) {
+      if (cacheNetworkImages) {
+        return CachedNetworkImage(
+          imageUrl: platformFile.fullNetworkUrl ?? platformFile.networkUrl!,
+          cacheKey: platformFile.getCachedUrlKey,
+          fit: fit,
+          width: width,
+          height: height,
+          memCacheWidth: config.cacheWidth,
+          memCacheHeight: config.cacheHeight,
+          filterQuality: config.filterQuality,
+          fadeInDuration: config.fadeInDuration,
+          fadeInCurve: config.fadeInCurve,
+          progressIndicatorBuilder: (context, url, downloadProgress) {
+            if (loadingBuilder != null) {
+              final chunkEvent = ImageChunkEvent(
+                cumulativeBytesLoaded: downloadProgress.downloaded,
+                expectedTotalBytes: downloadProgress.totalSize,
+              );
+              return loadingBuilder(
+                context,
+                const SizedBox.shrink(),
+                chunkEvent,
+              );
+            }
+            // Default loading indicator
+            return Center(
+              child: CircularProgressIndicator(
+                value: downloadProgress.totalSize != null
+                    ? downloadProgress.downloaded / downloadProgress.totalSize!
+                    : null,
+                strokeWidth: 2,
+              ),
+            );
+          },
+          errorWidget: errorBuilder != null
+              ? (context, url, error) => errorBuilder(context, error, null)
+              : null,
+        );
+      }
       return Image.network(
         platformFile.networkUrl!,
         fit: fit,
@@ -146,7 +191,6 @@ class VPlatformImageBuilder {
         errorBuilder: errorBuilder,
       );
     }
-
     if (platformFile.isFromPath) {
       return Image.file(
         File(platformFile.fileLocalPath!),
@@ -161,7 +205,6 @@ class VPlatformImageBuilder {
         errorBuilder: errorBuilder,
       );
     }
-
     // Fallback: return error widget if no valid source
     if (errorBuilder != null) {
       return Builder(

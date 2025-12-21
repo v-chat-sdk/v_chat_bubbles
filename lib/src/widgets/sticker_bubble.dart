@@ -91,6 +91,7 @@ class VStickerBubble extends BaseBubble {
     final callbacks = context.bubbleCallbacks;
     final isSelectionMode = context.bubbleScope.isSelectionMode;
     final theme = context.bubbleTheme;
+    final config = context.bubbleConfig;
     final shimmerBase = theme.systemMessageBackground.withValues(alpha: 0.3);
     final shimmerHighlight =
         theme.systemMessageBackground.withValues(alpha: 0.1);
@@ -109,6 +110,7 @@ class VStickerBubble extends BaseBubble {
             filterQuality: FilterQuality.high,
             fadeInDuration: Duration(milliseconds: 200),
           ),
+          cacheNetworkImages: config.media.cacheNetworkImages,
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) return child;
             return VShimmerLoading(

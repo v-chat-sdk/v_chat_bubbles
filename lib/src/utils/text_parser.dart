@@ -141,11 +141,14 @@ class VTextParser {
           match.rawText.length - match.pattern.markerLength,
         );
       }
+      // Apply valueTransformer to display text (e.g., [@user:123] -> @user)
+      if (match.pattern.valueTransformer != null) {
+        displayText = match.pattern.valueTransformer!(displayText);
+      }
       // Create recognizer for tappable patterns
       GestureRecognizer? recognizer;
       if (match.pattern.isTappable && onPatternTap != null) {
-        final value =
-            match.pattern.valueTransformer?.call(displayText) ?? displayText;
+        final value = displayText;
         recognizer = TapGestureRecognizer()
           ..onTap = () => onPatternTap(VPatternMatch(
                 patternId: match.pattern.id,

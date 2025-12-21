@@ -168,7 +168,6 @@ The root widget that provides configuration to all bubble descendants via Inheri
 | `isSelectionMode` | `bool` | `false` | Enable multi-selection |
 | `selectedIds` | `Set<String>` | `{}` | Currently selected message IDs |
 | `menuItemsBuilder` | `VMenuItemsBuilder?` | `null` | Dynamic context menu items |
-| `customBubbleBuilders` | `Map<String, CustomBubbleBuilder>` | `{}` | Custom bubble type builders |
 | `child` | `Widget` | required | Child widget tree |
 
 ### Available Styles
@@ -511,24 +510,61 @@ VBubbleTheme.custom(
 
 Event handlers for bubble interactions.
 
+### Context Menu Behavior
+
+By default, long-pressing a bubble opens the built-in iOS-style context menu (CupertinoContextMenu). You can customize this behavior:
+
+| Scenario | Behavior |
+|----------|----------|
+| `onLongPress` **not set** | Built-in context menu opens |
+| `onLongPress` **is set** | Your custom callback is called, built-in menu does NOT open |
+
+```dart
+// Option 1: Use built-in context menu (default)
+VBubbleCallbacks(
+  // No onLongPress - built-in menu will open
+  onMenuItemSelected: (messageId, item) {
+    // Handle menu item selection
+  },
+)
+
+// Option 2: Custom long press handler (replaces built-in menu)
+VBubbleCallbacks(
+  onLongPress: (messageId, position) {
+    // Show your own menu at position
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx, position.dy, position.dx, position.dy,
+      ),
+      items: [
+        PopupMenuItem(child: Text('Reply')),
+        PopupMenuItem(child: Text('Copy')),
+        PopupMenuItem(child: Text('Delete')),
+      ],
+    );
+  },
+)
+```
+
 ### All Callbacks
 
 ```dart
 VBubbleCallbacks(
   // === Core Callbacks ===
   onTap: (String messageId) { },
-  onLongPress: (String messageId, Offset position) { },
+  onLongPress: (String messageId, Offset position) { }, // Replaces built-in menu when set
   onSwipeReply: (String messageId) { },
-  onSelect: (String messageId, bool isSelected) { },
+  onSelectionChanged: (String messageId, bool isSelected) { },
   onAvatarTap: (String senderId) { },
-  onReplyTap: (String originalMessageId) { },
+  onReplyPreviewTap: (String originalMessageId) { },
 
   // === Grouped Callbacks ===
   onReaction: (String messageId, String emoji, ReactionAction action) { },
-  onReactionInfoTap: (String messageId, String emoji, Offset position) { },
+  onReactionTap: (String messageId, String emoji, Offset position) { },
   onPatternTap: (VPatternMatch match) { },
   onMediaTap: (VMediaTapData data) { },
-  onMenuItemTap: (String messageId, VBubbleMenuItem item) { },
+  onMenuItemSelected: (String messageId, VBubbleMenuItem item) { },
 
   // === Type-Specific Callbacks ===
   onPollVote: (String messageId, String optionId) { },
@@ -537,7 +573,7 @@ VBubbleCallbacks(
   onCallTap: (String messageId, bool isVideo) { },
   onExpandToggle: (String messageId, bool isExpanded) { },
   onDownload: (String messageId) { },
-  onMediaTransferAction: (String messageId, VMediaTransferAction action) { },
+  onTransferStateChanged: (String messageId, VMediaTransferAction action) { },
 )
 ```
 
@@ -821,29 +857,51 @@ VBubbleConfig(patterns: VPatternConfig.markdown)
 
 ## Custom Bubbles
 
-### Step 1: Create Data Model
+Create custom bubble widgets using `VCustomBubble` or by extending `BaseBubble`.
+
+### Using VCustomBubble (Quick & Easy)
 
 ```dart
+// 1. Define your data model
 @immutable
 class VPaymentData extends VCustomBubbleData {
-  final String transactionId;
   final double amount;
   final String currency;
-  final String status;
+
+  const VPaymentData({required this.amount, this.currency = 'USD'});
 
   @override
-  String get contentType => 'payment'; // Must match builder key
-
-  const VPaymentData({
-    required this.transactionId,
-    required this.amount,
-    this.currency = 'USD',
-    required this.status,
-  });
+  String get contentType => 'payment';
 }
+
+// 2. Use VCustomBubble with a builder
+VCustomBubble<VPaymentData>(
+  messageId: 'msg_payment_1',
+  isMeSender: true,
+  time: '12:30',
+  data: VPaymentData(amount: 99.99),
+  builder: (context, data) {
+    final theme = context.bubbleTheme;
+    final textColor = theme.outgoingTextColor;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.payment, color: Colors.green),
+            SizedBox(width: 8),
+            Text('Payment', style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        SizedBox(height: 8),
+        Text('\$${data.amount}', style: TextStyle(color: textColor, fontSize: 24)),
+      ],
+    );
+  },
+)
 ```
 
-### Step 2: Create Bubble Widget
+### Extending BaseBubble (Full Control)
 
 ```dart
 class VPaymentBubble extends BaseBubble {
@@ -896,49 +954,6 @@ class VPaymentBubble extends BaseBubble {
     );
   }
 }
-```
-
-### Step 3: Register Builder
-
-```dart
-VBubbleScope(
-  customBubbleBuilders: {
-    'payment': (context, messageId, isMeSender, time, data, props) {
-      final paymentData = data as VPaymentData;
-      return VPaymentBubble(
-        messageId: messageId,
-        isMeSender: isMeSender,
-        time: time,
-        paymentData: paymentData,
-        status: props.status,
-        isSameSender: props.isSameSender,
-        avatar: props.avatar,
-        senderName: props.senderName,
-        senderColor: props.senderColor,
-      );
-    },
-  },
-  child: ...,
-)
-```
-
-### Step 4: Use VCustomBubble
-
-```dart
-VCustomBubble<VPaymentData>(
-  messageId: 'msg_payment_1',
-  isMeSender: true,
-  time: '12:30',
-  data: VPaymentData(
-    transactionId: 'TXN-12345',
-    amount: 99.99,
-    status: 'completed',
-  ),
-  builder: (context, data) {
-    // Fallback if no builder registered
-    return Text('Payment: \$${data.amount}');
-  },
-)
 ```
 
 ### Available Helper Methods in BaseBubble
@@ -997,7 +1012,7 @@ class _ChatState extends State<ChatScreen> {
       isSelectionMode: _isSelectionMode,
       selectedIds: _selectedIds,
       callbacks: VBubbleCallbacks(
-        onSelect: (messageId, isSelected) {
+        onSelectionChanged: (messageId, isSelected) {
           setState(() {
             if (isSelected) {
               _selectedIds.add(messageId);

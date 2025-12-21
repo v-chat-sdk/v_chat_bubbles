@@ -62,16 +62,16 @@ VBubbleCallbacks(
   onTap: (messageId) => ..., // Universal tap handler - use messageId to lookup message data
   onLongPress: (messageId, position) => ...,
   onSwipeReply: (messageId) => ...,
-  onSelect: (messageId, isSelected) => ...,
+  onSelectionChanged: (messageId, isSelected) => ...,
   onAvatarTap: (senderId) => ...,
-  onReplyTap: (originalMessageId) => ...,
+  onReplyPreviewTap: (originalMessageId) => ...,
 
   // Grouped (5) - use action enums
   onReaction: (messageId, emoji, ReactionAction.add) => ..., // From context menu
-  onReactionInfoTap: (messageId, emoji, position) => ..., // Tap on reaction pill to show who reacted
+  onReactionTap: (messageId, emoji, position) => ..., // Tap on reaction pill to show who reacted
   onPatternTap: (PatternMatch(patternId: 'url', matchedText: url, ...)) => ..., // Links, mentions, phones, emails, custom patterns
   onMediaTap: (MediaTapData(messageId: id, index: 0)) => ...,
-  onMenuItemTap: (messageId, menuItemId) => ...,
+  onMenuItemSelected: (messageId, menuItemId) => ...,
 
   // Type-specific (4)
   onPollVote: (messageId, optionId) => ..., // Returns specific optionId for poll voting
@@ -312,55 +312,6 @@ When extending `BaseBubble`, these protected methods are available:
 | `buildReactionsWidget()` | Reaction pills row |
 | `generateColorFromName()` | Hash-based color from name |
 | `getEffectiveReactions()` | Merge external + internal reactions |
-
-### Registering Custom Builders in VBubbleScope
-
-```dart
-VBubbleScope(
-  customBubbleBuilders: {
-    'receipt': (context, messageId, isMeSender, time, data, props) {
-      return VReceiptBubble(
-        messageId: messageId,
-        isMeSender: isMeSender,
-        time: time,
-        receiptData: data as ReceiptData,
-        status: props.status,
-        isSameSender: props.isSameSender,
-      );
-    },
-    'product': (context, messageId, isMeSender, time, data, props) {
-      return VProductBubble(
-        messageId: messageId,
-        isMeSender: isMeSender,
-        time: time,
-        productData: data as ProductData,
-      );
-    },
-  },
-  child: ListView(...),
-)
-```
-
-### Using Custom Builders
-
-```dart
-// Check if builder exists
-if (context.hasCustomBubbleBuilder('receipt')) {
-  final builder = context.getCustomBubbleBuilder('receipt');
-  return builder!(context, messageId, isMeSender, time, data, props);
-}
-
-// Or use VBubbleScopeData.buildCustomBubble
-final widget = context.bubbleScope.buildCustomBubble(
-  context: context,
-  contentType: 'receipt',
-  messageId: messageId,
-  isMeSender: isMeSender,
-  time: time,
-  data: receiptData,
-  props: CommonBubbleProps(status: MessageStatus.sent),
-);
-```
 
 ### Example Custom Bubbles
 

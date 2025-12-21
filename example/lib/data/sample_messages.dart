@@ -99,6 +99,15 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         time: '09:04',
         isOutgoing: false,
       ),
+      // Custom mention pattern test: [@username:userId] -> displays @username
+      DemoMessage.text(
+        id: 'd_msg_mention_1',
+        text:
+            'Hey [@John:user_123] and [@Sarah:user_456], can you check this out? Also cc [@Admin:user_001]',
+        time: '09:05',
+        isOutgoing: true,
+        status: VMessageStatus.read,
+      ),
       // Code block with language
       DemoMessage.text(
         id: 'd_msg_format_3',
@@ -278,6 +287,7 @@ Check out https://flutter.dev for more info.''',
         time: '09:20',
         isOutgoing: false,
         replyTo: const VReplyData(
+          originalMessageId: 'd_msg_14',
           senderId: 'me',
           senderName: 'You',
           previewText:
@@ -722,6 +732,7 @@ Let me know if you want to test it out!''',
         avatar: _dianaAvatar,
         senderColor: _dianaColor,
         replyTo: const VReplyData(
+          originalMessageId: 'g_msg_5',
           senderId: 'alice',
           senderName: 'Alice',
           senderColor: _aliceColor,
@@ -737,6 +748,7 @@ Let me know if you want to test it out!''',
         isOutgoing: true,
         status: VMessageStatus.read,
         replyTo: const VReplyData(
+          originalMessageId: 'g_msg_2',
           senderId: 'me',
           senderName: 'You',
           previewText:

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../core/custom_bubble_types.dart';
 import '../core/enums.dart';
 import '../core/callbacks.dart';
 import '../core/config.dart';
@@ -76,32 +75,22 @@ class VBubbleScopeData extends InheritedWidget {
   final VBubbleTheme theme;
   final VBubbleConfig config;
   final VBubbleCallbacks callbacks;
-  final List<VBubbleMenuItem> menuItems;
   final VMenuItemsBuilder? menuItemsBuilder;
   final bool isSelectionMode;
   final Set<String> selectedIds;
   final ExpandStateManager expandStateManager;
   final ReactionStateManager reactionStateManager;
-
-  /// Custom bubble builders for rendering custom message types
-  ///
-  /// Map of contentType -> builder function.
-  /// When a message with a matching contentType is encountered,
-  /// the corresponding builder is used to create the bubble widget.
-  final Map<String, CustomBubbleBuilder> customBubbleBuilders;
   const VBubbleScopeData({
     super.key,
     required this.style,
     required this.theme,
     required this.config,
     required this.callbacks,
-    required this.menuItems,
     this.menuItemsBuilder,
     required this.isSelectionMode,
     required this.selectedIds,
     required this.expandStateManager,
     required this.reactionStateManager,
-    this.customBubbleBuilders = const {},
     required super.child,
   });
 
@@ -109,8 +98,7 @@ class VBubbleScopeData extends InheritedWidget {
   ///
   /// Priority:
   /// 1. If [menuItemsBuilder] returns non-null list -> use it
-  /// 2. Else if [menuItems] is not empty -> use static items
-  /// 3. Else -> use defaults based on message type
+  /// 2. Else -> use defaults based on message type
   List<VBubbleMenuItem> getMenuItemsFor(
       String messageId, String messageType, bool isMeSender) {
     // Try builder first
@@ -118,8 +106,6 @@ class VBubbleScopeData extends InheritedWidget {
       final items = menuItemsBuilder!(messageId, messageType, isMeSender);
       if (items != null) return items;
     }
-    // Fall back to static items if provided
-    if (menuItems.isNotEmpty) return menuItems;
     // Use defaults
     return VDefaultMenuItems.forMessageType(messageType);
   }
@@ -134,43 +120,16 @@ class VBubbleScopeData extends InheritedWidget {
 
   bool isSelected(String id) => selectedIds.contains(id);
 
-  /// Check if a custom builder exists for the given content type
-  bool hasCustomBubbleBuilder(String contentType) =>
-      customBubbleBuilders.containsKey(contentType);
-
-  /// Get the custom builder for a content type, or null if not found
-  CustomBubbleBuilder? getCustomBubbleBuilder(String contentType) =>
-      customBubbleBuilders[contentType];
-
-  /// Build a custom bubble if a builder exists for the content type
-  ///
-  /// Returns null if no builder is registered for the content type.
-  Widget? buildCustomBubble({
-    required BuildContext context,
-    required String contentType,
-    required String messageId,
-    required bool isMeSender,
-    required String time,
-    required VCustomBubbleData data,
-    CommonBubbleProps props = const CommonBubbleProps(),
-  }) {
-    final builder = customBubbleBuilders[contentType];
-    if (builder == null) return null;
-    return builder(context, messageId, isMeSender, time, data, props);
-  }
-
   @override
   bool updateShouldNotify(VBubbleScopeData oldWidget) =>
       style != oldWidget.style ||
       theme != oldWidget.theme ||
       config != oldWidget.config ||
       callbacks != oldWidget.callbacks ||
-      menuItems != oldWidget.menuItems ||
       menuItemsBuilder != oldWidget.menuItemsBuilder ||
       isSelectionMode != oldWidget.isSelectionMode ||
       selectedIds != oldWidget.selectedIds ||
-      reactionStateManager != oldWidget.reactionStateManager ||
-      customBubbleBuilders != oldWidget.customBubbleBuilders;
+      reactionStateManager != oldWidget.reactionStateManager;
 }
 
 /// Main scope widget that provides configuration to all bubbles
@@ -186,9 +145,6 @@ class VBubbleScope extends StatefulWidget {
 
   /// All callbacks for interactions
   final VBubbleCallbacks callbacks;
-
-  /// Static custom menu items for all messages (overrides defaults)
-  final List<VBubbleMenuItem> menuItems;
 
   /// Builder for dynamic menu items per message
   ///
@@ -216,40 +172,6 @@ class VBubbleScope extends StatefulWidget {
   /// Currently selected message IDs
   final Set<String> selectedIds;
 
-  /// Custom bubble builders for rendering custom message types
-  ///
-  /// Register custom bubble builders by content type. When building
-  /// messages, you can use [VBubbleScopeData.buildCustomBubble] to
-  /// create bubbles for custom message types.
-  ///
-  /// Example:
-  /// ```dart
-  /// VBubbleScope(
-  ///   customBubbleBuilders: {
-  ///     'receipt': (context, messageId, isMeSender, time, data, props) {
-  ///       return VReceiptBubble(
-  ///         messageId: messageId,
-  ///         isMeSender: isMeSender,
-  ///         time: time,
-  ///         receiptData: data as VReceiptData,
-  ///         status: props.status,
-  ///         isSameSender: props.isSameSender,
-  ///       );
-  ///     },
-  ///     'product': (context, messageId, isMeSender, time, data, props) {
-  ///       return VProductBubble(
-  ///         messageId: messageId,
-  ///         isMeSender: isMeSender,
-  ///         time: time,
-  ///         productData: data as VProductData,
-  ///       );
-  ///     },
-  ///   },
-  ///   child: ListView(...),
-  /// )
-  /// ```
-  final Map<String, CustomBubbleBuilder> customBubbleBuilders;
-
   /// Child widget (typically a list of bubbles)
   final Widget child;
   const VBubbleScope({
@@ -258,11 +180,9 @@ class VBubbleScope extends StatefulWidget {
     this.theme,
     this.config = const VBubbleConfig(),
     this.callbacks = const VBubbleCallbacks(),
-    this.menuItems = const [],
     this.menuItemsBuilder,
     this.isSelectionMode = false,
     this.selectedIds = const {},
-    this.customBubbleBuilders = const {},
     required this.child,
   });
   @override
@@ -289,13 +209,11 @@ class _VBubbleScopeState extends State<VBubbleScope> {
       theme: effectiveTheme,
       config: widget.config,
       callbacks: widget.callbacks,
-      menuItems: widget.menuItems,
       menuItemsBuilder: widget.menuItemsBuilder,
       isSelectionMode: widget.isSelectionMode,
       selectedIds: widget.selectedIds,
       expandStateManager: _expandStateManager,
       reactionStateManager: _reactionStateManager,
-      customBubbleBuilders: widget.customBubbleBuilders,
       child: widget.child,
     );
   }
@@ -316,16 +234,4 @@ extension VBubbleScopeExtension on BuildContext {
       VBubbleScopeData.of(this).expandStateManager;
   ReactionStateManager get reactionStateManager =>
       VBubbleScopeData.of(this).reactionStateManager;
-
-  /// Get all registered custom bubble builders
-  Map<String, CustomBubbleBuilder> get customBubbleBuilders =>
-      VBubbleScopeData.of(this).customBubbleBuilders;
-
-  /// Check if a custom builder exists for the given content type
-  bool hasCustomBubbleBuilder(String contentType) =>
-      VBubbleScopeData.of(this).hasCustomBubbleBuilder(contentType);
-
-  /// Get the custom builder for a content type, or null if not found
-  CustomBubbleBuilder? getCustomBubbleBuilder(String contentType) =>
-      VBubbleScopeData.of(this).getCustomBubbleBuilder(contentType);
 }
