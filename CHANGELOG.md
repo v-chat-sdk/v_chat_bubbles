@@ -2,6 +2,79 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.0
+
+### Breaking Changes - Theme System Refactor
+
+The `VBubbleTheme` has been refactored from a flat 49-property class into a nested architecture with 12 specialized sub-theme models. This provides better organization and more granular customization.
+
+#### New Nested Theme Structure
+
+```dart
+VBubbleTheme (root - 12 nested models)
+├── core: VBubbleCoreTheme (bubble colors)
+├── text: VBubbleTextTheme (text colors & styles)
+├── status: VBubbleStatusTheme (message status icons & colors)
+├── reply: VBubbleReplyTheme (reply preview styling)
+├── forward: VBubbleForwardTheme (forward header styling)
+├── voice: VBubbleVoiceTheme (voice message styling)
+├── media: VBubbleMediaTheme (media shimmer & progress)
+├── reaction: VBubbleReactionTheme (reaction pills)
+├── menu: VBubbleMenuTheme (context menu)
+├── selection: VBubbleSelectionTheme (selection mode)
+├── systemMessages: VBubbleSystemTheme (system messages)
+└── dateChip: VBubbleDateChipTheme (date separators)
+```
+
+#### Migration Guide
+
+```dart
+// Before (1.1.0) - flat properties
+theme.outgoingBubbleColor
+theme.incomingTextColor
+
+// After (1.2.0) - nested access
+theme.core.outgoing.bubbleColor
+theme.text.incoming.primaryColor
+
+// Or use convenience helpers
+theme.bubbleColor(isMeSender)
+theme.textColor(isMeSender)
+```
+
+### New Features
+
+#### Complete Sizing Properties
+All theme models now include hardcoded sizing properties for full customization:
+
+- **VBubbleMenuTheme**: `fontSize`, `iconSize`, `itemPadding`, `borderRadius`, `elevation`
+- **VBubbleReactionTheme**: `countFontSize`, `emojiSize`, `pillPadding`, `pillBorderRadius`, `pillSpacing`, `rowHeight`
+- **VBubbleSelectionTheme**: `checkmarkSize`, `checkmarkBackgroundSize`, `overlayBorderRadius`
+- **VBubbleForwardTheme**: `textStyle`, `iconSize`, `padding`, `borderRadius`
+- **VBubbleReplyTheme**: `barWidth`, `padding`, `borderRadius`, `senderNameStyle`, `messageStyle`, `maxLines`
+
+#### Selection Mode Behavior
+When `isSelectionMode` is enabled, all interactive elements inside bubbles are now properly disabled:
+- Pattern taps (links, mentions, emails, phones)
+- Reaction taps
+- Avatar taps
+- Reply preview taps
+- Media taps
+- Gallery image taps
+
+Only the tap to select/unselect the message works in selection mode.
+
+#### New Pattern Config Option
+- Added `enableMentionWithId` to `VPatternConfig` for enabling/disabling mention patterns with embedded user IDs
+
+### Other Changes
+
+- Renamed `system` property to `systemMessages` in `VBubbleTheme` for clarity
+- All theme presets (Telegram, WhatsApp, Messenger, iMessage - light/dark) updated with nested structure
+- Backward compatibility getters maintained for common properties
+
+---
+
 ## 1.1.0
 
 ### Breaking Changes - Callback Renames

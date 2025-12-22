@@ -155,6 +155,7 @@ class _ExpandableTextWithPreviewState
     final config = context.bubbleConfig;
     final callbacks = context.bubbleCallbacks;
     final expandManager = context.expandStateManager;
+    final isSelectionMode = context.bubbleScope.isSelectionMode;
     final isExpanded = expandManager.isExpanded(widget.messageId);
     final shouldTruncate = config.textExpansion.enabled &&
         widget.text.length > config.textExpansion.characterThreshold;
@@ -162,8 +163,9 @@ class _ExpandableTextWithPreviewState
         ? widget.text.substring(0, config.textExpansion.characterThreshold)
         : widget.text;
     // Generate cache key from relevant config values
+    // Include isSelectionMode since it affects whether pattern taps are enabled
     final newCacheKey =
-        '${widget.text}_${widget.textColor.hashCode}_${widget.isMeSender}_${config.patterns.hashCode}';
+        '${widget.text}_${widget.textColor.hashCode}_${widget.isMeSender}_${config.patterns.hashCode}_$isSelectionMode';
     final needsReParse = _cacheKey != newCacheKey;
     if (needsReParse) {
       _cacheKey = newCacheKey;
@@ -190,6 +192,9 @@ class _ExpandableTextWithPreviewState
     // Cache text direction
     _cachedTextDirection ??= VTextParser.getTextDirection(widget.text);
     final textDirection = _cachedTextDirection!;
+    // Disable pattern taps when in selection mode
+    final effectiveOnPatternTap =
+        isSelectionMode ? null : callbacks.onPatternTap;
     // Use block parsing if block patterns are enabled
     if (hasBlockPatterns && !shouldTruncate) {
       return _buildBlockContent(
@@ -198,7 +203,7 @@ class _ExpandableTextWithPreviewState
         baseStyle,
         linkStyle,
         mentionStyle,
-        callbacks.onPatternTap,
+        effectiveOnPatternTap,
         linkPreviewWidget,
         linkColor,
         config,
@@ -216,7 +221,7 @@ class _ExpandableTextWithPreviewState
         linkStyle,
         mentionStyle,
         config,
-        callbacks.onPatternTap,
+        effectiveOnPatternTap,
       );
       spans = _cachedTruncatedSpans!;
     } else {
@@ -227,7 +232,7 @@ class _ExpandableTextWithPreviewState
         linkStyle,
         mentionStyle,
         config,
-        callbacks.onPatternTap,
+        effectiveOnPatternTap,
       );
       spans = _cachedSpans!;
     }

@@ -206,6 +206,10 @@ class VPatternConfig {
 
   /// Enable numbered list parsing (1. item)
   final bool enableNumberedLists;
+
+  /// Enable mention with ID pattern ([@DisplayName:userId])
+  /// Displays @DisplayName but provides userId in callbacks via VPatternPresets.extractMentionId()
+  final bool enableMentionWithId;
   const VPatternConfig({
     this.customPatterns,
     this.enableLinks = true,
@@ -218,6 +222,7 @@ class VPatternConfig {
     this.enableBlockquotes = false,
     this.enableBulletLists = false,
     this.enableNumberedLists = false,
+    this.enableMentionWithId = false,
   });
 
   /// Use fully custom patterns
@@ -290,6 +295,7 @@ class VPatternConfig {
     required TextStyle baseStyle,
     required TextStyle linkStyle,
     TextStyle? mentionStyle,
+    TextStyle? mentionWithIdStyle,
   }) {
     final patterns = <VCustomPattern>[];
     // Add custom patterns first (they have higher priority)
@@ -308,6 +314,11 @@ class VPatternConfig {
     }
     if (enableMentions) {
       patterns.add(VPatternPresets.mention(style: mentionStyle ?? linkStyle));
+    }
+    if (enableMentionWithId) {
+      patterns.add(VPatternPresets.mentionWithId(
+        style: mentionWithIdStyle ?? mentionStyle ?? linkStyle,
+      ));
     }
     if (enableHashtags) {
       patterns.add(VPatternPresets.hashtag(style: linkStyle));
@@ -330,6 +341,7 @@ class VPatternConfig {
     bool? enableBlockquotes,
     bool? enableBulletLists,
     bool? enableNumberedLists,
+    bool? enableMentionWithId,
   }) =>
       VPatternConfig(
         customPatterns: customPatterns ?? this.customPatterns,
@@ -343,6 +355,7 @@ class VPatternConfig {
         enableBlockquotes: enableBlockquotes ?? this.enableBlockquotes,
         enableBulletLists: enableBulletLists ?? this.enableBulletLists,
         enableNumberedLists: enableNumberedLists ?? this.enableNumberedLists,
+        enableMentionWithId: enableMentionWithId ?? this.enableMentionWithId,
       );
   @override
   bool operator ==(Object other) =>
@@ -358,7 +371,8 @@ class VPatternConfig {
           enableCodeBlocks == other.enableCodeBlocks &&
           enableBlockquotes == other.enableBlockquotes &&
           enableBulletLists == other.enableBulletLists &&
-          enableNumberedLists == other.enableNumberedLists;
+          enableNumberedLists == other.enableNumberedLists &&
+          enableMentionWithId == other.enableMentionWithId;
   @override
   int get hashCode => Object.hash(
         enableLinks,
@@ -371,6 +385,7 @@ class VPatternConfig {
         enableBlockquotes,
         enableBulletLists,
         enableNumberedLists,
+        enableMentionWithId,
       );
 }
 

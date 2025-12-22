@@ -137,6 +137,20 @@ class VPlatformImageBuilder {
         errorBuilder: errorBuilder,
       );
     }
+    if (platformFile.isFromPath) {
+      return Image.file(
+        File(platformFile.fileLocalPath!),
+        fit: fit,
+        width: width,
+        height: height,
+        cacheWidth: config.cacheWidth,
+        cacheHeight: config.cacheHeight,
+        filterQuality: config.filterQuality,
+        gaplessPlayback: config.gaplessPlayback,
+        frameBuilder: frameBuilder,
+        errorBuilder: errorBuilder,
+      );
+    }
     if (platformFile.isFromUrl) {
       if (cacheNetworkImages) {
         return CachedNetworkImage(
@@ -191,20 +205,7 @@ class VPlatformImageBuilder {
         errorBuilder: errorBuilder,
       );
     }
-    if (platformFile.isFromPath) {
-      return Image.file(
-        File(platformFile.fileLocalPath!),
-        fit: fit,
-        width: width,
-        height: height,
-        cacheWidth: config.cacheWidth,
-        cacheHeight: config.cacheHeight,
-        filterQuality: config.filterQuality,
-        gaplessPlayback: config.gaplessPlayback,
-        frameBuilder: frameBuilder,
-        errorBuilder: errorBuilder,
-      );
-    }
+
     // Fallback: return error widget if no valid source
     if (errorBuilder != null) {
       return Builder(

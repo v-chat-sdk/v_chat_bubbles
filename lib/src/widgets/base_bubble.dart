@@ -147,7 +147,10 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
           if (showAvatar)
             GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () => callbacks.onAvatarTap?.call(messageId),
+              // Disable avatar tap in selection mode
+              onTap: isSelectionMode
+                  ? null
+                  : () => callbacks.onAvatarTap?.call(messageId),
               child: buildAvatarWidget(context),
             )
           else
@@ -341,6 +344,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     final theme = context.bubbleTheme;
     final callbacks = context.bubbleCallbacks;
     final reactionStateManager = context.reactionStateManager;
+    final isSelectionMode = context.bubbleScope.isSelectionMode;
     return ListenableBuilder(
       listenable: reactionStateManager,
       builder: (context, _) {
@@ -354,13 +358,16 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
             children: effectiveReactions.map((reaction) {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTapUp: (details) {
-                  callbacks.onReactionTap?.call(
-                    messageId,
-                    reaction.emoji,
-                    details.globalPosition,
-                  );
-                },
+                // Disable reaction tap in selection mode
+                onTapUp: isSelectionMode
+                    ? null
+                    : (details) {
+                        callbacks.onReactionTap?.call(
+                          messageId,
+                          reaction.emoji,
+                          details.globalPosition,
+                        );
+                      },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 2),

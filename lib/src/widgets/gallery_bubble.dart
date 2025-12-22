@@ -149,7 +149,9 @@ class VGalleryBubble extends BaseBubble {
                   if (showMore)
                     Positioned.fill(
                       child: GestureDetector(
-                        onTap: () => _onItemTap(context, items[3], 3),
+                        onTap: context.bubbleScope.isSelectionMode
+                            ? null
+                            : () => _onItemTap(context, items[3], 3),
                         child: Container(
                           color: Colors.black45,
                           child: Center(
@@ -212,9 +214,10 @@ class VGalleryBubble extends BaseBubble {
   ) {
     final theme = context.bubbleTheme;
     final config = context.bubbleConfig;
+    final isSelectionMode = context.bubbleScope.isSelectionMode;
     final shimmerColors = VShimmerHelper.getShimmerColors(theme, isMeSender);
     return GestureDetector(
-      onTap: () => _onItemTap(context, item, index),
+      onTap: isSelectionMode ? null : () => _onItemTap(context, item, index),
       child: Hero(
         tag: 'media_${messageId}_$index',
         child: SizedBox(

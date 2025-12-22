@@ -105,7 +105,9 @@ class VBubbleHeader extends StatelessWidget {
       ),
     );
     // Make sender name tappable (triggers same action as avatar tap)
-    if (callbacks?.onAvatarTap != null && messageId != null) {
+    // Disable tap in selection mode
+    final isSelectionMode = context.bubbleScope.isSelectionMode;
+    if (callbacks?.onAvatarTap != null && messageId != null && !isSelectionMode) {
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => callbacks!.onAvatarTap!(messageId!),
@@ -118,6 +120,7 @@ class VBubbleHeader extends StatelessWidget {
   Widget _buildReplyPreview(BuildContext context) {
     final theme = context.bubbleTheme;
     final config = context.bubbleConfig;
+    final isSelectionMode = context.bubbleScope.isSelectionMode;
 
     final replyBarColor =
         isMeSender ? theme.outgoingReplyBarColor : theme.incomingReplyBarColor;
@@ -133,8 +136,11 @@ class VBubbleHeader extends StatelessWidget {
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () =>
-          callbacks?.onReplyPreviewTap?.call(replyTo!.originalMessageId),
+      // Disable tap in selection mode
+      onTap: isSelectionMode
+          ? null
+          : () =>
+              callbacks?.onReplyPreviewTap?.call(replyTo!.originalMessageId),
       child: Container(
         margin: EdgeInsets.only(bottom: BubbleSpacing.inlineM),
         padding: EdgeInsets.all(BubbleSpacing.inlineM),

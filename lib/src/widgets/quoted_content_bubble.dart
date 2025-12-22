@@ -84,8 +84,9 @@ class VQuotedContentBubble extends BaseBubble {
   }
 
   Widget _buildContentPreview(BuildContext context) {
+    final isSelectionMode = context.bubbleScope.isSelectionMode;
     return GestureDetector(
-      onTap: () => _handleContentTap(context),
+      onTap: isSelectionMode ? null : () => _handleContentTap(context),
       child: Row(
         children: [
           _buildThumbnail(context),

@@ -205,6 +205,8 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
         enableBlockquotes: true,
         enableBulletLists: true,
         enableNumberedLists: true,
+        // Enable mention with ID pattern: [@DisplayName:userId] -> displays @DisplayName
+        enableMentionWithId: true,
         // Custom patterns for tickets, orders, invoices (added on top of flag-based)
         customPatterns: [
           // Custom ticket pattern: TKT-123
@@ -240,10 +242,6 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
             ),
             isTappable: true,
           ),
-          // Mention with ID pattern: [@username:userId] -> displays @username
-          VPatternPresets.mentionWithId(
-            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
-          ),
         ],
       ),
     );
@@ -260,6 +258,19 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
   @override
   Widget build(BuildContext context) {
     final theme = VBubbleTheme.fromStyle(_style, brightness: _brightness);
+
+    final x = theme.copyWith(
+      text: theme.text.copyWith(
+        messageTextStyle: TextStyle(fontSize: 15),
+        linkTextStyle: TextStyle(fontSize: 15),
+      ),
+      core: theme.core.copyWith(),
+      media: theme.media.copyWith(),
+      menu: theme.menu.copyWith(),
+      reactions: theme.reactions.copyWith(backgroundColor: Colors.red),
+      systemMessages: theme.systemMessages.copyWith(backgroundColor: Colors.red),
+    );
+
     final backgroundColor = _brightness == Brightness.dark
         ? const Color(0xFF1E1E1E)
         : const Color(0xFFF5F5F5);
@@ -290,7 +301,7 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
         ),
         body: VBubbleScope(
           style: _style,
-          theme: theme,
+          theme: x,
           config: _buildConfig(),
           callbacks: _buildCallbacks(),
           isSelectionMode: _isSelectionMode,
