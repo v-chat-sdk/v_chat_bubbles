@@ -1,6 +1,6 @@
 name: v_chat_bubbles
 description: A comprehensive Flutter chat bubble library supporting Telegram, WhatsApp, Messenger, and iMessage styles with full theming, callbacks, text formatting, and custom bubble support.
-version: 1.2.0
+version: 1.2.1
 homepage: https://github.com/v-chat-sdk/v_chat_bubbles
 repository: https://github.com/v-chat-sdk/v_chat_bubbles
 issue_tracker: https://github.com/v-chat-sdk/v_chat_bubbles/issues

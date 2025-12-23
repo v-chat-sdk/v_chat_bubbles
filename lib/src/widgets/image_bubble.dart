@@ -149,6 +149,7 @@ class VImageBubble extends BaseBubble {
                 loadingProgress.expectedTotalBytes!
             : null;
         return Stack(
+          alignment: Alignment.center,
           children: [
             VShimmerLoading.image(
               height: 200,
@@ -156,11 +157,7 @@ class VImageBubble extends BaseBubble {
               highlightColor: shimmerColors.highlight,
             ),
             if (progressValue != null)
-              Positioned.fill(
-                child: Center(
-                  child: _buildProgressRing(progressValue, theme.progressColor),
-                ),
-              ),
+              _buildProgressRing(progressValue, theme.progressColor),
           ],
         );
       },

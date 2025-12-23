@@ -133,7 +133,7 @@ class VVideoBubble extends BaseBubble {
     if (thumbnailFile == null) {
       final placeholder = Container(
         height: 200,
-        color: shimmerColors.base,
+        color: Colors.black,
         child: Center(
           child: Icon(Icons.videocam,
               color: Colors.white54, size: BubbleSizes.iconHuge),

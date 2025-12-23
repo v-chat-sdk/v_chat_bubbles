@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.1
+
+### Bug Fixes
+
+- Fixed: RenderFlex overflow by 0.124 pixels in `VBubbleFooter` row (meta/timestamp display)
+  - Wrapped footer Row in `FittedBox(fit: BoxFit.scaleDown)` to handle floating-point precision issues
+- Fixed: `VFileBubble` now filters out "null" and "undefined" file extensions
+  - Prevents displaying literal "NULL" or "UNDEFINED" text from improper serialization
+
+---
+
 ## 1.2.0
 
 ### Breaking Changes - Theme System Refactor

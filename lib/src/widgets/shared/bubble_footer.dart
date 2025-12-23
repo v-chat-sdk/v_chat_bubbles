@@ -33,28 +33,31 @@ class VBubbleFooter extends StatelessWidget {
         : theme.incomingSecondaryTextColor;
     final metaColor = overrideColor ?? defaultMetaColor;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (isStarred) ...[
-          Icon(Icons.star, size: BubbleSizes.iconTiny, color: metaColor),
-          BubbleSpacing.gapXS,
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isStarred) ...[
+            Icon(Icons.star, size: BubbleSizes.iconTiny, color: metaColor),
+            BubbleSpacing.gapXS,
+          ],
+          if (isPinned) ...[
+            Icon(Icons.push_pin, size: BubbleSizes.iconTiny, color: metaColor),
+            BubbleSpacing.gapXS,
+          ],
+          if (isEdited) ...[
+            Text(config.translations.statusEdited,
+                style: theme.timeTextStyle.copyWith(color: metaColor)),
+            BubbleSpacing.gapS,
+          ],
+          Text(time, style: theme.timeTextStyle.copyWith(color: metaColor)),
+          if (isMeSender) ...[
+            BubbleSpacing.gapXS,
+            _buildStatusIcon(context, metaColor),
+          ],
         ],
-        if (isPinned) ...[
-          Icon(Icons.push_pin, size: BubbleSizes.iconTiny, color: metaColor),
-          BubbleSpacing.gapXS,
-        ],
-        if (isEdited) ...[
-          Text(config.translations.statusEdited,
-              style: theme.timeTextStyle.copyWith(color: metaColor)),
-          BubbleSpacing.gapS,
-        ],
-        Text(time, style: theme.timeTextStyle.copyWith(color: metaColor)),
-        if (isMeSender) ...[
-          BubbleSpacing.gapXS,
-          _buildStatusIcon(context, metaColor),
-        ],
-      ],
+      ),
     );
   }
 

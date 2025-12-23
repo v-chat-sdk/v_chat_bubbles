@@ -52,7 +52,6 @@ class ReactionsRow extends StatelessWidget {
       ),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
         itemCount: availableReactions.length,
         separatorBuilder: (context, index) => const SizedBox(width: 4),
         itemBuilder: (context, index) {

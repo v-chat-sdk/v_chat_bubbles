@@ -214,7 +214,12 @@ class VFileBubble extends BaseBubble {
   String _getExtensionFromName(String fileName) {
     final dotIndex = fileName.lastIndexOf('.');
     if (dotIndex == -1 || dotIndex == fileName.length - 1) return '';
-    return fileName.substring(dotIndex + 1);
+    final ext = fileName.substring(dotIndex + 1);
+    // Filter out null/undefined text from improper serialization
+    if (ext.toLowerCase() == 'null' || ext.toLowerCase() == 'undefined') {
+      return '';
+    }
+    return ext;
   }
 
   IconData _getFileIcon(String? extension) {

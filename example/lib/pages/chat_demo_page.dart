@@ -35,6 +35,9 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
   late List<DemoMessage> _messages;
   bool _isSelectionMode = false;
   final Set<String> _selectedIds = {};
+  final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  int _messageIdCounter = 1000;
 
   @override
   void initState() {
@@ -42,15 +45,41 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
     _style = widget.initialStyle;
     _brightness = widget.initialBrightness;
     _locale = widget.initialLocale;
-    _messages = widget.isGroupChat
-        ? SampleMessages.buildGroupChat()
-        : SampleMessages.buildDirectChat();
+    // Reverse so newest messages are at bottom (for reverse ListView)
+    _messages = (widget.isGroupChat
+            ? SampleMessages.buildGroupChat()
+            : SampleMessages.buildDirectChat())
+        .reversed
+        .toList();
   }
 
   @override
   void dispose() {
+    _textController.dispose();
+    _scrollController.dispose();
     MessageBuilder.disposeAll();
     super.dispose();
+  }
+
+  void _sendMessage() {
+    final text = _textController.text.trim();
+    if (text.isEmpty) return;
+    final now = DateTime.now();
+    final timeStr =
+        '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+    setState(() {
+      _messages.insert(
+        0,
+        DemoMessage.text(
+          id: 'msg_${_messageIdCounter++}',
+          text: text,
+          time: timeStr,
+          isOutgoing: true,
+          status: VMessageStatus.sent,
+        ),
+      );
+    });
+    _textController.clear();
   }
 
   void _cycleStyle() {
@@ -309,14 +338,71 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
           menuItemsBuilder: (messageId, messageType, isMeSender) {
             return [...VDefaultMenuItems.textDefaults];
           },
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            itemCount: _messages.length,
-            itemBuilder: (context, index) {
-              final message = _messages[index];
-              return MessageBuilder.build(context, message);
-            },
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  reverse: true,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  itemCount: _messages.length,
+                  itemBuilder: (context, index) {
+                    final message = _messages[index];
+                    return MessageBuilder.build(context, message);
+                  },
+                ),
+              ),
+              _buildInputField(),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputField() {
+    final isDark = _brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+          ),
+        ),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _textController,
+                maxLines: 5,
+                minLines: 1,
+                decoration: InputDecoration(
+                  hintText: 'Type a message...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: isDark ? Colors.grey[800] : Colors.grey[200],
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                ),
+                onSubmitted: (_) => _sendMessage(),
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton.filled(
+              onPressed: _sendMessage,
+              icon: const Icon(Icons.send),
+            ),
+          ],
         ),
       ),
     );

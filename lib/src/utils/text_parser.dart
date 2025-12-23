@@ -77,6 +77,36 @@ class VBlockParseConfig {
 
 /// Utility to parse text and create styled spans for links, mentions, etc.
 class VTextParser {
+  /// Non-breaking space character for preserving whitespace
+  static const _nbsp = '\u00A0';
+
+  /// Preserve whitespace by replacing leading spaces and multiple spaces
+  /// with non-breaking spaces to prevent collapsing
+  static String preserveWhitespace(String text) {
+    if (text.isEmpty) return text;
+    final buffer = StringBuffer();
+    final lines = text.split('\n');
+    for (int i = 0; i < lines.length; i++) {
+      if (i > 0) buffer.write('\n');
+      final line = lines[i];
+      if (line.isEmpty) continue;
+      // Find leading whitespace and convert to non-breaking spaces
+      int leadingSpaces = 0;
+      while (leadingSpaces < line.length && line[leadingSpaces] == ' ') {
+        leadingSpaces++;
+      }
+      // Add leading non-breaking spaces
+      buffer.write(_nbsp * leadingSpaces);
+      // Process rest of line - replace sequences of 2+ spaces with nbsp
+      final rest = line.substring(leadingSpaces);
+      buffer.write(rest.replaceAllMapped(
+        RegExp(r'  +'),
+        (m) => _nbsp * m.group(0)!.length,
+      ));
+    }
+    return buffer.toString();
+  }
+
   /// NEW API: Parse text with custom patterns
   ///
   /// Example:
@@ -128,7 +158,7 @@ class VTextParser {
       // Add text before match
       if (match.start > currentIndex) {
         spans.add(TextSpan(
-          text: text.substring(currentIndex, match.start),
+          text: preserveWhitespace(text.substring(currentIndex, match.start)),
           style: safeBaseStyle,
         ));
       }
@@ -145,6 +175,8 @@ class VTextParser {
       if (match.pattern.valueTransformer != null) {
         displayText = match.pattern.valueTransformer!(displayText);
       }
+      // Preserve whitespace in display text
+      displayText = preserveWhitespace(displayText);
       // Create recognizer for tappable patterns
       GestureRecognizer? recognizer;
       if (match.pattern.isTappable && onPatternTap != null) {
@@ -172,7 +204,7 @@ class VTextParser {
     // Add remaining text
     if (currentIndex < text.length) {
       spans.add(TextSpan(
-        text: text.substring(currentIndex),
+        text: preserveWhitespace(text.substring(currentIndex)),
         style: safeBaseStyle,
       ));
     }
