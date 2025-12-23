@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class VDirectionalBubbleColors {
   /// Main bubble background color
   final Color bubbleColor;
+
   /// Optional gradient for bubble background (overrides bubbleColor if set)
   final Gradient? bubbleGradient;
   const VDirectionalBubbleColors({
@@ -20,6 +21,7 @@ class VDirectionalBubbleColors {
       bubbleGradient: bubbleGradient ?? this.bubbleGradient,
     );
   }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -36,15 +38,18 @@ class VDirectionalBubbleColors {
 class VBubbleCoreTheme {
   /// Colors for outgoing (sent) messages
   final VDirectionalBubbleColors outgoing;
+
   /// Colors for incoming (received) messages
   final VDirectionalBubbleColors incoming;
   const VBubbleCoreTheme({
     required this.outgoing,
     required this.incoming,
   });
+
   /// Get bubble color based on message direction
   Color bubbleColor(bool isMeSender) =>
       isMeSender ? outgoing.bubbleColor : incoming.bubbleColor;
+
   /// Get bubble gradient based on message direction
   Gradient? bubbleGradient(bool isMeSender) =>
       isMeSender ? outgoing.bubbleGradient : incoming.bubbleGradient;
@@ -57,6 +62,7 @@ class VBubbleCoreTheme {
       incoming: incoming ?? this.incoming,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

@@ -5,18 +5,25 @@ import 'package:flutter/material.dart';
 class VDirectionalVoiceTheme {
   /// Played portion of waveform
   final Color waveformPlayedColor;
+
   /// Unplayed portion of waveform
   final Color waveformUnplayedColor;
+
   /// Play/pause button background color
   final Color buttonColor;
+
   /// Play/pause button icon color
   final Color buttonIconColor;
+
   /// Speed control button background color
   final Color speedButtonColor;
+
   /// Speed control button text color
   final Color speedButtonTextColor;
+
   /// Duration text color
   final Color durationTextColor;
+
   /// Loading indicator color
   final Color loadingColor;
   const VDirectionalVoiceTheme({
@@ -51,6 +58,7 @@ class VDirectionalVoiceTheme {
       loadingColor: loadingColor ?? this.loadingColor,
     );
   }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -81,28 +89,40 @@ class VDirectionalVoiceTheme {
 class VVoiceVisualizerTheme {
   /// Whether to show voice visualizer
   final bool showVisualizer;
+
   /// Height of the visualizer
   final double visualizerHeight;
+
   /// Number of bars in the visualizer
   final int visualizerBarCount;
+
   /// Spacing between visualizer bars
   final double visualizerBarSpacing;
+
   /// Minimum height for visualizer bars
   final double visualizerMinBarHeight;
+
   /// Whether to enable bar animations during playback
   final bool enableBarAnimations;
+
   /// Size of the play/pause button
   final double buttonSize;
+
   /// Whether to use simple icon without circular background
   final bool useSimplePlayIcon;
+
   /// Size of simple icon (when useSimplePlayIcon is true)
   final double simpleIconSize;
+
   /// Whether to show speed control button
   final bool showSpeedControl;
+
   /// Border radius for speed button
   final double speedButtonBorderRadius;
+
   /// Padding for speed button
   final EdgeInsets speedButtonPadding;
+
   /// Text style for duration display
   final TextStyle durationTextStyle;
   const VVoiceVisualizerTheme({
@@ -155,6 +175,7 @@ class VVoiceVisualizerTheme {
       durationTextStyle: durationTextStyle ?? this.durationTextStyle,
     );
   }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -191,8 +212,10 @@ class VVoiceVisualizerTheme {
 class VBubbleVoiceTheme {
   /// Voice colors for outgoing messages
   final VDirectionalVoiceTheme outgoing;
+
   /// Voice colors for incoming messages
   final VDirectionalVoiceTheme incoming;
+
   /// Visualizer configuration
   final VVoiceVisualizerTheme visualizer;
   const VBubbleVoiceTheme({
@@ -200,28 +223,37 @@ class VBubbleVoiceTheme {
     required this.incoming,
     this.visualizer = const VVoiceVisualizerTheme(),
   });
+
   /// Get waveform played color based on message direction
   Color waveformPlayedColor(bool isMeSender) =>
       isMeSender ? outgoing.waveformPlayedColor : incoming.waveformPlayedColor;
+
   /// Get waveform unplayed color based on message direction
   Color waveformUnplayedColor(bool isMeSender) => isMeSender
       ? outgoing.waveformUnplayedColor
       : incoming.waveformUnplayedColor;
+
   /// Get button background color based on message direction
   Color buttonColor(bool isMeSender) =>
       isMeSender ? outgoing.buttonColor : incoming.buttonColor;
+
   /// Get button icon color based on message direction
   Color buttonIconColor(bool isMeSender) =>
       isMeSender ? outgoing.buttonIconColor : incoming.buttonIconColor;
+
   /// Get speed button background color based on message direction
   Color speedButtonColor(bool isMeSender) =>
       isMeSender ? outgoing.speedButtonColor : incoming.speedButtonColor;
+
   /// Get speed button text color based on message direction
-  Color speedButtonTextColor(bool isMeSender) =>
-      isMeSender ? outgoing.speedButtonTextColor : incoming.speedButtonTextColor;
+  Color speedButtonTextColor(bool isMeSender) => isMeSender
+      ? outgoing.speedButtonTextColor
+      : incoming.speedButtonTextColor;
+
   /// Get duration text color based on message direction
   Color durationTextColor(bool isMeSender) =>
       isMeSender ? outgoing.durationTextColor : incoming.durationTextColor;
+
   /// Get loading indicator color based on message direction
   Color loadingColor(bool isMeSender) =>
       isMeSender ? outgoing.loadingColor : incoming.loadingColor;
@@ -230,28 +262,40 @@ class VBubbleVoiceTheme {
   // ═══════════════════════════════════════════════════════════════════════════
   /// Whether to show voice visualizer
   bool get showVisualizer => visualizer.showVisualizer;
+
   /// Height of the visualizer
   double get visualizerHeight => visualizer.visualizerHeight;
+
   /// Number of bars in the visualizer
   int get visualizerBarCount => visualizer.visualizerBarCount;
+
   /// Spacing between visualizer bars
   double get visualizerBarSpacing => visualizer.visualizerBarSpacing;
+
   /// Minimum height for visualizer bars
   double get visualizerMinBarHeight => visualizer.visualizerMinBarHeight;
+
   /// Whether to enable bar animations during playback
   bool get enableBarAnimations => visualizer.enableBarAnimations;
+
   /// Size of the play/pause button
   double get buttonSize => visualizer.buttonSize;
+
   /// Whether to use simple icon without circular background
   bool get useSimplePlayIcon => visualizer.useSimplePlayIcon;
+
   /// Size of simple icon (when useSimplePlayIcon is true)
   double get simpleIconSize => visualizer.simpleIconSize;
+
   /// Whether to show speed control button
   bool get showSpeedControl => visualizer.showSpeedControl;
+
   /// Border radius for speed button
   double get speedButtonBorderRadius => visualizer.speedButtonBorderRadius;
+
   /// Padding for speed button
   EdgeInsets get speedButtonPadding => visualizer.speedButtonPadding;
+
   /// Text style for duration display
   TextStyle get durationTextStyle => visualizer.durationTextStyle;
   VBubbleVoiceTheme copyWith({
@@ -265,6 +309,7 @@ class VBubbleVoiceTheme {
       visualizer: visualizer ?? this.visualizer,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

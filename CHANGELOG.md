@@ -10,7 +10,8 @@ All notable changes to this project will be documented in this file.
   - Wrapped footer Row in `FittedBox(fit: BoxFit.scaleDown)` to handle floating-point precision issues
 - Fixed: `VFileBubble` now filters out "null" and "undefined" file extensions
   - Prevents displaying literal "NULL" or "UNDEFINED" text from improper serialization
-
+- fix file type name overflow
+- set back background color for video not have thumbnails
 ---
 
 ## 1.2.0

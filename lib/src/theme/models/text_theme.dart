@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class VDirectionalTextTheme {
   /// Primary text color
   final Color primaryColor;
+
   /// Secondary text color (timestamps, captions)
   final Color secondaryColor;
+
   /// Link text color
   final Color linkColor;
   const VDirectionalTextTheme({
@@ -25,6 +27,7 @@ class VDirectionalTextTheme {
       linkColor: linkColor ?? this.linkColor,
     );
   }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -43,18 +46,25 @@ class VDirectionalTextTheme {
 class VBubbleTextTheme {
   /// Text colors for outgoing messages
   final VDirectionalTextTheme outgoing;
+
   /// Text colors for incoming messages
   final VDirectionalTextTheme incoming;
+
   /// Main message text style
   final TextStyle messageTextStyle;
+
   /// Caption text style (for media captions)
   final TextStyle captionTextStyle;
+
   /// Link text style
   final TextStyle linkTextStyle;
+
   /// Sender name text style
   final TextStyle senderNameStyle;
+
   /// Time/timestamp text style
   final TextStyle timeTextStyle;
+
   /// Reply preview text style
   final TextStyle replyTextStyle;
   const VBubbleTextTheme({
@@ -67,12 +77,15 @@ class VBubbleTextTheme {
     required this.timeTextStyle,
     required this.replyTextStyle,
   });
+
   /// Get primary text color based on message direction
   Color textColor(bool isMeSender) =>
       isMeSender ? outgoing.primaryColor : incoming.primaryColor;
+
   /// Get secondary text color based on message direction
   Color secondaryTextColor(bool isMeSender) =>
       isMeSender ? outgoing.secondaryColor : incoming.secondaryColor;
+
   /// Get link color based on message direction
   Color linkColor(bool isMeSender) =>
       isMeSender ? outgoing.linkColor : incoming.linkColor;
@@ -97,6 +110,7 @@ class VBubbleTextTheme {
       replyTextStyle: replyTextStyle ?? this.replyTextStyle,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
@@ -117,8 +131,7 @@ class VBubbleTextTheme {
         senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         replyTextStyle: TextStyle(fontSize: 14),
         captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle:
-            TextStyle(fontSize: 17, decoration: TextDecoration.none),
+        linkTextStyle: TextStyle(fontSize: 17, decoration: TextDecoration.none),
       );
   static VBubbleTextTheme telegramDark() => const VBubbleTextTheme(
         outgoing: VDirectionalTextTheme(
@@ -137,8 +150,7 @@ class VBubbleTextTheme {
         senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         replyTextStyle: TextStyle(fontSize: 14),
         captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle:
-            TextStyle(fontSize: 17, decoration: TextDecoration.none),
+        linkTextStyle: TextStyle(fontSize: 17, decoration: TextDecoration.none),
       );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
@@ -200,8 +212,7 @@ class VBubbleTextTheme {
         senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         replyTextStyle: TextStyle(fontSize: 14),
         captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle:
-            TextStyle(fontSize: 15, decoration: TextDecoration.none),
+        linkTextStyle: TextStyle(fontSize: 15, decoration: TextDecoration.none),
       );
   static VBubbleTextTheme messengerDark() => const VBubbleTextTheme(
         outgoing: VDirectionalTextTheme(
@@ -219,8 +230,7 @@ class VBubbleTextTheme {
         senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         replyTextStyle: TextStyle(fontSize: 14),
         captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle:
-            TextStyle(fontSize: 15, decoration: TextDecoration.none),
+        linkTextStyle: TextStyle(fontSize: 15, decoration: TextDecoration.none),
       );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS

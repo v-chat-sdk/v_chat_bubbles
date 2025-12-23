@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class VDirectionalMediaTheme {
   /// Base color for shimmer loading animation
   final Color shimmerBaseColor;
+
   /// Highlight color for shimmer loading animation
   final Color shimmerHighlightColor;
   const VDirectionalMediaTheme({
@@ -21,6 +22,7 @@ class VDirectionalMediaTheme {
           shimmerHighlightColor ?? this.shimmerHighlightColor,
     );
   }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -38,10 +40,13 @@ class VDirectionalMediaTheme {
 class VBubbleMediaTheme {
   /// Media colors for outgoing messages
   final VDirectionalMediaTheme outgoing;
+
   /// Media colors for incoming messages
   final VDirectionalMediaTheme incoming;
+
   /// Track color for progress indicators
   final Color progressTrackColor;
+
   /// Color for progress indicators
   final Color progressColor;
   const VBubbleMediaTheme({
@@ -50,19 +55,23 @@ class VBubbleMediaTheme {
     required this.progressTrackColor,
     required this.progressColor,
   });
+
   /// Get shimmer base color based on message direction
   Color shimmerBaseColor(bool isMeSender) =>
       isMeSender ? outgoing.shimmerBaseColor : incoming.shimmerBaseColor;
+
   /// Get shimmer highlight color based on message direction
   Color shimmerHighlightColor(bool isMeSender) => isMeSender
       ? outgoing.shimmerHighlightColor
       : incoming.shimmerHighlightColor;
+
   /// Get shimmer colors as tuple based on message direction
   (Color base, Color highlight) shimmerColors(bool isMeSender) {
     return isMeSender
         ? (outgoing.shimmerBaseColor, outgoing.shimmerHighlightColor)
         : (incoming.shimmerBaseColor, incoming.shimmerHighlightColor);
   }
+
   VBubbleMediaTheme copyWith({
     VDirectionalMediaTheme? outgoing,
     VDirectionalMediaTheme? incoming,
@@ -76,6 +85,7 @@ class VBubbleMediaTheme {
       progressColor: progressColor ?? this.progressColor,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

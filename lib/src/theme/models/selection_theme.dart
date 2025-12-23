@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 class VBubbleSelectionTheme {
   /// Overlay color when bubble is selected
   final Color overlayColor;
+
   /// Checkmark icon color
   final Color checkmarkColor;
+
   /// Border color for selection indicator (optional)
   final Color? borderColor;
+
   /// Size of the checkmark icon
   final double checkmarkSize;
+
   /// Background size of the checkmark circle
   final double checkmarkBackgroundSize;
+
   /// Border radius for overlay (0 to match bubble shape)
   final double overlayBorderRadius;
   const VBubbleSelectionTheme({
@@ -41,6 +46,7 @@ class VBubbleSelectionTheme {
       overlayBorderRadius: overlayBorderRadius ?? this.overlayBorderRadius,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

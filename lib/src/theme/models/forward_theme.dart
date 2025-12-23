@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 class VBubbleForwardTheme {
   /// Color for forward header text and icon
   final Color headerColor;
+
   /// Background color for forward header area
   final Color backgroundColor;
+
   /// Text style for forward header
   final TextStyle textStyle;
+
   /// Icon size for forward icon
   final double iconSize;
+
   /// Padding for forward header area
   final EdgeInsets padding;
+
   /// Border radius for forward header container
   final double borderRadius;
   const VBubbleForwardTheme({
@@ -40,6 +45,7 @@ class VBubbleForwardTheme {
       borderRadius: borderRadius ?? this.borderRadius,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

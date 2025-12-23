@@ -5,22 +5,31 @@ import 'package:flutter/material.dart';
 class VBubbleMenuTheme {
   /// Background color for context menu
   final Color backgroundColor;
+
   /// Text color for menu items
   final Color textColor;
+
   /// Icon color for menu items
   final Color iconColor;
+
   /// Color for destructive actions (delete, etc.)
   final Color destructiveColor;
+
   /// Divider color between menu items
   final Color? dividerColor;
+
   /// Font size for menu item text
   final double fontSize;
+
   /// Icon size for menu items
   final double iconSize;
+
   /// Padding for each menu item
   final EdgeInsets itemPadding;
+
   /// Border radius for menu container
   final double borderRadius;
+
   /// Elevation/shadow for menu
   final double elevation;
   const VBubbleMenuTheme({
@@ -60,6 +69,7 @@ class VBubbleMenuTheme {
       elevation: elevation ?? this.elevation,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

@@ -6,22 +6,31 @@ import '../../core/enums.dart';
 class VBubbleReactionTheme {
   /// Background color for reaction pills
   final Color backgroundColor;
+
   /// Background color for selected/user's reaction
   final Color selectedBackgroundColor;
+
   /// Text color for reaction count
   final Color textColor;
+
   /// Border color for reaction pills (optional)
   final Color? borderColor;
+
   /// Font size for reaction count text
   final double countFontSize;
+
   /// Size for emoji display
   final double emojiSize;
+
   /// Padding inside reaction pill
   final EdgeInsets pillPadding;
+
   /// Border radius for reaction pill
   final double pillBorderRadius;
+
   /// Spacing between reaction pills
   final double pillSpacing;
+
   /// Height of reaction row
   final double rowHeight;
   const VBubbleReactionTheme({
@@ -62,6 +71,7 @@ class VBubbleReactionTheme {
       rowHeight: rowHeight ?? this.rowHeight,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // STYLE-SPECIFIC REACTION LISTS
   // ═══════════════════════════════════════════════════════════════════════════
@@ -80,6 +90,7 @@ class VBubbleReactionTheme {
         return ['👍', '❤️', '😂', '😮', '😢', '🎉'];
     }
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

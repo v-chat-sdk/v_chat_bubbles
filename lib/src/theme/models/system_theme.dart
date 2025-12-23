@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class VBubbleSystemTheme {
   /// Background color for system messages
   final Color backgroundColor;
+
   /// Text color for system messages
   final Color textColor;
+
   /// Text style for system messages
   final TextStyle textStyle;
   const VBubbleSystemTheme({
@@ -25,6 +27,7 @@ class VBubbleSystemTheme {
       textStyle: textStyle ?? this.textStyle,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

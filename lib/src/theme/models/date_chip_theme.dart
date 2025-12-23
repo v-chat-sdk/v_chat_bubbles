@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class VBubbleDateChipTheme {
   /// Background color for date chip
   final Color backgroundColor;
+
   /// Text color for date
   final Color textColor;
+
   /// Text style for date
   final TextStyle textStyle;
   const VBubbleDateChipTheme({
@@ -25,6 +27,7 @@ class VBubbleDateChipTheme {
       textStyle: textStyle ?? this.textStyle,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

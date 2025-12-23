@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class VDirectionalReplyTheme {
   /// Vertical bar color at the left of reply preview
   final Color barColor;
+
   /// Background color of the reply preview
   final Color backgroundColor;
+
   /// Text color in the reply preview
   final Color textColor;
   const VDirectionalReplyTheme({
@@ -25,6 +27,7 @@ class VDirectionalReplyTheme {
       textColor: textColor ?? this.textColor,
     );
   }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -43,18 +46,25 @@ class VDirectionalReplyTheme {
 class VBubbleReplyTheme {
   /// Reply colors for outgoing messages
   final VDirectionalReplyTheme outgoing;
+
   /// Reply colors for incoming messages
   final VDirectionalReplyTheme incoming;
+
   /// Width of the vertical reply bar
   final double barWidth;
+
   /// Padding for reply preview container
   final EdgeInsets padding;
+
   /// Border radius for reply preview
   final double borderRadius;
+
   /// Text style for reply sender name
   final TextStyle senderNameStyle;
+
   /// Text style for reply message content
   final TextStyle messageStyle;
+
   /// Maximum lines for reply message preview
   final int maxLines;
   const VBubbleReplyTheme({
@@ -68,12 +78,15 @@ class VBubbleReplyTheme {
     this.messageStyle = const TextStyle(fontSize: 14),
     this.maxLines = 2,
   });
+
   /// Get reply bar color based on message direction
   Color barColor(bool isMeSender) =>
       isMeSender ? outgoing.barColor : incoming.barColor;
+
   /// Get reply background color based on message direction
   Color backgroundColor(bool isMeSender) =>
       isMeSender ? outgoing.backgroundColor : incoming.backgroundColor;
+
   /// Get reply text color based on message direction
   Color textColor(bool isMeSender) =>
       isMeSender ? outgoing.textColor : incoming.textColor;
@@ -98,6 +111,7 @@ class VBubbleReplyTheme {
       maxLines: maxLines ?? this.maxLines,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════

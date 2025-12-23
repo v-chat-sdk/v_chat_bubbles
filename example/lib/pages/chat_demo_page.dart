@@ -46,11 +46,12 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
     _brightness = widget.initialBrightness;
     _locale = widget.initialLocale;
     // Reverse so newest messages are at bottom (for reverse ListView)
-    _messages = (widget.isGroupChat
-            ? SampleMessages.buildGroupChat()
-            : SampleMessages.buildDirectChat())
-        .reversed
-        .toList();
+    _messages =
+        (widget.isGroupChat
+                ? SampleMessages.buildGroupChat()
+                : SampleMessages.buildDirectChat())
+            .reversed
+            .toList();
   }
 
   @override
@@ -297,7 +298,9 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
       media: theme.media.copyWith(),
       menu: theme.menu.copyWith(),
       reactions: theme.reactions.copyWith(backgroundColor: Colors.red),
-      systemMessages: theme.systemMessages.copyWith(backgroundColor: Colors.red),
+      systemMessages: theme.systemMessages.copyWith(
+        backgroundColor: Colors.red,
+      ),
     );
 
     final backgroundColor = _brightness == Brightness.dark

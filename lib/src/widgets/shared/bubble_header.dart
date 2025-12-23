@@ -107,7 +107,9 @@ class VBubbleHeader extends StatelessWidget {
     // Make sender name tappable (triggers same action as avatar tap)
     // Disable tap in selection mode
     final isSelectionMode = context.bubbleScope.isSelectionMode;
-    if (callbacks?.onAvatarTap != null && messageId != null && !isSelectionMode) {
+    if (callbacks?.onAvatarTap != null &&
+        messageId != null &&
+        !isSelectionMode) {
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => callbacks!.onAvatarTap!(messageId!),

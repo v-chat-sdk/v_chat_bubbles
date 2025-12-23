@@ -6,14 +6,19 @@ import '../../core/enums.dart';
 class VStatusIconsConfig {
   /// Icon for pending/sending status
   final IconData pendingIcon;
+
   /// Icon for sent status
   final IconData sentIcon;
+
   /// Icon for delivered status
   final IconData deliveredIcon;
+
   /// Icon for read status
   final IconData readIcon;
+
   /// Icon for error status
   final IconData errorIcon;
+
   /// Size of status icons
   final double size;
   const VStatusIconsConfig({
@@ -24,8 +29,10 @@ class VStatusIconsConfig {
     this.errorIcon = Icons.error_outline,
     this.size = 14,
   });
+
   /// Default status icons (standard check marks)
   static const standard = VStatusIconsConfig();
+
   /// WhatsApp-style icons
   static const whatsapp = VStatusIconsConfig(
     pendingIcon: Icons.schedule,
@@ -34,6 +41,7 @@ class VStatusIconsConfig {
     readIcon: Icons.done_all,
     errorIcon: Icons.error,
   );
+
   /// Minimal style with smaller icons
   static const minimal = VStatusIconsConfig(
     pendingIcon: Icons.schedule_outlined,
@@ -43,6 +51,7 @@ class VStatusIconsConfig {
     errorIcon: Icons.warning_amber_outlined,
     size: 12,
   );
+
   /// Get icon for a specific status
   IconData iconFor(VMessageStatus status) {
     switch (status) {
@@ -58,6 +67,7 @@ class VStatusIconsConfig {
         return errorIcon;
     }
   }
+
   VStatusIconsConfig copyWith({
     IconData? pendingIcon,
     IconData? sentIcon,
@@ -75,6 +85,7 @@ class VStatusIconsConfig {
       size: size ?? this.size,
     );
   }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -101,14 +112,19 @@ class VStatusIconsConfig {
 class VBubbleStatusTheme {
   /// Status icons configuration
   final VStatusIconsConfig icons;
+
   /// Color for pending/sending status
   final Color pendingColor;
+
   /// Color for sent status
   final Color sentColor;
+
   /// Color for delivered status
   final Color deliveredColor;
+
   /// Color for read status
   final Color readColor;
+
   /// Color for error status
   final Color errorColor;
   const VBubbleStatusTheme({
@@ -119,6 +135,7 @@ class VBubbleStatusTheme {
     required this.readColor,
     required this.errorColor,
   });
+
   /// Get color for a specific status
   Color colorFor(VMessageStatus status) {
     switch (status) {
@@ -134,6 +151,7 @@ class VBubbleStatusTheme {
         return errorColor;
     }
   }
+
   VBubbleStatusTheme copyWith({
     VStatusIconsConfig? icons,
     Color? pendingColor,
@@ -151,6 +169,7 @@ class VBubbleStatusTheme {
       errorColor: errorColor ?? this.errorColor,
     );
   }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
