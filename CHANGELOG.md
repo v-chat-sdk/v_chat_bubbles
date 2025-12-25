@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.2
+
+### Improvements
+
+- **Context Menu i18n**: Context menu items now use `VTranslationConfig` for localization
+  - All menu item labels (Reply, Forward, Copy, Delete, etc.) are now translatable
+  - Added new translation fields: `actionUnpin`, `actionUnstar`, `actionSelect`, `actionShare`, `actionSave`, `actionInfo`, `actionTranslate`, `actionSpeak`
+  - Custom menu items fall back to their original `label` property
+  - Added `labelForMenuItemId()` method to `VTranslationConfig` for dynamic label lookup
+
+### New Translations Added
+
+All language presets updated with new context menu translations:
+- **English**: Select, Share, Save, Info, Translate, Speak, Unpin, Unstar
+- **Spanish**: Seleccionar, Compartir, Guardar, Información, Traducir, Hablar, Desfijar, Desmarcar
+- **French**: Sélectionner, Partager, Enregistrer, Infos, Traduire, Lire, Désépingler, Démarquer
+- **German**: Auswählen, Teilen, Speichern, Info, Übersetzen, Vorlesen, Lösen, Markierung aufheben
+- **Arabic**: تحديد, مشاركة, حفظ, معلومات, ترجمة, نطق, إلغاء التثبيت, إلغاء التمييز
+
+---
+
 ## 1.2.1
 
 ### Bug Fixes

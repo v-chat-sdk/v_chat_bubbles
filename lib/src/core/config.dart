@@ -818,8 +818,16 @@ class VTranslationConfig {
   final String actionEdit;
   final String actionDelete;
   final String actionPin;
+  final String actionUnpin;
   final String actionStar;
+  final String actionUnstar;
   final String actionReport;
+  final String actionSelect;
+  final String actionShare;
+  final String actionSave;
+  final String actionInfo;
+  final String actionTranslate;
+  final String actionSpeak;
 
   // ============= Message Status =============
   final String statusSent;
@@ -881,8 +889,16 @@ class VTranslationConfig {
     this.actionEdit = 'Edit',
     this.actionDelete = 'Delete',
     this.actionPin = 'Pin',
+    this.actionUnpin = 'Unpin',
     this.actionStar = 'Star',
+    this.actionUnstar = 'Unstar',
     this.actionReport = 'Report',
+    this.actionSelect = 'Select',
+    this.actionShare = 'Share',
+    this.actionSave = 'Save',
+    this.actionInfo = 'Info',
+    this.actionTranslate = 'Translate',
+    this.actionSpeak = 'Speak',
     this.statusSent = 'Sent',
     this.statusReceived = 'Received',
     this.statusEdited = 'edited',
@@ -931,8 +947,16 @@ class VTranslationConfig {
     actionEdit: 'Editar',
     actionDelete: 'Eliminar',
     actionPin: 'Fijar',
+    actionUnpin: 'Desfijar',
     actionStar: 'Marcar',
+    actionUnstar: 'Desmarcar',
     actionReport: 'Reportar',
+    actionSelect: 'Seleccionar',
+    actionShare: 'Compartir',
+    actionSave: 'Guardar',
+    actionInfo: 'Información',
+    actionTranslate: 'Traducir',
+    actionSpeak: 'Hablar',
     statusSent: 'Enviado',
     statusReceived: 'Recibido',
     statusEdited: 'editado',
@@ -978,8 +1002,16 @@ class VTranslationConfig {
     actionEdit: 'Modifier',
     actionDelete: 'Supprimer',
     actionPin: 'Épingler',
+    actionUnpin: 'Désépingler',
     actionStar: 'Marquer',
+    actionUnstar: 'Démarquer',
     actionReport: 'Signaler',
+    actionSelect: 'Sélectionner',
+    actionShare: 'Partager',
+    actionSave: 'Enregistrer',
+    actionInfo: 'Infos',
+    actionTranslate: 'Traduire',
+    actionSpeak: 'Lire',
     statusSent: 'Envoyé',
     statusReceived: 'Reçu',
     statusEdited: 'modifié',
@@ -1025,8 +1057,16 @@ class VTranslationConfig {
     actionEdit: 'Bearbeiten',
     actionDelete: 'Löschen',
     actionPin: 'Anheften',
+    actionUnpin: 'Lösen',
     actionStar: 'Markieren',
+    actionUnstar: 'Markierung aufheben',
     actionReport: 'Melden',
+    actionSelect: 'Auswählen',
+    actionShare: 'Teilen',
+    actionSave: 'Speichern',
+    actionInfo: 'Info',
+    actionTranslate: 'Übersetzen',
+    actionSpeak: 'Vorlesen',
     statusSent: 'Gesendet',
     statusReceived: 'Erhalten',
     statusEdited: 'bearbeitet',
@@ -1072,8 +1112,16 @@ class VTranslationConfig {
     actionEdit: 'تحرير',
     actionDelete: 'حذف',
     actionPin: 'تثبيت',
-    actionStar: 'علم',
+    actionUnpin: 'إلغاء التثبيت',
+    actionStar: 'تمييز',
+    actionUnstar: 'إلغاء التمييز',
     actionReport: 'إبلاغ',
+    actionSelect: 'تحديد',
+    actionShare: 'مشاركة',
+    actionSave: 'حفظ',
+    actionInfo: 'معلومات',
+    actionTranslate: 'ترجمة',
+    actionSpeak: 'نطق',
     statusSent: 'تم الإرسال',
     statusReceived: 'تم الاستلام',
     statusEdited: 'تم تحريره',
@@ -1130,6 +1178,51 @@ class VTranslationConfig {
     }
   }
 
+  /// Get translated label for a menu item id
+  ///
+  /// Returns the translated label if the id matches a known action,
+  /// otherwise returns the fallback (typically the original label)
+  String labelForMenuItemId(String id, {String? fallback}) {
+    switch (id) {
+      case 'reply':
+        return actionReply;
+      case 'forward':
+        return actionForward;
+      case 'copy':
+        return actionCopy;
+      case 'download':
+        return actionDownload;
+      case 'edit':
+        return actionEdit;
+      case 'delete':
+        return actionDelete;
+      case 'pin':
+        return actionPin;
+      case 'star':
+        return actionStar;
+      case 'report':
+        return actionReport;
+      case 'select':
+        return actionSelect;
+      case 'share':
+        return actionShare;
+      case 'save':
+        return actionSave;
+      case 'info':
+        return actionInfo;
+      case 'translate':
+        return actionTranslate;
+      case 'speak':
+        return actionSpeak;
+      case 'unpin':
+        return actionUnpin;
+      case 'unstar':
+        return actionUnstar;
+      default:
+        return fallback ?? id;
+    }
+  }
+
   VTranslationConfig copyWith({
     String? actionReply,
     String? actionForward,
@@ -1138,8 +1231,16 @@ class VTranslationConfig {
     String? actionEdit,
     String? actionDelete,
     String? actionPin,
+    String? actionUnpin,
     String? actionStar,
+    String? actionUnstar,
     String? actionReport,
+    String? actionSelect,
+    String? actionShare,
+    String? actionSave,
+    String? actionInfo,
+    String? actionTranslate,
+    String? actionSpeak,
     String? statusSent,
     String? statusReceived,
     String? statusEdited,
@@ -1183,8 +1284,16 @@ class VTranslationConfig {
         actionEdit: actionEdit ?? this.actionEdit,
         actionDelete: actionDelete ?? this.actionDelete,
         actionPin: actionPin ?? this.actionPin,
+        actionUnpin: actionUnpin ?? this.actionUnpin,
         actionStar: actionStar ?? this.actionStar,
+        actionUnstar: actionUnstar ?? this.actionUnstar,
         actionReport: actionReport ?? this.actionReport,
+        actionSelect: actionSelect ?? this.actionSelect,
+        actionShare: actionShare ?? this.actionShare,
+        actionSave: actionSave ?? this.actionSave,
+        actionInfo: actionInfo ?? this.actionInfo,
+        actionTranslate: actionTranslate ?? this.actionTranslate,
+        actionSpeak: actionSpeak ?? this.actionSpeak,
         statusSent: statusSent ?? this.statusSent,
         statusReceived: statusReceived ?? this.statusReceived,
         statusEdited: statusEdited ?? this.statusEdited,
@@ -1233,8 +1342,16 @@ class VTranslationConfig {
           actionEdit == other.actionEdit &&
           actionDelete == other.actionDelete &&
           actionPin == other.actionPin &&
+          actionUnpin == other.actionUnpin &&
           actionStar == other.actionStar &&
+          actionUnstar == other.actionUnstar &&
           actionReport == other.actionReport &&
+          actionSelect == other.actionSelect &&
+          actionShare == other.actionShare &&
+          actionSave == other.actionSave &&
+          actionInfo == other.actionInfo &&
+          actionTranslate == other.actionTranslate &&
+          actionSpeak == other.actionSpeak &&
           statusSent == other.statusSent &&
           statusReceived == other.statusReceived &&
           statusEdited == other.statusEdited &&
@@ -1279,8 +1396,16 @@ class VTranslationConfig {
         actionEdit,
         actionDelete,
         actionPin,
+        actionUnpin,
         actionStar,
+        actionUnstar,
         actionReport,
+        actionSelect,
+        actionShare,
+        actionSave,
+        actionInfo,
+        actionTranslate,
+        actionSpeak,
         statusSent,
         statusReceived,
         statusEdited,
