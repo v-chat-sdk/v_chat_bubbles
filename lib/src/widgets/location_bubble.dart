@@ -12,8 +12,10 @@ import 'shared/unified_image.dart';
 class VLocationBubble extends BaseBubble {
   /// Location data (lat, lng, address, static map URL)
   final VLocationData locationData;
+
   @override
   String get messageType => 'location';
+
   const VLocationBubble({
     super.key,
     required super.messageId,
@@ -33,6 +35,7 @@ class VLocationBubble extends BaseBubble {
     super.isStarred,
     super.isHighlighted,
   });
+
   @override
   Widget buildContent(BuildContext context) {
     final config = context.bubbleConfig;
@@ -153,29 +156,20 @@ class VLocationBubble extends BaseBubble {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       color: bubbleColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Icon(Icons.location_on,
-                  size: BubbleSizes.iconMedium, color: textColor),
-              BubbleSpacing.gapS,
-              Expanded(
-                child: Text(
-                  locationData.address!,
-                  style: theme.messageTextStyle.copyWith(color: textColor),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
+          Flexible(
+            child: Text(
+              locationData.address!,
+              style: theme.messageTextStyle.copyWith(color: textColor),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          BubbleSpacing.vGapS,
-          Align(
-            alignment: Alignment.centerRight,
-            child: buildMeta(context),
-          ),
+          BubbleSpacing.gapM,
+          buildMeta(context),
         ],
       ),
     );

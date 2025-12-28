@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/constants.dart';
 import '../core/enums.dart';
 import '../core/models.dart';
@@ -72,20 +73,30 @@ class VCallBubble extends BaseBubble {
                       overflow: TextOverflow.ellipsis,
                     ),
                     BubbleSpacing.vGapXS,
+                    // Subtitle + meta inline
                     Row(
-                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildStatusIcon(context, secondaryColor),
-                        BubbleSpacing.gapS,
-                        Flexible(
-                          child: Text(
-                            _getCallSubtitle(context),
-                            style: theme.timeTextStyle
-                                .copyWith(color: secondaryColor),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                        Expanded(
+                          child: Row(
+                            children: [
+                              _buildStatusIcon(context, secondaryColor),
+                              BubbleSpacing.gapS,
+                              Flexible(
+                                child: Text(
+                                  _getCallSubtitle(context),
+                                  style: theme.timeTextStyle
+                                      .copyWith(color: secondaryColor),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                        BubbleSpacing.gapM,
+                        buildMeta(context),
                       ],
                     ),
                   ],

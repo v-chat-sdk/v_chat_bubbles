@@ -32,32 +32,36 @@ class VBubbleFooter extends StatelessWidget {
         ? theme.outgoingSecondaryTextColor
         : theme.incomingSecondaryTextColor;
     final metaColor = overrideColor ?? defaultMetaColor;
-
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (isStarred) ...[
-            Icon(Icons.star, size: BubbleSizes.iconTiny, color: metaColor),
-            BubbleSpacing.gapXS,
-          ],
-          if (isPinned) ...[
-            Icon(Icons.push_pin, size: BubbleSizes.iconTiny, color: metaColor),
-            BubbleSpacing.gapXS,
-          ],
-          if (isEdited) ...[
-            Text(config.translations.statusEdited,
-                style: theme.timeTextStyle.copyWith(color: metaColor)),
-            BubbleSpacing.gapS,
-          ],
-          Text(time, style: theme.timeTextStyle.copyWith(color: metaColor)),
-          if (isMeSender) ...[
-            BubbleSpacing.gapXS,
-            _buildStatusIcon(context, metaColor),
-          ],
+    // Inline meta row - matches Telegram iOS style
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Pin indicator (before star, per Telegram iOS)
+        if (isPinned) ...[
+          Icon(Icons.push_pin, size: BubbleSizes.iconTiny, color: metaColor),
+          BubbleSpacing.gapXS,
         ],
-      ),
+        // Star indicator
+        if (isStarred) ...[
+          Icon(Icons.star, size: BubbleSizes.iconTiny, color: metaColor),
+          BubbleSpacing.gapXS,
+        ],
+        // Edited label
+        if (isEdited) ...[
+          Text(
+            config.translations.statusEdited,
+            style: theme.timeTextStyle.copyWith(color: metaColor),
+          ),
+          BubbleSpacing.gapXS,
+        ],
+        // Timestamp
+        Text(time, style: theme.timeTextStyle.copyWith(color: metaColor)),
+        // Status icon (outgoing only)
+        if (isMeSender) ...[
+          BubbleSpacing.gapXS,
+          _buildStatusIcon(context, metaColor),
+        ],
+      ],
     );
   }
 

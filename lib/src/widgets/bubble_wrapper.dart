@@ -23,7 +23,7 @@ class VBubbleWrapper extends StatelessWidget {
     this.padding,
     this.maxWidth,
     this.backgroundColor,
-    this.clipContent = false,
+    this.clipContent = true,
   });
   @override
   Widget build(BuildContext context) {

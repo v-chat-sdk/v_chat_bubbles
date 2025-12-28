@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.3
+
+### Improvements
+
+#### Telegram iOS Typography
+Updated Telegram theme to match authentic iOS Telegram typography:
+- **messageTextStyle**: 17pt, w400, height 1.35, letterSpacing -0.4
+- **timeTextStyle**: 11pt, w400, letterSpacing -0.1
+- **senderNameStyle**: 13pt, w600, letterSpacing -0.1
+- **replyTextStyle**: 14pt, w400, letterSpacing -0.2
+- **captionTextStyle**: 15pt, w400, height 1.3, letterSpacing -0.3
+- **linkTextStyle**: 17pt, w400, letterSpacing -0.4
+
+#### Inline Meta for All Bubble Types
+Consistent inline meta (timestamp + status) rendering across all bubbles:
+- **VBubbleFooter**: Updated indicator order (pinned → starred), cleaner Row structure
+- **VLocationBubble**: Address text + meta now inline with `Flexible` wrapper
+- **VContactBubble**: Phone number + meta now inline
+- **VCallBubble**: Added missing meta display with `Expanded` wrapper for proper layout
+- **VTextBubble**: Block content now wrapped in `Flexible(Column(...))` for better overflow handling
+
+### New Features
+
+#### Text Expansion i18n
+- Added `seeMore` and `seeLess` translation fields to `VTranslationConfig`
+- "See more" / "See less" buttons now fully translatable
+
+### New Translations Added
+
+All language presets updated with text expansion translations:
+- **English**: See more, See less
+- **Spanish**: Ver más, Ver menos
+- **French**: Voir plus, Voir moins
+- **German**: Mehr sehen, Weniger sehen
+- **Arabic**: عرض المزيد, عرض أقل
+
+---
+
 ## 1.2.2
 
 ### Improvements

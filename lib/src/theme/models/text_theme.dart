@@ -112,7 +112,7 @@ class VBubbleTextTheme {
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // TELEGRAM PRESETS
+  // TELEGRAM PRESETS (iOS Telegram typography)
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleTextTheme telegramLight() => const VBubbleTextTheme(
         outgoing: VDirectionalTextTheme(
@@ -125,13 +125,45 @@ class VBubbleTextTheme {
           secondaryColor: Color(0x99525252),
           linkColor: Color(0xFF007EE5),
         ),
-        messageTextStyle:
-            TextStyle(fontSize: 17, height: 1.3125, letterSpacing: -0.41),
-        timeTextStyle: TextStyle(fontSize: 12, letterSpacing: 0.07),
-        senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle: TextStyle(fontSize: 17, decoration: TextDecoration.none),
+        // Message text - 17pt on iOS
+        messageTextStyle: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w400,
+          height: 1.35,
+          letterSpacing: -0.4,
+        ),
+        // Time stamp - 11pt
+        timeTextStyle: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.1,
+        ),
+        // Sender name - 13pt semibold
+        senderNameStyle: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.1,
+        ),
+        // Reply text preview - 14pt
+        replyTextStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.2,
+        ),
+        // Caption - 15pt
+        captionTextStyle: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          height: 1.3,
+          letterSpacing: -0.3,
+        ),
+        // Link text - 17pt (matches message text)
+        linkTextStyle: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.4,
+          decoration: TextDecoration.none,
+        ),
       );
   static VBubbleTextTheme telegramDark() => const VBubbleTextTheme(
         outgoing: VDirectionalTextTheme(
@@ -144,13 +176,45 @@ class VBubbleTextTheme {
           secondaryColor: Color(0x99FFFFFF),
           linkColor: Color(0xFF5EADEA),
         ),
-        messageTextStyle:
-            TextStyle(fontSize: 17, height: 1.3125, letterSpacing: -0.41),
-        timeTextStyle: TextStyle(fontSize: 12, letterSpacing: 0.07),
-        senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle: TextStyle(fontSize: 17, decoration: TextDecoration.none),
+        // Message text - 17pt on iOS
+        messageTextStyle: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w400,
+          height: 1.35,
+          letterSpacing: -0.4,
+        ),
+        // Time stamp - 11pt
+        timeTextStyle: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.1,
+        ),
+        // Sender name - 13pt semibold
+        senderNameStyle: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.1,
+        ),
+        // Reply text preview - 14pt
+        replyTextStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.2,
+        ),
+        // Caption - 15pt
+        captionTextStyle: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          height: 1.3,
+          letterSpacing: -0.3,
+        ),
+        // Link text - 17pt (matches message text)
+        linkTextStyle: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.4,
+          decoration: TextDecoration.none,
+        ),
       );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS

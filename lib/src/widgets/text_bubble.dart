@@ -8,8 +8,8 @@ import 'base_bubble.dart';
 import 'bubble_scope.dart';
 import 'bubble_wrapper.dart';
 import 'shared/block_format_widgets.dart';
-import 'shared/unified_image.dart';
 import 'shared/color_selector_mixin.dart';
+import 'shared/unified_image.dart';
 
 /// Simple text message bubble
 ///
@@ -24,8 +24,10 @@ class VTextBubble extends BaseBubble {
 
   /// Optional link preview data
   final VLinkPreviewData? linkPreview;
+
   @override
   String get messageType => 'text message';
+
   const VTextBubble({
     super.key,
     required super.messageId,
@@ -78,6 +80,7 @@ class _ExpandableTextWithPreview extends StatefulWidget {
   final Color textColor;
   final Widget Function() metaBuilder;
   final Widget? header;
+
   const _ExpandableTextWithPreview({
     required this.messageId,
     required this.text,
@@ -87,6 +90,7 @@ class _ExpandableTextWithPreview extends StatefulWidget {
     required this.metaBuilder,
     this.header,
   });
+
   @override
   State<_ExpandableTextWithPreview> createState() =>
       _ExpandableTextWithPreviewState();
@@ -112,6 +116,7 @@ class _ExpandableTextWithPreviewState
 
   /// Cached text direction
   TextDirection? _cachedTextDirection;
+
   @override
   void didUpdateWidget(covariant _ExpandableTextWithPreview oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -312,14 +317,16 @@ class _ExpandableTextWithPreviewState
           ),
           BubbleSpacing.vGapS,
           Row(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
                 child: GestureDetector(
                   onTap: _toggleExpand,
                   child: Text(
-                    isExpanded ? 'See less' : 'See more',
+                    isExpanded
+                        ? config.translations.seeLess
+                        : config.translations.seeMore,
                     style: theme.linkTextStyle.copyWith(
                       color: linkColor,
                       fontWeight: FontWeight.w500,
@@ -327,7 +334,6 @@ class _ExpandableTextWithPreviewState
                   ),
                 ),
               ),
-              BubbleSpacing.gapM,
               widget.metaBuilder(),
             ],
           ),
@@ -405,11 +411,20 @@ class _ExpandableTextWithPreviewState
           linkPreviewWidget,
           BubbleSpacing.gapM,
         ],
-        ..._cachedBlockWidgets!,
-        BubbleSpacing.vGapS,
-        Align(
-          alignment: Alignment.centerRight,
-          child: widget.metaBuilder(),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: _cachedBlockWidgets!,
+              ),
+            ),
+            BubbleSpacing.gapM,
+            widget.metaBuilder(),
+          ],
         ),
       ],
     );
@@ -458,7 +473,10 @@ class _ExpandableTextWithPreviewState
   }
 
   Widget _buildLinkPreview(
-      BuildContext context, VLinkPreviewData linkPreview, Color linkColor) {
+    BuildContext context,
+    VLinkPreviewData linkPreview,
+    Color linkColor,
+  ) {
     final theme = context.bubbleTheme;
     final callbacks = context.bubbleCallbacks;
     final textColor = widget.textColor;
@@ -476,7 +494,7 @@ class _ExpandableTextWithPreviewState
               ));
             },
       child: Container(
-        padding: const EdgeInsets.only(left: 8),
+        padding: const EdgeInsets.only(left: 8, bottom: 8),
         decoration: BoxDecoration(
           border: Border(left: BorderSide(color: replyBarColor, width: 2)),
         ),

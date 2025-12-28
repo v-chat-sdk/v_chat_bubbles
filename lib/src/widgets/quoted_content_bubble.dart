@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/constants.dart';
 import '../core/models.dart';
 import '../utils/text_parser.dart';
@@ -33,8 +34,10 @@ class VQuotedContentBubble extends BaseBubble {
 
   /// Optional message text with pattern parsing support
   final String? text;
+
   @override
   String get messageType => 'quoted_content';
+
   const VQuotedContentBubble({
     super.key,
     required super.messageId,
@@ -55,6 +58,7 @@ class VQuotedContentBubble extends BaseBubble {
     super.isStarred,
     super.isHighlighted,
   });
+
   @override
   Widget buildContent(BuildContext context) {
     final config = context.bubbleConfig;
@@ -71,12 +75,18 @@ class VQuotedContentBubble extends BaseBubble {
           children: [
             if (header != null) header,
             _buildContentPreview(context),
-            if (text != null && text!.isNotEmpty) ...[
-              BubbleSpacing.vGapM,
-              _buildParsedText(context),
-            ],
-            BubbleSpacing.vGapXS,
-            buildMeta(context),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (text != null && text!.isNotEmpty) ...[
+                  BubbleSpacing.vGapM,
+                  Flexible(child: _buildParsedText(context)),
+                ],
+                BubbleSpacing.vGapXS,
+                buildMeta(context),
+              ],
+            )
           ],
         ),
       ),

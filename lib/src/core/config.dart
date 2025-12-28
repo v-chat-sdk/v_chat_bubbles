@@ -874,6 +874,10 @@ class VTranslationConfig {
   // ============= Context Menu =============
   final String contextMenuCancel;
 
+  // ============= Text Expansion =============
+  final String seeMore;
+  final String seeLess;
+
   // ============= Receipt Labels =============
   final String receiptTitle;
   final String receiptOrderPrefix;
@@ -928,6 +932,8 @@ class VTranslationConfig {
     this.viewerShare = 'Share',
     this.viewerRetry = 'Retry',
     this.contextMenuCancel = 'Cancel',
+    this.seeMore = 'See more',
+    this.seeLess = 'See less',
     this.receiptTitle = 'Receipt',
     this.receiptOrderPrefix = 'Order #',
     this.receiptSubtotal = 'Subtotal',
@@ -986,6 +992,8 @@ class VTranslationConfig {
     viewerShare: 'Compartir',
     viewerRetry: 'Reintentar',
     contextMenuCancel: 'Cancelar',
+    seeMore: 'Ver más',
+    seeLess: 'Ver menos',
     receiptTitle: 'Recepción',
     receiptOrderPrefix: 'Pedido #',
     receiptSubtotal: 'Subtotal',
@@ -1041,6 +1049,8 @@ class VTranslationConfig {
     viewerShare: 'Partager',
     viewerRetry: 'Réessayer',
     contextMenuCancel: 'Annuler',
+    seeMore: 'Voir plus',
+    seeLess: 'Voir moins',
     receiptTitle: 'Reçu',
     receiptOrderPrefix: 'Commande #',
     receiptSubtotal: 'Sous-total',
@@ -1096,6 +1106,8 @@ class VTranslationConfig {
     viewerShare: 'Teilen',
     viewerRetry: 'Erneut versuchen',
     contextMenuCancel: 'Abbrechen',
+    seeMore: 'Mehr sehen',
+    seeLess: 'Weniger sehen',
     receiptTitle: 'Quittung',
     receiptOrderPrefix: 'Bestellung #',
     receiptSubtotal: 'Summe',
@@ -1151,6 +1163,8 @@ class VTranslationConfig {
     viewerShare: 'مشاركة',
     viewerRetry: 'إعادة المحاولة',
     contextMenuCancel: 'إلغاء',
+    seeMore: 'عرض المزيد',
+    seeLess: 'عرض أقل',
     receiptTitle: 'إيصال',
     receiptOrderPrefix: 'الطلب #',
     receiptSubtotal: 'المجموع الفرعي',

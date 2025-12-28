@@ -67,15 +67,24 @@ class VContactBubble extends BaseBubble {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      if (contactData.phoneNumber != null) ...[
-                        BubbleSpacing.vGapXS,
-                        Text(
-                          contactData.phoneNumber!,
-                          style: theme.timeTextStyle.copyWith(color: linkColor),
-                        ),
-                      ],
-                      BubbleSpacing.vGapS,
-                      buildMeta(context),
+                      BubbleSpacing.vGapXS,
+                      // Phone number + meta inline
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          if (contactData.phoneNumber != null)
+                            Flexible(
+                              child: Text(
+                                contactData.phoneNumber!,
+                                style: theme.timeTextStyle
+                                    .copyWith(color: linkColor),
+                              ),
+                            ),
+                          BubbleSpacing.gapM,
+                          buildMeta(context),
+                        ],
+                      ),
                     ],
                   ),
                 ),

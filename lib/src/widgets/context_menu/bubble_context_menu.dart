@@ -236,7 +236,8 @@ class _ContextMenuItem extends StatelessWidget {
     final textColor =
         isDestructive ? theme.menuDestructiveColor : theme.menuTextColor;
     // Use translated label, falling back to item.label for custom items
-    final label = translations.labelForMenuItemId(item.id, fallback: item.label);
+    final label =
+        translations.labelForMenuItemId(item.id, fallback: item.label);
     return CupertinoContextMenuAction(
       onPressed: () {
         if (enableHapticFeedback) {
@@ -332,41 +333,37 @@ class BubbleContextMenuSheet extends StatelessWidget {
               reactionStateManager: reactionStateManager,
             )
           : null,
-      actions: menuItems
-          .where((item) {
-            final action = _actionForItem(item);
-            return action == null ||
-                menuConfig.availableActions.contains(action);
-          })
-          .map((item) {
-            final label =
-                translations.labelForMenuItemId(item.id, fallback: item.label);
-            return CupertinoActionSheetAction(
-              onPressed: () {
-                if (config.gestures.enableHapticFeedback) {
-                  HapticFeedback.selectionClick();
-                }
-                Navigator.of(context).pop();
-                callbacks.onMenuItemSelected?.call(messageId, item);
-              },
-              isDestructiveAction: item.isDestructive,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    item.icon,
-                    color: item.isDestructive
-                        ? theme.menuDestructiveColor
-                        : theme.menuTextColor,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(label),
-                ],
+      actions: menuItems.where((item) {
+        final action = _actionForItem(item);
+        return action == null || menuConfig.availableActions.contains(action);
+      }).map((item) {
+        final label =
+            translations.labelForMenuItemId(item.id, fallback: item.label);
+        return CupertinoActionSheetAction(
+          onPressed: () {
+            if (config.gestures.enableHapticFeedback) {
+              HapticFeedback.selectionClick();
+            }
+            Navigator.of(context).pop();
+            callbacks.onMenuItemSelected?.call(messageId, item);
+          },
+          isDestructiveAction: item.isDestructive,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                item.icon,
+                color: item.isDestructive
+                    ? theme.menuDestructiveColor
+                    : theme.menuTextColor,
+                size: 20,
               ),
-            );
-          })
-          .toList(),
+              const SizedBox(width: 8),
+              Text(label),
+            ],
+          ),
+        );
+      }).toList(),
       cancelButton: CupertinoActionSheetAction(
         onPressed: () => Navigator.of(context).pop(),
         child: Text(translations.contextMenuCancel),

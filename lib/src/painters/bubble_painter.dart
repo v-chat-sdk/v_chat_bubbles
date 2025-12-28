@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/enums.dart';
 
 /// Constants for bubble painter calculations
@@ -166,12 +167,17 @@ abstract class VBubblePainter extends CustomPainter {
   }
 }
 
-/// Telegram iOS bubble style
+/// iOS/Telegram-style message bubble painter
 ///
-/// Uses rounded rectangles with a small curved tail at the bottom corner.
-/// The tail curves inward creating a subtle hook effect, characteristic
-/// of Telegram's iOS design.
+/// Uses exact bezier curves from iOS iMessage implementation for authentic
+/// Telegram iOS design with curved hook tails.
 class VTelegramBubblePainter extends VBubblePainter {
+  /// Whether to show shadow under the bubble
+  final bool showShadow;
+
+  /// Custom shadow color (defaults to black with 0.1 alpha)
+  final Color? shadowColor;
+
   late Paint _cachedPaint;
   late Color _lastColor;
   Gradient? _lastGradient;
@@ -192,6 +198,8 @@ class VTelegramBubblePainter extends VBubblePainter {
     required super.radius,
     required super.tailSize,
     super.isRtl,
+    this.showShadow = false,
+    this.shadowColor,
   });
 
   @override
@@ -219,94 +227,102 @@ class VTelegramBubblePainter extends VBubblePainter {
         _cachedTailOnRight != tailOnRight ||
         _cachedRadius != radius) {
       // Use tailOnRight to determine path (respects RTL)
-      final tailPath =
-          tailOnRight ? _createRightTailPath(size) : _createLeftTailPath(size);
-      _cachedPath = showTail ? tailPath : createSimpleRoundedPath(size);
+      final tailPath = tailOnRight
+          ? _createOutgoingBubblePath(size)
+          : _createIncomingBubblePath(size);
+      _cachedPath = showTail ? tailPath : _createSimpleBubblePath(size);
       _cachedSize = size;
       _cachedShowTail = showTail;
       _cachedTailOnRight = tailOnRight;
       _cachedRadius = radius;
       _isPathInitialized = true;
     }
+    // Draw shadow
+    if (showShadow) {
+      final shadowPaint = Paint()
+        ..color = shadowColor ?? Colors.black.withValues(alpha: 0.1)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
+      canvas.drawPath(_cachedPath.shift(const Offset(0, 1)), shadowPaint);
+    }
+    // Draw bubble
     canvas.drawPath(_cachedPath, _cachedPaint);
   }
 
-  /// Creates bubble path with authentic Telegram tail on bottom-right
-  /// The tail curves outward and hooks back, characteristic of Telegram iOS design
-  Path _createRightTailPath(Size size) {
-    final width = size.width;
-    final height = size.height;
-    final r = radius;
+  /// Creates simple rounded bubble without tail
+  Path _createSimpleBubblePath(Size size) {
+    return Path()
+      ..addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+        Radius.circular(radius),
+      ));
+  }
+
+  /// Outgoing bubble - tail on bottom-right
+  /// Based on iOS iMessage bezier path
+  Path _createOutgoingBubblePath(Size size) {
+    final w = size.width;
+    final h = size.height;
     final path = Path();
-    // Start from top-left
-    path.moveTo(r, 0);
-    // Top edge
-    path.lineTo(width - r, 0);
-    // Top-right corner
-    path.quadraticBezierTo(width, 0, width, r);
-    // Right edge down to where tail begins (tail starts closer to bottom)
-    path.lineTo(width, height - 10);
-    // Telegram-authentic tail: smooth outward curve with elegant hook back
-    // The tail flows naturally from the bubble edge, curves out, then sweeps
-    // down and hooks back to meet the bottom edge
-    path.cubicTo(
-      width, height - 4, // control 1: slight curve before extending
-      width + 2, height + 1, // control 2: curve outward and down
-      width + 5, height + 2, // end: tail tip extends out and slightly below
-    );
-    // Hook back: the signature Telegram curve that sweeps back to bottom
-    path.cubicTo(
-      width + 4, height + 4, // control 1: continue the downward flow
-      width - 4, height + 2, // control 2: sweep back toward bubble
-      width - r, height, // end: smooth junction with bottom edge
-    );
-    // Bottom edge
-    path.lineTo(r, height);
+    // Start at bottom-left of main content area
+    path.moveTo(w - 20, h);
+    // Bottom edge going left
+    path.lineTo(18, h);
     // Bottom-left corner
-    path.quadraticBezierTo(0, height, 0, height - r);
-    // Left edge
-    path.lineTo(0, r);
+    path.cubicTo(8, h, 0, h - 8, 0, h - 18);
+    // Left edge going up
+    path.lineTo(0, 18);
     // Top-left corner
-    path.quadraticBezierTo(0, 0, r, 0);
+    path.cubicTo(0, 8, 8, 0, 18, 0);
+    // Top edge going right
+    path.lineTo(w - 20, 0);
+    // Top-right corner (before tail area)
+    path.cubicTo(w - 12, 0, w - 5, 8, w - 5, 18);
+    // Right edge going down (stops before tail)
+    path.lineTo(w - 5, h - 12);
+    // THE TAIL - curved hook shape
+    // Curve down to tail tip
+    path.cubicTo(w - 5, h - 1, w, h, w, h);
+    // Extend slightly past edge
+    path.lineTo(w + 1, h);
+    // Curve back creating the hook
+    path.cubicTo(w - 4, h + 1, w - 8, h - 1, w - 12, h - 4);
+    // Final curve back to starting point
+    path.cubicTo(w - 15, h, w - 20, h, w - 20, h);
     path.close();
     return path;
   }
 
-  /// Creates bubble path with authentic Telegram tail on bottom-left (mirrored)
-  Path _createLeftTailPath(Size size) {
-    final width = size.width;
-    final height = size.height;
-    final r = radius;
+  /// Incoming bubble - tail on bottom-left
+  /// Mirrored version of outgoing
+  Path _createIncomingBubblePath(Size size) {
+    final w = size.width;
+    final h = size.height;
     final path = Path();
-    // Start from top-right
-    path.moveTo(width - r, 0);
-    // Top-right corner
-    path.quadraticBezierTo(width, 0, width, r);
-    // Right edge
-    path.lineTo(width, height - r);
+    // Start at bottom-right of main content area
+    path.moveTo(20, h);
+    // Bottom edge going right
+    path.lineTo(w - 18, h);
     // Bottom-right corner
-    path.quadraticBezierTo(width, height, width - r, height);
-    // Bottom edge to tail area
-    path.lineTo(r, height);
-    // Telegram-authentic tail: mirrored smooth outward curve with hook back
-    // Hook from bottom edge outward to the left
-    path.cubicTo(
-      4, height + 2, // control 1: sweep toward tail
-      -4, height + 4, // control 2: continue outward flow
-      -5, height + 2, // end: tail tip extends out and slightly below
-    );
-    // Curve back up to meet the left edge
-    path.cubicTo(
-      -2, height + 1, // control 1: curve back inward
-      0, height - 4, // control 2: rise back toward bubble
-      0, height - 10, // end: smooth junction with left edge
-    );
-    // Left edge
-    path.lineTo(0, r);
-    // Top-left corner
-    path.quadraticBezierTo(0, 0, r, 0);
-    // Top edge
-    path.lineTo(width - r, 0);
+    path.cubicTo(w - 8, h, w, h - 8, w, h - 18);
+    // Right edge going up
+    path.lineTo(w, 18);
+    // Top-right corner
+    path.cubicTo(w, 8, w - 8, 0, w - 18, 0);
+    // Top edge going left
+    path.lineTo(20, 0);
+    // Top-left corner (before tail area)
+    path.cubicTo(12, 0, 5, 8, 5, 18);
+    // Left edge going down (stops before tail)
+    path.lineTo(5, h - 12);
+    // THE TAIL - curved hook shape (mirrored)
+    // Curve down to tail tip
+    path.cubicTo(5, h - 1, 0, h, 0, h);
+    // Extend slightly past edge
+    path.lineTo(-1, h);
+    // Curve back creating the hook
+    path.cubicTo(4, h + 1, 8, h - 1, 12, h - 4);
+    // Final curve back to starting point
+    path.cubicTo(15, h, 20, h, 20, h);
     path.close();
     return path;
   }
@@ -319,7 +335,51 @@ class VTelegramBubblePainter extends VBubblePainter {
       showTail != oldDelegate.showTail ||
       radius != oldDelegate.radius ||
       tailSize != oldDelegate.tailSize ||
-      isRtl != oldDelegate.isRtl;
+      isRtl != oldDelegate.isRtl ||
+      showShadow != oldDelegate.showShadow ||
+      shadowColor != oldDelegate.shadowColor;
+}
+
+/// Standalone tail painter for use with Row layout
+class VTelegramTailPainter extends CustomPainter {
+  final Color color;
+  final bool isOutgoing;
+
+  VTelegramTailPainter({required this.color, required this.isOutgoing});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+    final path = Path();
+    final w = size.width;
+    final h = size.height;
+    if (isOutgoing) {
+      // Tail extends from left edge, curves right and hooks back
+      path.moveTo(0, 0);
+      path.lineTo(0, h - 12);
+      // Curve to tip
+      path.cubicTo(0, h - 1, w - 2, h, w, h);
+      // Hook back
+      path.cubicTo(w - 6, h + 1, w - 10, h - 1, 0, h - 6);
+      path.close();
+    } else {
+      // Mirror for incoming
+      path.moveTo(w, 0);
+      path.lineTo(w, h - 12);
+      // Curve to tip
+      path.cubicTo(w, h - 1, 2, h, 0, h);
+      // Hook back
+      path.cubicTo(6, h + 1, 10, h - 1, w, h - 6);
+      path.close();
+    }
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(VTelegramTailPainter oldDelegate) =>
+      oldDelegate.color != color || oldDelegate.isOutgoing != isOutgoing;
 }
 
 /// WhatsApp iOS bubble style
