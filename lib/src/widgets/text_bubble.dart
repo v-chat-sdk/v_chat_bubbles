@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../core/config.dart';
@@ -202,16 +203,19 @@ class _ExpandableTextWithPreviewState
         isSelectionMode ? null : callbacks.onPatternTap;
     // Use block parsing if block patterns are enabled
     if (hasBlockPatterns && !shouldTruncate) {
-      return _buildBlockContent(
-        context,
-        displayText,
-        baseStyle,
-        linkStyle,
-        mentionStyle,
-        effectiveOnPatternTap,
-        linkPreviewWidget,
-        linkColor,
-        config,
+      return _wrapWithWebSelection(
+        isSelectionMode: isSelectionMode,
+        child: _buildBlockContent(
+          context,
+          displayText,
+          baseStyle,
+          linkStyle,
+          mentionStyle,
+          effectiveOnPatternTap,
+          linkPreviewWidget,
+          linkColor,
+          config,
+        ),
       );
     }
     // ═══════════════════════════════════════════════════════════════════════
@@ -256,90 +260,115 @@ class _ExpandableTextWithPreviewState
           widget.metaBuilder(),
         ],
       );
-      if (widget.header == null && linkPreviewWidget == null) return textRow;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.header != null) widget.header!,
-          if (linkPreviewWidget != null) ...[
-            linkPreviewWidget,
-            BubbleSpacing.gapM,
+      if (widget.header == null && linkPreviewWidget == null) {
+        return _wrapWithWebSelection(
+          isSelectionMode: isSelectionMode,
+          child: textRow,
+        );
+      }
+      return _wrapWithWebSelection(
+        isSelectionMode: isSelectionMode,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.header != null) widget.header!,
+            if (linkPreviewWidget != null) ...[
+              linkPreviewWidget,
+              BubbleSpacing.gapM,
+            ],
+            textRow,
           ],
-          textRow,
-        ],
+        ),
       );
     }
     // Truncated text with gradient fade and "See more/less"
     final animDuration =
         isExpanded ? config.animation.expand : config.animation.collapse;
     final animCurve = config.animation.defaultCurve;
-    return AnimatedSize(
-      duration: animDuration,
-      curve: animCurve,
-      alignment: Alignment.topLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.header != null) widget.header!,
-          if (linkPreviewWidget != null) ...[
-            linkPreviewWidget,
-            BubbleSpacing.gapM,
-          ],
-          AnimatedCrossFade(
-            duration: animDuration,
-            firstCurve: animCurve,
-            secondCurve: animCurve,
-            crossFadeState: isExpanded
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            firstChild: ShaderMask(
-              shaderCallback: (bounds) => LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  widget.textColor,
-                  widget.textColor.withValues(alpha: 0),
-                ],
-                stops: const [0.7, 1.0],
-              ).createShader(bounds),
-              blendMode: BlendMode.dstIn,
-              child: RichText(
+    return _wrapWithWebSelection(
+      isSelectionMode: isSelectionMode,
+      child: AnimatedSize(
+        duration: animDuration,
+        curve: animCurve,
+        alignment: Alignment.topLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.header != null) widget.header!,
+            if (linkPreviewWidget != null) ...[
+              linkPreviewWidget,
+              BubbleSpacing.gapM,
+            ],
+            AnimatedCrossFade(
+              duration: animDuration,
+              firstCurve: animCurve,
+              secondCurve: animCurve,
+              crossFadeState: isExpanded
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              firstChild: ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    widget.textColor,
+                    widget.textColor.withValues(alpha: 0),
+                  ],
+                  stops: const [0.7, 1.0],
+                ).createShader(bounds),
+                blendMode: BlendMode.dstIn,
+                child: RichText(
+                  text: TextSpan(children: spans),
+                  textDirection: textDirection,
+                ),
+              ),
+              secondChild: RichText(
                 text: TextSpan(children: spans),
                 textDirection: textDirection,
               ),
             ),
-            secondChild: RichText(
-              text: TextSpan(children: spans),
-              textDirection: textDirection,
-            ),
-          ),
-          BubbleSpacing.vGapS,
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: GestureDetector(
-                  onTap: _toggleExpand,
-                  child: Text(
-                    isExpanded
-                        ? config.translations.seeLess
-                        : config.translations.seeMore,
-                    style: theme.linkTextStyle.copyWith(
-                      color: linkColor,
-                      fontWeight: FontWeight.w500,
+            BubbleSpacing.vGapS,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: GestureDetector(
+                    onTap: _toggleExpand,
+                    child: Text(
+                      isExpanded
+                          ? config.translations.seeLess
+                          : config.translations.seeMore,
+                      style: theme.linkTextStyle.copyWith(
+                        color: linkColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              widget.metaBuilder(),
-            ],
-          ),
-        ],
+                widget.metaBuilder(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WEB TEXT SELECTION - Enable text selection on web platform
+  // ═══════════════════════════════════════════════════════════════════════════
+  /// Wraps content with SelectionArea on web platform for text selection support.
+  /// Disabled during message selection mode to avoid conflicts.
+  Widget _wrapWithWebSelection({
+    required bool isSelectionMode,
+    required Widget child,
+  }) {
+    // Only enable on web and when not in message selection mode
+    if (!kIsWeb || isSelectionMode) return child;
+    return SelectionArea(child: child);
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

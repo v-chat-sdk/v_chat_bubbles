@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.6
+
+### Bug Fixes
+
+#### Telegram Dark Mode Status Icon Color
+- Fixed delivered/sent status icon showing blue instead of grey in dark mode
+- `sentColor` and `deliveredColor` now use grey (`#8696A0`) to distinguish from `readColor` (blue `#5EADEA`)
+- Status icons now clearly differentiate: grey for sent/delivered, blue for read
+
+#### Web Text Selection Support
+- Added `SelectionArea` wrapper for text bubbles on web platform
+- Users can now select and copy text from messages on web
+- Automatically disabled during message selection mode to avoid conflicts
+
+---
+
 ## 1.2.5
 
 ### Config Defaults Updated

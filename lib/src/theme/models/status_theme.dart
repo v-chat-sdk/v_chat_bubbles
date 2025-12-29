@@ -182,8 +182,8 @@ class VBubbleStatusTheme {
       );
   static VBubbleStatusTheme telegramDark() => VBubbleStatusTheme(
         pendingColor: const Color(0x80FFFFFF),
-        sentColor: const Color(0xFF5EADEA),
-        deliveredColor: const Color(0xFF5EADEA),
+        sentColor: const Color(0xFF8696A0),
+        deliveredColor: const Color(0xFF8696A0),
         readColor: const Color(0xFF5EADEA),
         errorColor: const Color(0xFFFF6B6B),
       );

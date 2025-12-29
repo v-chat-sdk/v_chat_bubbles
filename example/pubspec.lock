@@ -584,7 +584,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.2.3"
+    version: "1.2.5"
   v_chat_voice_player:
     dependency: transitive
     description:
