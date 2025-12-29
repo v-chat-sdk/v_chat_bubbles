@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.5
+
+### Config Defaults Updated
+
+#### VSpacingConfig Tuning
+- **bubbleRadius**: 10 → 13 (more rounded bubbles matching Telegram iOS)
+- **sameSenderSpacing**: 2 → 4 (slightly more space between same-sender messages)
+- **differentSenderSpacing**: 8 → 1 (tighter grouping when sender changes)
+
+#### Preset Adjustments
+- **compact**: sameSenderSpacing 1→0, differentSenderSpacing 4→3
+- **loose**: sameSenderSpacing 4→2, differentSenderSpacing 12→8
+
+### Example App Updates
+- Updated demo pages with improved message samples
+- Enhanced message builder examples
+
+---
+
 ## 1.2.4
 
 ### Bug Fixes
