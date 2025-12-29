@@ -171,7 +171,6 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
               constraints: BoxConstraints(
                 maxWidth: maxBubbleWidth,
                 minWidth: config.sizing.minWidth,
-                minHeight: config.accessibility.minTapTargetSize,
               ),
               child: _buildInteractiveWrapper(
                 context: context,
@@ -205,64 +204,71 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
         ),
       ],
     );
+    final rowContent = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Selection indicator at far left (Telegram style)
+        if (isSelectionMode)
+          SizedBox(
+            width: selectionIndicatorWidth,
+            child: Center(
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? theme.selectionCheckmarkColor
+                      : Colors.transparent,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected
+                        ? theme.selectionCheckmarkColor
+                        : isDarkMode
+                            ? Colors.white
+                            : Colors.black54,
+                    width: 2,
+                  ),
+                ),
+                child: isSelected
+                    ? const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: BubbleSizes.iconMedium,
+                      )
+                    : null,
+              ),
+            ),
+          ),
+        // Bubble content
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: isSelectionMode
+                  ? 0
+                  : isMeSender
+                      ? oppositeMargin
+                      : horizontalMargin,
+              right: isMeSender ? horizontalMargin : oppositeMargin,
+            ),
+            child: bubbleContent,
+          ),
+        ),
+      ],
+    );
     Widget bubble = Padding(
       padding: EdgeInsets.only(
         top: isSameSender
             ? config.spacing.sameSenderSpacing
             : config.spacing.differentSenderSpacing,
-        bottom: config.spacing.sameSenderSpacing,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Selection indicator at far left (Telegram style)
-          if (isSelectionMode)
-            SizedBox(
-              width: selectionIndicatorWidth,
-              child: Center(
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? theme.selectionCheckmarkColor
-                        : Colors.transparent,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected
-                          ? theme.selectionCheckmarkColor
-                          : isDarkMode
-                              ? Colors.white
-                              : Colors.black54,
-                      width: 2,
-                    ),
-                  ),
-                  child: isSelected
-                      ? const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: BubbleSizes.iconMedium,
-                        )
-                      : null,
-                ),
-              ),
-            ),
-          // Bubble content
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: isSelectionMode
-                    ? 0
-                    : isMeSender
-                        ? oppositeMargin
-                        : horizontalMargin,
-                right: isMeSender ? horizontalMargin : oppositeMargin,
-              ),
-              child: bubbleContent,
-            ),
-          ),
-        ],
-      ),
+      // In selection mode, wrap entire row for full-width tap target
+      child: isSelectionMode
+          ? GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _handleTap(context),
+              child: rowContent,
+            )
+          : rowContent,
     );
     if (config.accessibility.enableSemanticLabels) {
       bubble = Semantics(
@@ -571,13 +577,10 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     required bool showTail,
     required Widget bubbleContent,
   }) {
-    // In selection mode, only handle tap for selection
+    // In selection mode, gesture is handled at the row level (full width tap)
+    // See build() method where the outer Row is wrapped with GestureDetector
     if (isSelectionMode) {
-      return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => _handleTap(context),
-        child: bubbleContent,
-      );
+      return bubbleContent;
     }
     // Check if user provided custom onLongPress callback
     final hasCustomLongPress = callbacks.onLongPress != null;

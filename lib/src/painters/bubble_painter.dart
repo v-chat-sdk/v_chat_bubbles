@@ -258,71 +258,65 @@ class VTelegramBubblePainter extends VBubblePainter {
   }
 
   /// Outgoing bubble - tail on bottom-right
-  /// Based on iOS iMessage bezier path
+  /// Based on Telegram iOS bezier path - smooth curve flows into tail
   Path _createOutgoingBubblePath(Size size) {
     final w = size.width;
     final h = size.height;
+    final r = radius;
+    final rCtrl = r * 0.44; // Control point ratio for smooth curves
     final path = Path();
-    // Start at bottom-left of main content area
-    path.moveTo(w - 20, h);
-    // Bottom edge going left
-    path.lineTo(18, h);
+    // Start at bottom-left, before bottom-left corner
+    path.moveTo(r, h);
     // Bottom-left corner
-    path.cubicTo(8, h, 0, h - 8, 0, h - 18);
+    path.cubicTo(rCtrl, h, 0, h - rCtrl, 0, h - r);
     // Left edge going up
-    path.lineTo(0, 18);
+    path.lineTo(0, r);
     // Top-left corner
-    path.cubicTo(0, 8, 8, 0, 18, 0);
+    path.cubicTo(0, rCtrl, rCtrl, 0, r, 0);
     // Top edge going right
-    path.lineTo(w - 20, 0);
-    // Top-right corner (before tail area)
-    path.cubicTo(w - 12, 0, w - 5, 8, w - 5, 18);
-    // Right edge going down (stops before tail)
-    path.lineTo(w - 5, h - 12);
-    // THE TAIL - curved hook shape
-    // Curve down to tail tip
-    path.cubicTo(w - 5, h - 1, w, h, w, h);
-    // Extend slightly past edge
-    path.lineTo(w + 1, h);
-    // Curve back creating the hook
-    path.cubicTo(w - 4, h + 1, w - 8, h - 1, w - 12, h - 4);
-    // Final curve back to starting point
-    path.cubicTo(w - 15, h, w - 20, h, w - 20, h);
+    path.lineTo(w - r - 5, 0);
+    // Top-right corner
+    path.cubicTo(w - rCtrl - 5, 0, w - 5, rCtrl, w - 5, r);
+    // Right edge going down - goes all the way down, no separate corner
+    path.lineTo(w - 5, h - 10);
+    // Smooth curve that flows directly into the tail (no separate corner)
+    path.cubicTo(w - 5, h - 4, w - 4, h, w + 2, h);
+    // Tail hook - curves back
+    path.cubicTo(w - 2, h + 1, w - 8, h, w - 12, h - 4);
+    // Back to bottom edge
+    path.cubicTo(w - 16, h - 1, w - 18, h, r, h);
     path.close();
     return path;
   }
 
   /// Incoming bubble - tail on bottom-left
-  /// Mirrored version of outgoing
+  /// Based on Telegram iOS bezier path - smooth curve flows into tail (mirrored)
   Path _createIncomingBubblePath(Size size) {
     final w = size.width;
     final h = size.height;
+    final r = radius;
+    final rCtrl = r * 0.44; // Control point ratio for smooth curves
     final path = Path();
-    // Start at bottom-right of main content area
-    path.moveTo(20, h);
-    // Bottom edge going right
-    path.lineTo(w - 18, h);
+    // Start at bottom-right, before bottom-right corner
+    path.moveTo(w - r, h);
     // Bottom-right corner
-    path.cubicTo(w - 8, h, w, h - 8, w, h - 18);
+    path.cubicTo(w - rCtrl, h, w, h - rCtrl, w, h - r);
     // Right edge going up
-    path.lineTo(w, 18);
+    path.lineTo(w, r);
     // Top-right corner
-    path.cubicTo(w, 8, w - 8, 0, w - 18, 0);
+    path.cubicTo(w, rCtrl, w - rCtrl, 0, w - r, 0);
     // Top edge going left
-    path.lineTo(20, 0);
-    // Top-left corner (before tail area)
-    path.cubicTo(12, 0, 5, 8, 5, 18);
-    // Left edge going down (stops before tail)
-    path.lineTo(5, h - 12);
-    // THE TAIL - curved hook shape (mirrored)
-    // Curve down to tail tip
-    path.cubicTo(5, h - 1, 0, h, 0, h);
-    // Extend slightly past edge
-    path.lineTo(-1, h);
-    // Curve back creating the hook
-    path.cubicTo(4, h + 1, 8, h - 1, 12, h - 4);
-    // Final curve back to starting point
-    path.cubicTo(15, h, 20, h, 20, h);
+    path.lineTo(r + 5, 0);
+    // Top-left corner
+    path.cubicTo(rCtrl + 5, 0, 5, rCtrl, 5, r);
+    // Left edge going down - goes all the way down, no separate corner
+    path.lineTo(5, h - 10);
+    // Smooth curve that flows directly into the tail (no separate corner)
+    path.cubicTo(5, h - 4, 4, h, -2, h);
+    // Tail hook - curves back
+    path.cubicTo(2, h + 1, 8, h, 12, h - 4);
+    // Back to bottom edge
+    path.cubicTo(16, h - 1, 18, h, w - r, h);
     path.close();
     return path;
   }

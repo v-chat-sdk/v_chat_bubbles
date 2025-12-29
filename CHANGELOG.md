@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.4
+
+### Bug Fixes
+
+#### Fixed Extra Space Under Single-Line Text Bubbles
+- Removed `minHeight: minTapTargetSize` constraint from `BaseBubble` that was forcing 48px minimum height
+- Single-line text messages now size naturally without extra padding below
+
+#### Telegram Bubble Painter Improvements
+- **Consistent Corner Radius**: Updated `VTelegramBubblePainter` to use configurable `radius` parameter instead of hardcoded `18px`
+- Bubbles with tails and without tails now have matching corner radii
+- All corners (top-left, top-right, bottom-left, bottom-right) use the same `bubbleRadius` from `VSpacingConfig`
+
+#### Telegram iOS Tail Shape
+- Redesigned tail bezier curves to match authentic Telegram iOS style
+- The corner before the tail now flows smoothly into the tail (no "cut off" appearance)
+- Right edge curves directly into tail as one continuous smooth curve
+- Applied to both outgoing (bottom-right tail) and incoming (bottom-left tail) bubbles
+
+### Improvements
+
+#### Selection Mode Tap Target
+- Full-width tap target in selection mode - tap anywhere on the row to select/deselect
+- GestureDetector now wraps entire row content instead of just the bubble
+
+---
+
 ## 1.2.3
 
 ### Improvements
