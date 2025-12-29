@@ -588,10 +588,10 @@ class VSpacingConfig {
   /// Horizontal padding inside bubble (left + right base, before tail adjustment)
   final double contentPaddingHorizontal;
   const VSpacingConfig({
-    this.bubbleRadius = 10,
+    this.bubbleRadius = 13,
     this.tailSize = 1,
-    this.sameSenderSpacing = 2,
-    this.differentSenderSpacing = 8,
+    this.sameSenderSpacing = 4,
+    this.differentSenderSpacing = 1,
     this.horizontalMargin = 5,
     this.contentPaddingVertical = 6,
     this.contentPaddingHorizontal = 12,
@@ -604,8 +604,8 @@ class VSpacingConfig {
   static const compact = VSpacingConfig(
     bubbleRadius: 14,
     tailSize: 6,
-    sameSenderSpacing: 1,
-    differentSenderSpacing: 4,
+    sameSenderSpacing: 0,
+    differentSenderSpacing: 3,
     horizontalMargin: 4,
     contentPaddingVertical: 4,
     contentPaddingHorizontal: 8,
@@ -615,8 +615,8 @@ class VSpacingConfig {
   static const loose = VSpacingConfig(
     bubbleRadius: 20,
     tailSize: 10,
-    sameSenderSpacing: 4,
-    differentSenderSpacing: 12,
+    sameSenderSpacing: 2,
+    differentSenderSpacing: 8,
     horizontalMargin: 12,
     contentPaddingVertical: 8,
     contentPaddingHorizontal: 12,

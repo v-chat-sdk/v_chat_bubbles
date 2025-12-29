@@ -351,7 +351,15 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
                   itemCount: _messages.length,
                   itemBuilder: (context, index) {
                     final message = _messages[index];
-                    return MessageBuilder.build(context, message);
+                    // Since list is reversed, "previous" message is at index + 1
+                    final previousMessage = index + 1 < _messages.length
+                        ? _messages[index + 1]
+                        : null;
+                    return MessageBuilder.build(
+                      context,
+                      message,
+                      previousMessage: previousMessage,
+                    );
                   },
                 ),
               ),

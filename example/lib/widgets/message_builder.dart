@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:v_chat_bubbles/v_chat_bubbles.dart';
+
 import '../models/demo_message.dart';
 
 class MessageBuilder {
@@ -29,13 +30,33 @@ class MessageBuilder {
     _voiceControllers.clear();
   }
 
+  /// Compute isSameSender based on previous message
+  static bool computeIsSameSender(
+    DemoMessage message,
+    DemoMessage? previousMessage,
+  ) {
+    if (previousMessage == null) return false;
+    // Skip system messages and date chips for grouping
+    if (previousMessage.type == DemoMessageType.system ||
+        previousMessage.type == DemoMessageType.dateChip) {
+      return false;
+    }
+    return message.isOutgoing == previousMessage.isOutgoing;
+  }
+
   /// Build the appropriate bubble widget for a DemoMessage
-  static Widget build(BuildContext context, DemoMessage message) {
+  static Widget build(
+    BuildContext context,
+    DemoMessage message, {
+    DemoMessage? previousMessage,
+  }) {
+    final isSameSender = computeIsSameSender(message, previousMessage);
     switch (message.type) {
       case DemoMessageType.text:
         return VTextBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           text: message.text ?? '',
           status: message.status,
@@ -53,6 +74,7 @@ class MessageBuilder {
         return VImageBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           imageFile: VPlatformFile.fromUrl(networkUrl: message.imageUrl ?? ''),
           caption: message.caption,
@@ -67,6 +89,7 @@ class MessageBuilder {
         return VGalleryBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           items: urls.asMap().entries.map((entry) {
             return VGalleryItemData(
@@ -85,6 +108,7 @@ class MessageBuilder {
         return VVideoBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           videoFile: VPlatformFile.fromUrl(
             networkUrl: message.videoUrl ?? '',
@@ -103,6 +127,7 @@ class MessageBuilder {
       case DemoMessageType.voice:
         return VVoiceBubble(
           messageId: message.id,
+          isSameSender: isSameSender,
           isMeSender: message.isOutgoing,
           time: message.time,
           controller: _getVoiceController(message),
@@ -115,6 +140,7 @@ class MessageBuilder {
         return VFileBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           file: message.file ?? VPlatformFile.fromPath(fileLocalPath: ''),
           transferState: message.transferState,
@@ -128,6 +154,7 @@ class MessageBuilder {
         return VPollBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           pollData:
               message.pollData ?? const VPollData(question: '', options: []),
@@ -140,6 +167,7 @@ class MessageBuilder {
         return VLocationBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           locationData:
               message.locationData ??
@@ -153,6 +181,7 @@ class MessageBuilder {
         return VContactBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           contactData:
               message.contactData ?? const VContactData(name: 'Unknown'),
@@ -165,6 +194,7 @@ class MessageBuilder {
         return VCallBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           callData:
               message.callData ??
@@ -181,6 +211,7 @@ class MessageBuilder {
         return VTextBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           text: message.text ?? '',
           linkPreview: message.linkPreviewData,
@@ -193,6 +224,7 @@ class MessageBuilder {
         return VQuotedContentBubble(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           contentData:
               message.quotedContentData ??
@@ -228,6 +260,7 @@ class MessageBuilder {
         return VCustomBubble<VProductData>(
           messageId: message.id,
           isMeSender: message.isOutgoing,
+          isSameSender: isSameSender,
           time: message.time,
           data: message.productData!,
           status: message.status,

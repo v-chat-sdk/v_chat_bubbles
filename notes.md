@@ -52,3 +52,15 @@ so the user can see and update it very well
 14. when i change the language to be AR which is RTL you should not apply this to the message itself inside the bubble for example there are english text inside the bubble you force the RTL to it which is never good you should do the RTL based on the text inside the bubble so fix all ! =>DONE 
 15. add click action tab to the user profile and the name of it to callback which is the user clicked 
 16. we need to inverstage more time inside the longpress function of show the context menu tell me how it works 
+17. 'See less' : 'See more' this need to pass the transalted config to it inisde   Flexible(
+    child: GestureDetector(
+    onTap: _toggleExpand,
+    child: Text(
+    isExpanded ? 'See less' : 'See more',
+    style: theme.linkTextStyle.copyWith(
+    color: linkColor,
+    fontWeight: FontWeight.w500,
+    ),
+    ),
+    ),
+    ),
