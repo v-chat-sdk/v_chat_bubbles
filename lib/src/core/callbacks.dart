@@ -40,6 +40,10 @@ class VBubbleCallbacks {
   final void Function(String messageId, String emoji, Offset position)?
       onReactionTap;
 
+  /// Called when the "+" button is tapped to show more reactions
+  /// Use this to display a full emoji picker for the user to choose from
+  final void Function(String messageId)? onMoreReactions;
+
   /// Called for any pattern tap (supports custom patterns)
   final void Function(VPatternMatch match)? onPatternTap;
 
@@ -88,6 +92,7 @@ class VBubbleCallbacks {
     // Grouped
     this.onReaction,
     this.onReactionTap,
+    this.onMoreReactions,
     this.onPatternTap,
     this.onMediaTap,
     this.onMenuItemSelected,
@@ -114,6 +119,7 @@ class VBubbleCallbacks {
         onReaction,
     void Function(String messageId, String emoji, Offset position)?
         onReactionTap,
+    void Function(String messageId)? onMoreReactions,
     void Function(VPatternMatch match)? onPatternTap,
     void Function(VMediaTapData data)? onMediaTap,
     void Function(String messageId, VBubbleMenuItem item)? onMenuItemSelected,
@@ -134,6 +140,7 @@ class VBubbleCallbacks {
       onReplyPreviewTap: onReplyPreviewTap ?? this.onReplyPreviewTap,
       onReaction: onReaction ?? this.onReaction,
       onReactionTap: onReactionTap ?? this.onReactionTap,
+      onMoreReactions: onMoreReactions ?? this.onMoreReactions,
       onPatternTap: onPatternTap ?? this.onPatternTap,
       onMediaTap: onMediaTap ?? this.onMediaTap,
       onMenuItemSelected: onMenuItemSelected ?? this.onMenuItemSelected,
@@ -159,6 +166,7 @@ class VBubbleCallbacks {
       onReplyPreviewTap: other.onReplyPreviewTap ?? onReplyPreviewTap,
       onReaction: other.onReaction ?? onReaction,
       onReactionTap: other.onReactionTap ?? onReactionTap,
+      onMoreReactions: other.onMoreReactions ?? onMoreReactions,
       onPatternTap: other.onPatternTap ?? onPatternTap,
       onMediaTap: other.onMediaTap ?? onMediaTap,
       onMenuItemSelected: other.onMenuItemSelected ?? onMenuItemSelected,

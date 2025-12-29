@@ -79,7 +79,7 @@ class VBubbleReactionTheme {
   static List<String> reactionsForStyle(VBubbleStyle style) {
     switch (style) {
       case VBubbleStyle.telegram:
-        return ['👍', '👎', '❤️', '🔥', '🎉', '😢', '💩'];
+        return ['👍', '👎', '❤️', '🔥', '🎉', '😂', '💩'];
       case VBubbleStyle.whatsapp:
         return ['👍', '❤️', '😂', '😮', '😢', '🙏'];
       case VBubbleStyle.messenger:

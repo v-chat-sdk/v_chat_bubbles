@@ -189,6 +189,7 @@ class BubbleContextMenuWrapper extends StatelessWidget {
           theme: theme,
           enableHapticFeedback: config.gestures.enableHapticFeedback,
           onReaction: callbacks.onReaction,
+          onMoreReactions: callbacks.onMoreReactions,
           reactionStateManager: reactionStateManager,
         ),
       );
@@ -330,6 +331,7 @@ class BubbleContextMenuSheet extends StatelessWidget {
               theme: theme,
               enableHapticFeedback: config.gestures.enableHapticFeedback,
               onReaction: callbacks.onReaction,
+              onMoreReactions: callbacks.onMoreReactions,
               reactionStateManager: reactionStateManager,
             )
           : null,

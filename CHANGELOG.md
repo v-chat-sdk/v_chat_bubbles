@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.7
+
+### New Features
+
+#### Built-in Emoji Picker
+- Added "+" button at the end of reactions row in context menu
+- Tapping "+" opens a full emoji picker bottom sheet (using `emoji_picker_flutter`)
+- Users can browse categories (Recent, Smileys, Animals, Food, etc.) and search for emojis
+- Selected emoji triggers `onReaction` callback with `VReactionAction.add`
+- Emoji picker respects theme colors (light/dark mode)
+
+#### Custom Emoji Picker Override
+- Optionally provide `onMoreReactions` callback to show your own emoji picker instead
+- If `onMoreReactions` is set, built-in picker is bypassed
+
+#### Telegram Default Reactions Updated
+- Added 😂 (laugh emoji) to Telegram's default reactions
+- Updated reactions: `['👍', '👎', '❤️', '🔥', '🎉', '😂', '💩']`
+
+### New Dependencies
+- Added `emoji_picker_flutter: ^4.4.0` for full emoji picker support
+
+---
+
 ## 1.2.6
 
 ### Bug Fixes
