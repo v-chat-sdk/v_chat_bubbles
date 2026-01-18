@@ -766,14 +766,20 @@ class VMediaConfig {
       );
 }
 
-/// Configuration for text expansion (See more/less)
+/// Configuration for text expansion (See more/less) and selection
 @immutable
 class VTextExpansionConfig {
   final bool enabled;
   final int characterThreshold;
+
+  /// Enable text selection on mobile (tap still triggers links, drag to select)
+  /// On web, SelectionArea is used regardless of this setting.
+  final bool enableTextSelection;
+
   const VTextExpansionConfig({
     this.enabled = true,
     this.characterThreshold = 300,
+    this.enableTextSelection = false,
   });
 
   /// Enable text expansion (default)
@@ -787,10 +793,19 @@ class VTextExpansionConfig {
 
   /// Long threshold (500 chars)
   static const long = VTextExpansionConfig(characterThreshold: 500);
-  VTextExpansionConfig copyWith({bool? enabled, int? characterThreshold}) =>
+
+  /// Enable text selection
+  static const selectable = VTextExpansionConfig(enableTextSelection: true);
+
+  VTextExpansionConfig copyWith({
+    bool? enabled,
+    int? characterThreshold,
+    bool? enableTextSelection,
+  }) =>
       VTextExpansionConfig(
         enabled: enabled ?? this.enabled,
         characterThreshold: characterThreshold ?? this.characterThreshold,
+        enableTextSelection: enableTextSelection ?? this.enableTextSelection,
       );
   @override
   bool operator ==(Object other) =>
@@ -798,9 +813,11 @@ class VTextExpansionConfig {
       other is VTextExpansionConfig &&
           runtimeType == other.runtimeType &&
           enabled == other.enabled &&
-          characterThreshold == other.characterThreshold;
+          characterThreshold == other.characterThreshold &&
+          enableTextSelection == other.enableTextSelection;
   @override
-  int get hashCode => Object.hash(enabled, characterThreshold);
+  int get hashCode =>
+      Object.hash(enabled, characterThreshold, enableTextSelection);
 }
 
 /// Configuration for translatable strings in the package

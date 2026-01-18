@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 
 import '../core/config.dart';
 import '../core/constants.dart';
+import '../core/enums.dart';
 import '../core/models.dart';
 import '../utils/text_parser.dart';
 import 'base_bubble.dart';
 import 'bubble_scope.dart';
 import 'bubble_wrapper.dart';
 import 'shared/block_format_widgets.dart';
-import 'shared/color_selector_mixin.dart';
-import 'shared/unified_image.dart';
+import 'shared/bubble_footer.dart';
+import 'shared/link_preview_widget.dart';
 
 /// Simple text message bubble
 ///
@@ -65,8 +66,13 @@ class VTextBubble extends BaseBubble {
         linkPreview: linkPreview,
         isMeSender: isMeSender,
         textColor: textColor,
-        metaBuilder: () => buildMeta(context),
         header: header,
+        // Meta values for proper didUpdateWidget comparison
+        time: time,
+        status: status,
+        isEdited: isEdited,
+        isPinned: isPinned,
+        isStarred: isStarred,
       ),
     );
   }
@@ -79,8 +85,13 @@ class _ExpandableTextWithPreview extends StatefulWidget {
   final VLinkPreviewData? linkPreview;
   final bool isMeSender;
   final Color textColor;
-  final Widget Function() metaBuilder;
   final Widget? header;
+  // Meta values for proper comparison in didUpdateWidget
+  final String time;
+  final VMessageStatus status;
+  final bool isEdited;
+  final bool isPinned;
+  final bool isStarred;
 
   const _ExpandableTextWithPreview({
     required this.messageId,
@@ -88,8 +99,12 @@ class _ExpandableTextWithPreview extends StatefulWidget {
     this.linkPreview,
     required this.isMeSender,
     required this.textColor,
-    required this.metaBuilder,
     this.header,
+    required this.time,
+    required this.status,
+    required this.isEdited,
+    required this.isPinned,
+    required this.isStarred,
   });
 
   @override
@@ -121,7 +136,9 @@ class _ExpandableTextWithPreviewState
   @override
   void didUpdateWidget(covariant _ExpandableTextWithPreview oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Invalidate cache if text changes
+    // Invalidate cache only for properties that affect text parsing
+    // Meta values (status, isEdited, isPinned, isStarred) don't need cache
+    // invalidation - they only affect VBubbleFooter which rebuilds anyway
     if (oldWidget.text != widget.text ||
         oldWidget.textColor != widget.textColor ||
         oldWidget.isMeSender != widget.isMeSender) {
@@ -136,6 +153,18 @@ class _ExpandableTextWithPreviewState
     _cachedPatterns = null;
     _cacheKey = null;
     _cachedTextDirection = null;
+  }
+
+  /// Build meta widget using values passed from parent
+  Widget _buildMeta() {
+    return VBubbleFooter(
+      isMeSender: widget.isMeSender,
+      time: widget.time,
+      status: widget.status,
+      isStarred: widget.isStarred,
+      isPinned: widget.isPinned,
+      isEdited: widget.isEdited,
+    );
   }
 
   void _toggleExpand() {
@@ -189,11 +218,18 @@ class _ExpandableTextWithPreviewState
     );
     // Check if block patterns are enabled
     final hasBlockPatterns = config.patterns.hasBlockPatterns;
+    // Check if text selection is enabled (mobile only, web uses SelectionArea)
+    final enableTextSelection = config.textExpansion.enableTextSelection;
     // Build link preview widget if available
     Widget? linkPreviewWidget;
     if (widget.linkPreview != null) {
-      linkPreviewWidget =
-          _buildLinkPreview(context, widget.linkPreview!, linkColor);
+      linkPreviewWidget = VLinkPreviewWidget(
+        linkPreview: widget.linkPreview!,
+        linkColor: linkColor,
+        textColor: widget.textColor,
+        isMeSender: widget.isMeSender,
+        messageId: widget.messageId,
+      );
     }
     // Cache text direction
     _cachedTextDirection ??= VTextParser.getTextDirection(widget.text);
@@ -251,13 +287,14 @@ class _ExpandableTextWithPreviewState
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Flexible(
-            child: RichText(
-              text: TextSpan(children: spans),
+            child: _buildRichText(
+              spans: spans,
               textDirection: textDirection,
+              enableSelection: enableTextSelection,
             ),
           ),
           BubbleSpacing.gapM,
-          widget.metaBuilder(),
+          _buildMeta(),
         ],
       );
       if (widget.header == null && linkPreviewWidget == null) {
@@ -319,14 +356,16 @@ class _ExpandableTextWithPreviewState
                   stops: const [0.7, 1.0],
                 ).createShader(bounds),
                 blendMode: BlendMode.dstIn,
-                child: RichText(
-                  text: TextSpan(children: spans),
+                child: _buildRichText(
+                  spans: spans,
                   textDirection: textDirection,
+                  enableSelection: enableTextSelection,
                 ),
               ),
-              secondChild: RichText(
-                text: TextSpan(children: spans),
+              secondChild: _buildRichText(
+                spans: spans,
                 textDirection: textDirection,
+                enableSelection: enableTextSelection,
               ),
             ),
             BubbleSpacing.vGapS,
@@ -348,7 +387,7 @@ class _ExpandableTextWithPreviewState
                     ),
                   ),
                 ),
-                widget.metaBuilder(),
+                _buildMeta(),
               ],
             ),
           ],
@@ -358,7 +397,7 @@ class _ExpandableTextWithPreviewState
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // WEB TEXT SELECTION - Enable text selection on web platform
+  // TEXT SELECTION - Enable text selection based on config
   // ═══════════════════════════════════════════════════════════════════════════
   /// Wraps content with SelectionArea on web platform for text selection support.
   /// Disabled during message selection mode to avoid conflicts.
@@ -369,6 +408,28 @@ class _ExpandableTextWithPreviewState
     // Only enable on web and when not in message selection mode
     if (!kIsWeb || isSelectionMode) return child;
     return SelectionArea(child: child);
+  }
+
+  /// Builds text widget - SelectableText.rich() when selection enabled, RichText otherwise.
+  /// Pattern taps (links, mentions) still work with SelectableText.
+  Widget _buildRichText({
+    required List<InlineSpan> spans,
+    required TextDirection textDirection,
+    required bool enableSelection,
+  }) {
+    final textSpan = TextSpan(children: spans);
+    if (enableSelection && !kIsWeb) {
+      // Use SelectableText.rich for mobile when selection enabled
+      // Web uses SelectionArea wrapper instead
+      return SelectableText.rich(
+        textSpan,
+        textDirection: textDirection,
+      );
+    }
+    return RichText(
+      text: textSpan,
+      textDirection: textDirection,
+    );
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -452,7 +513,7 @@ class _ExpandableTextWithPreviewState
               ),
             ),
             BubbleSpacing.gapM,
-            widget.metaBuilder(),
+            _buildMeta(),
           ],
         ),
       ],
@@ -501,84 +562,4 @@ class _ExpandableTextWithPreviewState
     );
   }
 
-  Widget _buildLinkPreview(
-    BuildContext context,
-    VLinkPreviewData linkPreview,
-    Color linkColor,
-  ) {
-    final theme = context.bubbleTheme;
-    final callbacks = context.bubbleCallbacks;
-    final textColor = widget.textColor;
-    final replyBarColor =
-        ColorSelectorMixin.getReplyBarColor(theme, widget.isMeSender);
-    return GestureDetector(
-      onTap: context.bubbleScope.isSelectionMode
-          ? null
-          : () {
-              callbacks.onPatternTap?.call(VPatternMatch(
-                patternId: 'url',
-                matchedText: linkPreview.url,
-                rawText: linkPreview.url,
-                messageId: widget.messageId,
-              ));
-            },
-      child: Container(
-        padding: const EdgeInsets.only(left: 8, bottom: 8),
-        decoration: BoxDecoration(
-          border: Border(left: BorderSide(color: replyBarColor, width: 2)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (linkPreview.siteName != null)
-              Text(
-                linkPreview.siteName!,
-                style: theme.timeTextStyle.copyWith(
-                  color: linkColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            if (linkPreview.title != null) ...[
-              BubbleSpacing.vGapXS,
-              Text(
-                linkPreview.title!,
-                style: theme.messageTextStyle.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textDirection: VTextParser.getTextDirection(linkPreview.title!),
-              ),
-            ],
-            if (linkPreview.description != null) ...[
-              BubbleSpacing.vGapXS,
-              Text(
-                linkPreview.description!,
-                style: theme.captionTextStyle.copyWith(
-                  color: textColor.withValues(alpha: BubbleOpacity.heavy),
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textDirection:
-                    VTextParser.getTextDirection(linkPreview.description!),
-              ),
-            ],
-            if (linkPreview.image != null) ...[
-              BubbleSpacing.gapM,
-              ClipRRect(
-                borderRadius: BubbleRadius.small,
-                child: VUnifiedImage(
-                  imageSource: linkPreview.image!,
-                  height: BubbleSizes.mediaHeightMedium,
-                  fit: BoxFit.cover,
-                  fadeInDuration: const Duration(milliseconds: 250),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
 }
