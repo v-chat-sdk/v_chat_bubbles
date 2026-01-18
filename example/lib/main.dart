@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Brightness _brightness = Brightness.light;
+  Brightness _brightness = Brightness.dark;
   Locale _locale = const Locale('en');
   void _onBrightnessChanged(Brightness brightness) {
     setState(() => _brightness = brightness);
