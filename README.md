@@ -72,8 +72,10 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  v_chat_bubbles: ^latest_version
+  v_chat_bubbles: ^2.0.0
 ```
+
+Version 2 requires Flutter 3.44.0 or newer and Dart 3.12.0 or newer.
 
 Then run:
 
@@ -391,7 +393,8 @@ Controls expandable text behavior.
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `enabled` | `bool` | `true` | Enable text expansion |
-| `characterThreshold` | `int` | `500` | Characters before truncation |
+| `characterThreshold` | `int` | `300` | Characters before truncation |
+| `enableTextSelection` | `bool` | `false` | Enable selectable text on mobile |
 
 ---
 

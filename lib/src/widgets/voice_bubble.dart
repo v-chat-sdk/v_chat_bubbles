@@ -52,13 +52,14 @@ class VVoiceBubble extends BaseBubble {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (header != null) header,
+            ?header,
             VVoiceMessageView(
               controller: controller,
               colorConfig: VoiceColorConfig(
                 activeSliderColor: voiceTheme.waveformPlayedColor(isMeSender),
-                notActiveSliderColor:
-                    voiceTheme.waveformUnplayedColor(isMeSender),
+                notActiveSliderColor: voiceTheme.waveformUnplayedColor(
+                  isMeSender,
+                ),
               ),
               buttonConfig: VoiceButtonConfig(
                 buttonColor: voiceTheme.buttonColor(isMeSender),
@@ -70,8 +71,9 @@ class VVoiceBubble extends BaseBubble {
               speedConfig: VoiceSpeedConfig(
                 showSpeedControl: voiceTheme.showSpeedControl,
                 speedButtonColor: voiceTheme.speedButtonColor(isMeSender),
-                speedButtonTextColor:
-                    voiceTheme.speedButtonTextColor(isMeSender),
+                speedButtonTextColor: voiceTheme.speedButtonTextColor(
+                  isMeSender,
+                ),
                 speedButtonBorderRadius: voiceTheme.speedButtonBorderRadius,
                 speedButtonPadding: voiceTheme.speedButtonPadding,
               ),

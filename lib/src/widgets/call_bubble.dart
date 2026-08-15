@@ -53,7 +53,7 @@ class VCallBubble extends BaseBubble {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (header != null) header,
+          ?header,
           Row(
             children: [
               _buildCallIcon(context, linkColor, secondaryColor),
@@ -86,8 +86,9 @@ class VCallBubble extends BaseBubble {
                               Flexible(
                                 child: Text(
                                   _getCallSubtitle(context),
-                                  style: theme.timeTextStyle
-                                      .copyWith(color: secondaryColor),
+                                  style: theme.timeTextStyle.copyWith(
+                                    color: secondaryColor,
+                                  ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -110,8 +111,12 @@ class VCallBubble extends BaseBubble {
   }
 
   Widget _buildCallIcon(
-      BuildContext context, Color linkColor, Color secondaryColor) {
-    final isMissed = callData.status == VCallStatus.missed ||
+    BuildContext context,
+    Color linkColor,
+    Color secondaryColor,
+  ) {
+    final isMissed =
+        callData.status == VCallStatus.missed ||
         callData.status == VCallStatus.declined;
     return Container(
       width: BubbleSizes.callIconContainer,

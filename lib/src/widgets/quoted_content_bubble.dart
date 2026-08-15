@@ -73,7 +73,7 @@ class VQuotedContentBubble extends BaseBubble {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (header != null) header,
+            ?header,
             _buildContentPreview(context),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -86,7 +86,7 @@ class VQuotedContentBubble extends BaseBubble {
                 BubbleSpacing.vGapXS,
                 buildMeta(context),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -137,8 +137,9 @@ class VQuotedContentBubble extends BaseBubble {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: selectSecondaryTextColor(theme)
-            .withValues(alpha: BubbleOpacity.light),
+        color: selectSecondaryTextColor(
+          theme,
+        ).withValues(alpha: BubbleOpacity.light),
         borderRadius: BubbleRadius.small,
       ),
       child: Icon(
@@ -183,8 +184,9 @@ class VQuotedContentBubble extends BaseBubble {
     final config = context.bubbleConfig;
     final callbacks = context.bubbleCallbacks;
     final textColor = selectTextColor(theme);
-    final linkColor =
-        isMeSender ? theme.outgoingLinkColor : theme.incomingLinkColor;
+    final linkColor = isMeSender
+        ? theme.outgoingLinkColor
+        : theme.incomingLinkColor;
     final baseStyle = theme.messageTextStyle.copyWith(color: textColor);
     final linkStyle = theme.linkTextStyle.copyWith(color: linkColor);
     final mentionStyle = theme.messageTextStyle.copyWith(

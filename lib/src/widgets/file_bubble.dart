@@ -69,7 +69,7 @@ class VFileBubble extends BaseBubble {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (header != null) header,
+            ?header,
             Row(
               children: [
                 _buildFileIcon(context, extension),
@@ -101,19 +101,24 @@ class VFileBubble extends BaseBubble {
                                   Flexible(
                                     child: Text(
                                       formatFileSize(fileSize),
-                                      style: theme.timeTextStyle
-                                          .copyWith(color: secondaryColor),
+                                      style: theme.timeTextStyle.copyWith(
+                                        color: secondaryColor,
+                                      ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 if (extension.isNotEmpty) ...[
-                                  Text(' • ',
-                                      style: theme.timeTextStyle
-                                          .copyWith(color: secondaryColor)),
+                                  Text(
+                                    ' • ',
+                                    style: theme.timeTextStyle.copyWith(
+                                      color: secondaryColor,
+                                    ),
+                                  ),
                                   Text(
                                     extension.toUpperCase(),
-                                    style: theme.timeTextStyle
-                                        .copyWith(color: secondaryColor),
+                                    style: theme.timeTextStyle.copyWith(
+                                      color: secondaryColor,
+                                    ),
                                   ),
                                 ],
                               ],
@@ -162,8 +167,9 @@ class VFileBubble extends BaseBubble {
                 value: progress,
                 strokeWidth: 2,
                 color: iconColor,
-                backgroundColor:
-                    iconColor.withValues(alpha: BubbleOpacity.light2),
+                backgroundColor: iconColor.withValues(
+                  alpha: BubbleOpacity.light2,
+                ),
               ),
               Icon(
                 Icons.close,
