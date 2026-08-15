@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.0
+
+### Breaking Changes
+
+- Raised the minimum supported toolchain to Flutter 3.44.0 and Dart 3.12.0 so the package can use the latest stable media and emoji dependencies.
+
+### New Features
+
+- Added the reusable `VLinkPreviewWidget` and selectable mobile text through `VTextExpansionConfig.enableTextSelection` and the `selectable` preset.
+
+### Bug Fixes and Improvements
+
+- Fixed text-bubble timestamp and status metadata overlap at constrained widths.
+- Split text parsing, expansion, and layout into focused modules for easier maintenance.
+- Corrected the Telegram light-theme regression test and added constrained-width layout coverage.
+- Made the example chat-type selector scrollable on short screens and replaced its stale counter test with a real navigation smoke test.
+- Applied Dart 3.12 null-aware collection-element cleanups across bubble widgets.
+- Corrected the documented text-expansion defaults, aligned the `doc/` layout with pub conventions, and excluded internal contributor and scratch files from published archives.
+
+### Dependency Updates
+
+- Updated `video_player` to `^2.14.0` and `emoji_picker_flutter` to `^4.5.3`.
+- Kept `intl` on `^0.20.2`, the version pinned by Flutter 3.44's `flutter_localizations` SDK package.
+
+---
+
 ## 1.2.7
 
 ### New Features

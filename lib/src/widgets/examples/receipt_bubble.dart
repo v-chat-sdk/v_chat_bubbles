@@ -209,7 +209,7 @@ class VReceiptBubble extends BaseBubble {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (header != null) header,
+            ?header,
             // Receipt header with icon
             Row(
               children: [
@@ -248,28 +248,30 @@ class VReceiptBubble extends BaseBubble {
             ],
             const SizedBox(height: 12),
             // Items list
-            ...receiptData.items.map((item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          '${item.quantity}x ${item.name}',
-                          style:
-                              theme.messageTextStyle.copyWith(color: textColor),
-                          overflow: TextOverflow.ellipsis,
+            ...receiptData.items.map(
+              (item) => Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${item.quantity}x ${item.name}',
+                        style: theme.messageTextStyle.copyWith(
+                          color: textColor,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${receiptData.currencySymbol}${item.total.toStringAsFixed(2)}',
-                        style:
-                            theme.messageTextStyle.copyWith(color: textColor),
-                      ),
-                    ],
-                  ),
-                )),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${receiptData.currencySymbol}${item.total.toStringAsFixed(2)}',
+                      style: theme.messageTextStyle.copyWith(color: textColor),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Divider(height: 16, color: secondaryColor.withValues(alpha: 0.3)),
             // Totals
             _buildTotalRow(
@@ -295,10 +297,7 @@ class VReceiptBubble extends BaseBubble {
             ),
             const SizedBox(height: 8),
             // Meta
-            Align(
-              alignment: Alignment.centerRight,
-              child: buildMeta(context),
-            ),
+            Align(alignment: Alignment.centerRight, child: buildMeta(context)),
           ],
         ),
       ),
@@ -346,7 +345,7 @@ class VReceiptBubble extends BaseBubble {
       'Sep',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }

@@ -45,7 +45,7 @@ class VPollBubble extends BaseBubble {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (header != null) header,
+          ?header,
           // Poll icon and type
           Row(
             children: [
@@ -60,10 +60,14 @@ class VPollBubble extends BaseBubble {
                 style: theme.timeTextStyle.copyWith(color: secondaryColor),
               ),
               if (pollData.isAnonymous) ...[
-                Text(' • ',
-                    style: theme.timeTextStyle.copyWith(color: secondaryColor)),
-                Text(context.bubbleConfig.translations.pollAnonymous,
-                    style: theme.timeTextStyle.copyWith(color: secondaryColor)),
+                Text(
+                  ' • ',
+                  style: theme.timeTextStyle.copyWith(color: secondaryColor),
+                ),
+                Text(
+                  context.bubbleConfig.translations.pollAnonymous,
+                  style: theme.timeTextStyle.copyWith(color: secondaryColor),
+                ),
               ],
             ],
           ),
@@ -124,16 +128,17 @@ class VPollBubble extends BaseBubble {
     final isSelectionMode = context.bubbleScope.isSelectionMode;
     final textColor = selectTextColor(theme);
     final linkColor = selectLinkColor(theme);
-    final progressColor =
-        isMeSender ? theme.progressColor : theme.incomingLinkColor;
+    final progressColor = isMeSender
+        ? theme.progressColor
+        : theme.incomingLinkColor;
     final showResults = pollData.hasVoted || pollData.isClosed;
     final percentage = option.percentage;
     return GestureDetector(
       onTap: isSelectionMode
           ? null
           : (!showResults && !pollData.isClosed
-              ? () => callbacks.onPollVote?.call(messageId, option.id)
-              : null),
+                ? () => callbacks.onPollVote?.call(messageId, option.id)
+                : null),
       child: Container(
         margin: EdgeInsets.only(bottom: BubbleSpacing.inlineL),
         child: Column(
@@ -155,8 +160,11 @@ class VPollBubble extends BaseBubble {
                       border: Border.all(color: linkColor, width: 2),
                     ),
                     child: option.isSelected
-                        ? Icon(Icons.check,
-                            size: BubbleSizes.iconSmall, color: linkColor)
+                        ? Icon(
+                            Icons.check,
+                            size: BubbleSizes.iconSmall,
+                            color: linkColor,
+                          )
                         : null,
                   ),
                   BubbleSpacing.gapL,
@@ -174,13 +182,19 @@ class VPollBubble extends BaseBubble {
                 ),
                 if (showResults) ...[
                   if (pollData.mode == VPollMode.quiz && option.isCorrect)
-                    Icon(Icons.check_circle,
-                        color: Colors.green, size: BubbleSizes.iconStandard),
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: BubbleSizes.iconStandard,
+                    ),
                   if (option.isSelected &&
                       !option.isCorrect &&
                       pollData.mode == VPollMode.quiz)
-                    Icon(Icons.cancel,
-                        color: Colors.red, size: BubbleSizes.iconStandard),
+                    Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                      size: BubbleSizes.iconStandard,
+                    ),
                   BubbleSpacing.gapM,
                   Text(
                     '${(percentage * 100).toInt()}%',
@@ -198,8 +212,9 @@ class VPollBubble extends BaseBubble {
                 borderRadius: BubbleRadius.extraSmall,
                 child: LinearProgressIndicator(
                   value: percentage,
-                  backgroundColor:
-                      progressColor.withValues(alpha: BubbleOpacity.light2),
+                  backgroundColor: progressColor.withValues(
+                    alpha: BubbleOpacity.light2,
+                  ),
                   color: option.isSelected ? linkColor : progressColor,
                   minHeight: 4,
                 ),

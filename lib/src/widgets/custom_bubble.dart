@@ -137,14 +137,11 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (header != null) header,
+          ?header,
           customContent,
           if (showMeta) ...[
             const SizedBox(height: 4),
-            Align(
-              alignment: Alignment.centerRight,
-              child: buildMeta(context),
-            ),
+            Align(alignment: Alignment.centerRight, child: buildMeta(context)),
           ],
         ],
       ),

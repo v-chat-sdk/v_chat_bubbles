@@ -1,35 +1,29 @@
 # Repository Guidelines
 
-## Project Structure and Module Organization
-- `lib/v_chat_bubbles.dart` is the public entry point that exports the package API.
-- `lib/src/core` holds enums, models, configs, and callbacks that define behavior.
-- `lib/src/widgets`, `lib/src/theme`, `lib/src/painters`, `lib/src/utils`, and `lib/src/viewers` contain the UI layer, theming, drawing logic, helpers, and media viewers.
-- `example/` is a runnable Flutter app for manual and visual testing.
-- `test/` contains automated tests (for example `test/v_chat_bubbles_test.dart`).
-- `screenshots/` and `docs/` store README assets and design notes.
+## Project Structure & Module Organization
 
-## Build, Test, and Development Commands
-- `flutter pub get` installs dependencies for the package and example app.
-- `flutter analyze` runs static analysis using `flutter_lints`.
-- `flutter test` runs the full test suite.
-- `flutter test test/v_chat_bubbles_test.dart` runs a single test file.
-- `cd example && flutter run` launches the demo app for UI validation.
+`lib/v_chat_bubbles.dart` is the package entry point and exports the supported public API. Implementation lives under `lib/src/`: shared models and configuration are in `core/`, visual tokens in `theme/`, drawing code in `painters/`, UI in `widgets/`, media screens in `viewers/`, and helpers in `utils/`. Keep new code in the matching module and update its barrel export when it is public.
 
-## Coding Style and Naming Conventions
-- Follow Dart formatting (`dart format .`); the standard is 2-space indentation.
-- Keep file names in `snake_case` and public types in `PascalCase`.
-- Public widgets and configs use the `V` prefix (for example `VBubbleScope`, `VTextBubble`).
-- Place new bubble widgets in `lib/src/widgets`, painters in `lib/src/painters`, and shared data in `lib/src/core`.
+Automated tests live in `test/`. The runnable showcase is in `example/`; use it for manual checks across chat styles and platforms. Demo backgrounds are under `example/assets/`, while repository screenshots and design notes belong in `screenshots/` and `doc/`.
+
+## Build, Test & Development Commands
+
+- `flutter pub get` resolves package dependencies.
+- `dart format .` applies the standard Dart formatter.
+- `flutter analyze` runs the `flutter_lints` rules configured in `analysis_options.yaml`.
+- `flutter test` runs all package unit and widget tests.
+- `flutter test test/bubble_components_test.dart` runs one focused suite.
+- `cd example && flutter run` launches the demo for visual and interaction testing.
+- `flutter pub publish --dry-run` validates package metadata and publish contents without releasing.
+
+## Coding Style & Naming Conventions
+
+Use null-safe, idiomatic Dart with two-space indentation. Name files `snake_case.dart`, types `UpperCamelCase`, and members `lowerCamelCase`. Public package widgets and configuration types conventionally use the `V` prefix, such as `VBubbleScope` and `VBubbleConfig`. Prefer immutable values, `const` constructors, small reusable widgets, and existing theme/config abstractions. Do not expose implementation files directly when a barrel export is appropriate.
 
 ## Testing Guidelines
-- Tests use the `flutter_test` framework from `dev_dependencies`.
-- Name tests with the `*_test.dart` suffix and place them under `test/`.
-- Add or update tests when changing bubble layout logic, gesture handling, or callbacks.
 
-## Commit and Pull Request Guidelines
-- Follow existing commit patterns: release commits use `vX.Y.Z: <summary>`; other commits are short, descriptive sentences.
-- Pull requests should include a clear summary, linked issues (if any), and the exact commands run.
-- Include screenshots or short recordings for any visual changes to bubbles or themes, and update the example app when behavior changes.
+Tests use `flutter_test`, with `group`, `test`, and `testWidgets`. Name files `*_test.dart` and describe observable behavior, for example `VBubbleFooter renders edited label`. Add a regression test for every bug fix and cover public defaults when adding configuration. There is no enforced coverage threshold; meaningful behavior coverage is required. For visual changes, also exercise the affected styles in `example/`.
 
-## Agent Notes
-- `CLAUDE.md` documents architecture and common commands; keep it in sync when adding new core modules or workflows.
+## Commit & Pull Request Guidelines
+
+History uses `vX.Y.Z: Summary` for releases and short, behavior-focused subjects for other changes; Conventional Commit prefixes are not required. Keep commits scoped. Pull requests should explain the change, link relevant issues, list validation commands, and call out compatibility concerns. Include screenshots or recordings for UI changes, and update the example, README, or changelog when public behavior changes.

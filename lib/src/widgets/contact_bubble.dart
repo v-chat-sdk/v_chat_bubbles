@@ -49,7 +49,7 @@ class VContactBubble extends BaseBubble {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (header != null) header,
+            ?header,
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -77,8 +77,9 @@ class VContactBubble extends BaseBubble {
                             Flexible(
                               child: Text(
                                 contactData.phoneNumber!,
-                                style: theme.timeTextStyle
-                                    .copyWith(color: linkColor),
+                                style: theme.timeTextStyle.copyWith(
+                                  color: linkColor,
+                                ),
                               ),
                             ),
                           BubbleSpacing.gapM,

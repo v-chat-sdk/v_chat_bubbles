@@ -5,7 +5,7 @@ void main() {
   group('VBubbleTheme', () {
     test('Telegram light theme should have correct outgoing bubble color', () {
       final theme = VBubbleTheme.telegramLight();
-      expect(theme.outgoingBubbleColor.toARGB32(), 0xFFEEFFDE);
+      expect(theme.outgoingBubbleColor.toARGB32(), 0xFFE1FFC7);
     });
     test('WhatsApp light theme should have correct outgoing bubble color', () {
       final theme = VBubbleTheme.whatsappLight();
@@ -47,12 +47,18 @@ void main() {
       expect(config.gestures.enableSwipeToReply, true);
       expect(config.gestures.enableLongPress, true);
       expect(config.sizing.maxWidthFraction, 0.75);
+      expect(config.textExpansion.characterThreshold, 300);
+      expect(config.textExpansion.enableTextSelection, false);
     });
     test('copyWith should work correctly', () {
       const config = VBubbleConfig();
       final updated = config.copyWith(avatar: const VAvatarConfig(show: false));
       expect(updated.avatar.show, false);
       expect(updated.gestures.enableSwipeToReply, true);
+    });
+    test('selectable preset enables mobile text selection', () {
+      expect(VTextExpansionConfig.selectable.enableTextSelection, true);
+      expect(VTextExpansionConfig.selectable.characterThreshold, 300);
     });
   });
 }
