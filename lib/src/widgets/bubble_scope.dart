@@ -27,31 +27,41 @@ class ExpandStateManager extends ChangeNotifier {
   }
 }
 
-/// Manages user's selected reaction per message (per-session, single reaction per message)
+/// Manages the current user's selected reactions per message for this session.
 class ReactionStateManager extends ChangeNotifier {
-  final Map<String, String> _selectedReactions = {};
+  final Map<String, Set<String>> _selectedReactions = {};
 
   /// Get the selected reaction emoji for a message, or null if none
-  String? getSelectedReaction(String messageId) =>
-      _selectedReactions[messageId];
+  String? getSelectedReaction(String messageId) {
+    final reactions = _selectedReactions[messageId];
+    return reactions == null || reactions.isEmpty ? null : reactions.first;
+  }
+
+  /// All reactions selected by the current user for [messageId].
+  Set<String> getSelectedReactions(String messageId) =>
+      Set<String>.unmodifiable(_selectedReactions[messageId] ?? const {});
 
   /// Check if a specific emoji is selected for a message
   bool isReactionSelected(String messageId, String emoji) =>
-      _selectedReactions[messageId] == emoji;
+      _selectedReactions[messageId]?.contains(emoji) ?? false;
 
   /// Set or toggle a reaction for a message
   /// Returns the action taken (add or remove)
-  VReactionAction setReaction(String messageId, String emoji) {
-    final current = _selectedReactions[messageId];
-    if (current == emoji) {
-      _selectedReactions.remove(messageId);
+  VReactionAction setReaction(
+    String messageId,
+    String emoji, {
+    bool allowMultiple = false,
+  }) {
+    final selected = _selectedReactions.putIfAbsent(messageId, () => {});
+    if (selected.remove(emoji)) {
+      if (selected.isEmpty) _selectedReactions.remove(messageId);
       notifyListeners();
       return VReactionAction.remove;
-    } else {
-      _selectedReactions[messageId] = emoji;
-      notifyListeners();
-      return VReactionAction.add;
     }
+    if (!allowMultiple) selected.clear();
+    selected.add(emoji);
+    notifyListeners();
+    return VReactionAction.add;
   }
 
   /// Remove reaction for a message
@@ -100,7 +110,10 @@ class VBubbleScopeData extends InheritedWidget {
   /// 1. If [menuItemsBuilder] returns non-null list -> use it
   /// 2. Else -> use defaults based on message type
   List<VBubbleMenuItem> getMenuItemsFor(
-      String messageId, String messageType, bool isMeSender) {
+    String messageId,
+    String messageType,
+    bool isMeSender,
+  ) {
     // Try builder first
     if (menuItemsBuilder != null) {
       final items = menuItemsBuilder!(messageId, messageType, isMeSender);
@@ -202,7 +215,8 @@ class _VBubbleScopeState extends State<VBubbleScope> {
   @override
   Widget build(BuildContext context) {
     final brightness = Theme.of(context).brightness;
-    final effectiveTheme = widget.theme ??
+    final effectiveTheme =
+        widget.theme ??
         VBubbleTheme.fromStyle(widget.style, brightness: brightness);
     return VBubbleScopeData(
       style: widget.style,

@@ -20,6 +20,7 @@ class VPollBubble extends BaseBubble {
     required this.pollData,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -27,6 +28,7 @@ class VPollBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -39,7 +41,7 @@ class VPollBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       maxWidth: MediaQuery.sizeOf(context).width * 0.8,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

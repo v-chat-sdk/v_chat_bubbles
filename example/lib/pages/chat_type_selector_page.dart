@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:v_chat_bubbles/v_chat_bubbles.dart';
 import 'chat_demo_page.dart';
+import 'modern_features_page.dart';
 
 class ChatTypeSelectorPage extends StatelessWidget {
   final VBubbleStyle style;
@@ -101,12 +102,38 @@ class ChatTypeSelectorPage extends StatelessWidget {
                       ],
                       onTap: () => _navigateToChat(context, isGroupChat: true),
                     ),
+                    const SizedBox(height: 16),
+                    _ChatTypeCard(
+                      title: 'Modern Features',
+                      subtitle: 'Collaborative and intelligent messages',
+                      description:
+                          'Preview grouping, translation, rich reactions, '
+                          'checklists, events, and live location.',
+                      icon: Icons.auto_awesome,
+                      color: styleColor,
+                      features: const [
+                        'Automatic message grouping',
+                        'Translation and rich previews',
+                        'Checklists and events',
+                        'Live location state',
+                      ],
+                      onTap: () => _navigateToModernFeatures(context),
+                    ),
                   ],
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _navigateToModernFeatures(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) =>
+            ModernFeaturesPage(style: style, brightness: brightness),
       ),
     );
   }

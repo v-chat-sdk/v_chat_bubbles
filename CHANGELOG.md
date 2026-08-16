@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.0 - 2026-08-17
+
+### New Features
+
+- Added automatic sender/time message grouping with first, middle, last, and
+  single positions while preserving `isSameSender` compatibility.
+- Added adaptive hover actions, secondary-click menus, keyboard shortcuts,
+  high-contrast rendering, minimum action targets, and reduced-motion support.
+- Added delivery lifecycle metadata, per-recipient receipts, retry actions,
+  edit history, spoilers, view-once media, and expiring-content countdowns.
+- Added actor-aware and multiple reactions, overflow pills, selective quotes,
+  nested replies, thread summaries, translation, and voice transcripts.
+- Added dedicated GIF playback, animated stickers, three rich link-preview
+  layouts, and shared media collections with HD/original quality metadata.
+- Added collaborative checklist, event RSVP, and live-location bubbles.
+
+### Compatibility
+
+- All new bubble properties are optional. Existing constructors and legacy
+  grouping behavior remain supported.
+- Consumers with exhaustive `VMessageType` switches must handle the new
+  `checklist`, `event`, and `liveLocation` values.
+
+### Dependency Updates
+
+- Updated `v_platform` to `^2.2.0`.
+
+### Tests
+
+- Added focused grouping, pointer/keyboard, lifecycle, protected-content,
+  reaction/reply, translation/transcript, animated-media, rich-preview,
+  shared-album, checklist, event, and live-location coverage.
+
 ## 2.0.0
 
 ### Breaking Changes

@@ -1,6 +1,7 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,7 @@ class ReactionsRow extends StatelessWidget {
 
   /// Callback when a reaction is tapped
   final void Function(String messageId, String emoji, VReactionAction action)?
-      onReaction;
+  onReaction;
 
   /// Callback when the "+" button is tapped to show more reactions
   /// If null, built-in emoji picker will be shown
@@ -56,8 +57,7 @@ class ReactionsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Total items = reactions + 1 for "+" button
-    final itemCount =
-        availableReactions.length + (showMoreButton ? 1 : 0);
+    final itemCount = availableReactions.length + (showMoreButton ? 1 : 0);
     return Container(
       height: 52,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -112,7 +112,11 @@ class ReactionsRow extends StatelessWidget {
     // Update internal state manager
     VReactionAction action;
     if (reactionStateManager != null) {
-      action = reactionStateManager!.setReaction(messageId, emoji);
+      action = reactionStateManager!.setReaction(
+        messageId,
+        emoji,
+        allowMultiple: context.bubbleConfig.contextMenu.allowMultipleReactions,
+      );
     } else {
       action = isSelected ? VReactionAction.remove : VReactionAction.add;
     }
@@ -158,7 +162,12 @@ class ReactionsRow extends StatelessWidget {
           // Update internal state manager
           VReactionAction action;
           if (reactionStateManager != null) {
-            action = reactionStateManager!.setReaction(messageId, emoji);
+            action = reactionStateManager!.setReaction(
+              messageId,
+              emoji,
+              allowMultiple:
+                  context.bubbleConfig.contextMenu.allowMultipleReactions,
+            );
           } else {
             action = VReactionAction.add;
           }
@@ -173,10 +182,7 @@ class ReactionsRow extends StatelessWidget {
 class _EmojiPickerSheet extends StatelessWidget {
   final VBubbleTheme theme;
   final void Function(String emoji) onEmojiSelected;
-  const _EmojiPickerSheet({
-    required this.theme,
-    required this.onEmojiSelected,
-  });
+  const _EmojiPickerSheet({required this.theme, required this.onEmojiSelected});
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -209,7 +215,9 @@ class _EmojiPickerSheet extends StatelessWidget {
                 checkPlatformCompatibility: true,
                 emojiViewConfig: EmojiViewConfig(
                   columns: 8,
-                  emojiSizeMax: 28 * (defaultTargetPlatform == TargetPlatform.iOS ? 1.2 : 1.0),
+                  emojiSizeMax:
+                      28 *
+                      (defaultTargetPlatform == TargetPlatform.iOS ? 1.2 : 1.0),
                   verticalSpacing: 0,
                   horizontalSpacing: 0,
                   gridPadding: EdgeInsets.zero,
@@ -229,7 +237,9 @@ class _EmojiPickerSheet extends StatelessWidget {
                   tabIndicatorAnimDuration: kTabScrollDuration,
                   categoryIcons: const CategoryIcons(),
                 ),
-                bottomActionBarConfig: const BottomActionBarConfig(enabled: false),
+                bottomActionBarConfig: const BottomActionBarConfig(
+                  enabled: false,
+                ),
                 searchViewConfig: SearchViewConfig(
                   backgroundColor: theme.menuBackground,
                   buttonIconColor: theme.menuTextColor,
@@ -239,7 +249,9 @@ class _EmojiPickerSheet extends StatelessWidget {
                   ),
                 ),
                 skinToneConfig: SkinToneConfig(
-                  dialogBackgroundColor: isDark ? Colors.grey[800]! : Colors.white,
+                  dialogBackgroundColor: isDark
+                      ? Colors.grey[800]!
+                      : Colors.white,
                   indicatorColor: theme.readIconColor,
                 ),
               ),
@@ -277,9 +289,10 @@ class _ReactionButtonState extends State<_ReactionButton>
       duration: const Duration(milliseconds: 100),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.85).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.85,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -312,10 +325,7 @@ class _ReactionButtonState extends State<_ReactionButton>
                 : CupertinoColors.transparent,
             borderRadius: BubbleRadius.small,
             border: widget.isSelected
-                ? Border.all(
-                    color: widget.theme.readIconColor,
-                    width: 1.5,
-                  )
+                ? Border.all(color: widget.theme.readIconColor, width: 1.5)
                 : null,
           ),
           child: DefaultTextStyle(
@@ -338,10 +348,7 @@ class _ReactionButtonState extends State<_ReactionButton>
 class _MoreReactionsButton extends StatefulWidget {
   final VBubbleTheme theme;
   final VoidCallback onTap;
-  const _MoreReactionsButton({
-    required this.theme,
-    required this.onTap,
-  });
+  const _MoreReactionsButton({required this.theme, required this.onTap});
   @override
   State<_MoreReactionsButton> createState() => _MoreReactionsButtonState();
 }
@@ -357,9 +364,10 @@ class _MoreReactionsButtonState extends State<_MoreReactionsButton>
       duration: const Duration(milliseconds: 100),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.85).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.85,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override

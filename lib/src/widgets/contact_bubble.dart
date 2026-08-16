@@ -21,6 +21,7 @@ class VContactBubble extends BaseBubble {
     required this.contactData,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -28,6 +29,7 @@ class VContactBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -44,7 +46,7 @@ class VContactBubble extends BaseBubble {
       onTap: isSelectionMode ? null : () => callbacks.onTap?.call(messageId),
       child: VBubbleWrapper(
         isMeSender: isMeSender,
-        showTail: !isSameSender,
+        showTail: showsGroupEnd,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

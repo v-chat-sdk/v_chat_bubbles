@@ -38,6 +38,7 @@ class VFileBubble extends BaseBubble {
     this.progress,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -45,6 +46,7 @@ class VFileBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -56,7 +58,7 @@ class VFileBubble extends BaseBubble {
     final textColor = selectTextColor(theme);
     final secondaryColor = selectSecondaryTextColor(theme);
     final header = buildBubbleHeader(context);
-    final showTail = !isSameSender;
+    final showTail = showsGroupEnd;
     final fileName = file.name;
     final extension = _getExtensionFromName(fileName);
     final fileSize = file.fileSize;

@@ -24,6 +24,7 @@ class VLocationBubble extends BaseBubble {
     required this.locationData,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -31,6 +32,7 @@ class VLocationBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -63,16 +65,13 @@ class VLocationBubble extends BaseBubble {
     if (header == null) return mediaContent;
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       padding: EdgeInsets.zero,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: header,
-          ),
+          Padding(padding: const EdgeInsets.all(8), child: header),
           mediaContent,
         ],
       ),
@@ -91,8 +90,11 @@ class VLocationBubble extends BaseBubble {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.location_on,
-                size: BubbleSizes.iconHuge, color: Colors.red),
+            Icon(
+              Icons.location_on,
+              size: BubbleSizes.iconHuge,
+              color: Colors.red,
+            ),
             BubbleSpacing.vGapL,
             Text(
               '${locationData.latitude.toStringAsFixed(4)}, ${locationData.longitude.toStringAsFixed(4)}',
@@ -113,8 +115,9 @@ class VLocationBubble extends BaseBubble {
           height: 150,
           width: double.infinity,
           child: VUnifiedImage(
-            imageSource:
-                VPlatformFile.fromUrl(networkUrl: locationData.staticMapUrl!),
+            imageSource: VPlatformFile.fromUrl(
+              networkUrl: locationData.staticMapUrl!,
+            ),
             height: 150,
             fit: BoxFit.cover,
             shimmerBaseColor: Colors.grey[300],
@@ -126,8 +129,11 @@ class VLocationBubble extends BaseBubble {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.location_on,
-                      size: BubbleSizes.iconHuge, color: Colors.red),
+                  Icon(
+                    Icons.location_on,
+                    size: BubbleSizes.iconHuge,
+                    color: Colors.red,
+                  ),
                   BubbleSpacing.vGapL,
                   Text(
                     '${locationData.latitude.toStringAsFixed(4)}, ${locationData.longitude.toStringAsFixed(4)}',
@@ -141,8 +147,11 @@ class VLocationBubble extends BaseBubble {
         Positioned(
           top: 8,
           left: 8,
-          child: Icon(Icons.location_on,
-              color: Colors.red, size: BubbleSizes.iconXL),
+          child: Icon(
+            Icons.location_on,
+            color: Colors.red,
+            size: BubbleSizes.iconXL,
+          ),
         ),
       ],
     );

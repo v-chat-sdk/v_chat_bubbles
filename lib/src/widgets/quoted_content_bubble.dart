@@ -47,6 +47,7 @@ class VQuotedContentBubble extends BaseBubble {
     this.text,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -54,6 +55,7 @@ class VQuotedContentBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -63,7 +65,7 @@ class VQuotedContentBubble extends BaseBubble {
   Widget buildContent(BuildContext context) {
     final config = context.bubbleConfig;
     final header = buildBubbleHeader(context);
-    final showTail = !isSameSender;
+    final showTail = showsGroupEnd;
     return VBubbleWrapper(
       isMeSender: isMeSender,
       showTail: showTail,

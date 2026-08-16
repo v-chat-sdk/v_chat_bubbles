@@ -62,8 +62,11 @@ class VBubbleHeader extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.forward,
-                  size: BubbleSizes.iconTiny, color: theme.forwardHeaderColor),
+              Icon(
+                Icons.forward,
+                size: BubbleSizes.iconTiny,
+                color: theme.forwardHeaderColor,
+              ),
               BubbleSpacing.gapS,
               Flexible(
                 child: Text(
@@ -75,7 +78,8 @@ class VBubbleHeader extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textDirection: VTextParser.getTextDirection(
-                      forwardedFrom!.originalSenderName),
+                    forwardedFrom!.originalSenderName,
+                  ),
                 ),
               ),
             ],
@@ -84,8 +88,9 @@ class VBubbleHeader extends StatelessWidget {
           Divider(
             height: 1,
             thickness: 0.5,
-            color: theme.forwardHeaderColor
-                .withValues(alpha: BubbleOpacity.light2),
+            color: theme.forwardHeaderColor.withValues(
+              alpha: BubbleOpacity.light2,
+            ),
           ),
         ],
       ),
@@ -124,8 +129,9 @@ class VBubbleHeader extends StatelessWidget {
     final config = context.bubbleConfig;
     final isSelectionMode = context.bubbleScope.isSelectionMode;
 
-    final replyBarColor =
-        isMeSender ? theme.outgoingReplyBarColor : theme.incomingReplyBarColor;
+    final replyBarColor = isMeSender
+        ? theme.outgoingReplyBarColor
+        : theme.incomingReplyBarColor;
     final replyBackground = isMeSender
         ? theme.outgoingReplyBackgroundColor
         : theme.incomingReplyBackgroundColor;
@@ -135,6 +141,7 @@ class VBubbleHeader extends StatelessWidget {
     final replySecondaryTextColor = isMeSender
         ? theme.outgoingSecondaryTextColor
         : theme.incomingSecondaryTextColor;
+    final quotedText = replyTo!.quoteRange?.text ?? replyTo!.previewText;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -142,7 +149,7 @@ class VBubbleHeader extends StatelessWidget {
       onTap: isSelectionMode
           ? null
           : () =>
-              callbacks?.onReplyPreviewTap?.call(replyTo!.originalMessageId),
+                callbacks?.onReplyPreviewTap?.call(replyTo!.originalMessageId),
       child: Container(
         margin: EdgeInsets.only(bottom: BubbleSpacing.inlineM),
         padding: EdgeInsets.all(BubbleSpacing.inlineM),
@@ -211,19 +218,75 @@ class VBubbleHeader extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textDirection: VTextParser.getTextDirection(
-                                replyTo!.senderName),
+                              replyTo!.senderName,
+                            ),
                           ),
                           const SizedBox(height: 1),
                           Text(
-                            replyTo!.previewText,
+                            quotedText,
                             style: theme.timeTextStyle.copyWith(
                               color: replySecondaryTextColor,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textDirection: VTextParser.getTextDirection(
-                                replyTo!.previewText),
+                              quotedText,
+                            ),
                           ),
+                          if (replyTo!.parentReply != null) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              '↳ ${replyTo!.parentReply!.senderName}: '
+                              '${replyTo!.parentReply!.previewText}',
+                              key: ValueKey(
+                                'v-parent-reply-${replyTo!.originalMessageId}',
+                              ),
+                              style: theme.timeTextStyle.copyWith(
+                                color: replySecondaryTextColor.withValues(
+                                  alpha: 0.8,
+                                ),
+                                fontSize: theme.timeTextStyle.fontSize == null
+                                    ? null
+                                    : theme.timeTextStyle.fontSize! - 1,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                          if (replyTo!.threadSummary case final thread?) ...[
+                            const SizedBox(height: 4),
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: isSelectionMode
+                                  ? null
+                                  : () => callbacks?.onThreadTap?.call(
+                                      thread.threadId,
+                                    ),
+                              child: Row(
+                                key: ValueKey('v-thread-${thread.threadId}'),
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.forum_outlined,
+                                    size: BubbleSizes.iconTiny,
+                                    color: replyTextColor,
+                                  ),
+                                  BubbleSpacing.gapXS,
+                                  Flexible(
+                                    child: Text(
+                                      '${thread.replyCount} replies',
+                                      style: theme.timeTextStyle.copyWith(
+                                        color: replyTextColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),

@@ -100,26 +100,25 @@ class VContextMenuLabels {
     String? save,
     String? translate,
     String? speak,
-  }) =>
-      VContextMenuLabels(
-        reply: reply ?? this.reply,
-        forward: forward ?? this.forward,
-        copy: copy ?? this.copy,
-        download: download ?? this.download,
-        edit: edit ?? this.edit,
-        delete: delete ?? this.delete,
-        pin: pin ?? this.pin,
-        unpin: unpin ?? this.unpin,
-        star: star ?? this.star,
-        unstar: unstar ?? this.unstar,
-        report: report ?? this.report,
-        share: share ?? this.share,
-        select: select ?? this.select,
-        info: info ?? this.info,
-        save: save ?? this.save,
-        translate: translate ?? this.translate,
-        speak: speak ?? this.speak,
-      );
+  }) => VContextMenuLabels(
+    reply: reply ?? this.reply,
+    forward: forward ?? this.forward,
+    copy: copy ?? this.copy,
+    download: download ?? this.download,
+    edit: edit ?? this.edit,
+    delete: delete ?? this.delete,
+    pin: pin ?? this.pin,
+    unpin: unpin ?? this.unpin,
+    star: star ?? this.star,
+    unstar: unstar ?? this.unstar,
+    report: report ?? this.report,
+    share: share ?? this.share,
+    select: select ?? this.select,
+    info: info ?? this.info,
+    save: save ?? this.save,
+    translate: translate ?? this.translate,
+    speak: speak ?? this.speak,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -144,24 +143,24 @@ class VContextMenuLabels {
           speak == other.speak;
   @override
   int get hashCode => Object.hash(
-        reply,
-        forward,
-        copy,
-        download,
-        edit,
-        delete,
-        pin,
-        unpin,
-        star,
-        unstar,
-        report,
-        share,
-        select,
-        info,
-        save,
-        translate,
-        speak,
-      );
+    reply,
+    forward,
+    copy,
+    download,
+    edit,
+    delete,
+    pin,
+    unpin,
+    star,
+    unstar,
+    report,
+    share,
+    select,
+    info,
+    save,
+    translate,
+    speak,
+  );
 }
 
 /// Configuration for the built-in context menu
@@ -179,6 +178,12 @@ class VContextMenuConfig {
   /// Custom reaction emojis (uses style-specific if null)
   final List<String>? customReactions;
 
+  /// Maximum reaction pills rendered below a bubble before an overflow pill.
+  final int maxVisibleReactionPills;
+
+  /// Allow the current user to select more than one reaction per message.
+  final bool allowMultipleReactions;
+
   /// Labels for actions (for i18n support)
   final VContextMenuLabels labels;
   const VContextMenuConfig({
@@ -192,26 +197,25 @@ class VContextMenuConfig {
     ],
     this.showReactions = true,
     this.customReactions,
+    this.maxVisibleReactionPills = 6,
+    this.allowMultipleReactions = false,
     this.labels = const VContextMenuLabels(),
-  });
+  }) : assert(
+         maxVisibleReactionPills > 0,
+         'maxVisibleReactionPills must be greater than zero',
+       );
 
   /// Standard context menu with default settings
   static const standard = VContextMenuConfig();
 
   /// Context menu with reactions only (no actions)
-  static const reactionsOnly = VContextMenuConfig(
-    availableActions: [],
-  );
+  static const reactionsOnly = VContextMenuConfig(availableActions: []);
 
   /// Context menu with actions only (no reactions)
-  static const actionsOnly = VContextMenuConfig(
-    showReactions: false,
-  );
+  static const actionsOnly = VContextMenuConfig(showReactions: false);
 
   /// Disabled context menu - falls back to onLongPress callback
-  static const disabled = VContextMenuConfig(
-    enableBuiltInMenu: false,
-  );
+  static const disabled = VContextMenuConfig(enableBuiltInMenu: false);
 
   /// Full context menu with all actions
   static const full = VContextMenuConfig(
@@ -259,15 +263,20 @@ class VContextMenuConfig {
     List<VMessageAction>? availableActions,
     bool? showReactions,
     List<String>? customReactions,
+    int? maxVisibleReactionPills,
+    bool? allowMultipleReactions,
     VContextMenuLabels? labels,
-  }) =>
-      VContextMenuConfig(
-        enableBuiltInMenu: enableBuiltInMenu ?? this.enableBuiltInMenu,
-        availableActions: availableActions ?? this.availableActions,
-        showReactions: showReactions ?? this.showReactions,
-        customReactions: customReactions ?? this.customReactions,
-        labels: labels ?? this.labels,
-      );
+  }) => VContextMenuConfig(
+    enableBuiltInMenu: enableBuiltInMenu ?? this.enableBuiltInMenu,
+    availableActions: availableActions ?? this.availableActions,
+    showReactions: showReactions ?? this.showReactions,
+    customReactions: customReactions ?? this.customReactions,
+    maxVisibleReactionPills:
+        maxVisibleReactionPills ?? this.maxVisibleReactionPills,
+    allowMultipleReactions:
+        allowMultipleReactions ?? this.allowMultipleReactions,
+    labels: labels ?? this.labels,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -277,13 +286,17 @@ class VContextMenuConfig {
           listEquals(availableActions, other.availableActions) &&
           showReactions == other.showReactions &&
           listEquals(customReactions, other.customReactions) &&
+          maxVisibleReactionPills == other.maxVisibleReactionPills &&
+          allowMultipleReactions == other.allowMultipleReactions &&
           labels == other.labels;
   @override
   int get hashCode => Object.hash(
-        enableBuiltInMenu,
-        Object.hashAll(availableActions),
-        showReactions,
-        customReactions != null ? Object.hashAll(customReactions!) : null,
-        labels,
-      );
+    enableBuiltInMenu,
+    Object.hashAll(availableActions),
+    showReactions,
+    customReactions != null ? Object.hashAll(customReactions!) : null,
+    maxVisibleReactionPills,
+    allowMultipleReactions,
+    labels,
+  );
 }

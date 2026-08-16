@@ -69,6 +69,7 @@ class VVideoBubble extends BaseBubble {
     this.progress,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -76,6 +77,7 @@ class VVideoBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -97,28 +99,21 @@ class VVideoBubble extends BaseBubble {
           if (transferState != VTransferState.completed)
             _buildTransferOverlay(context),
           _buildOverlayInfo(context),
-          Positioned(
-            top: 8,
-            left: 8,
-            child: _buildDurationBadge(context),
-          ),
+          Positioned(top: 8, left: 8, child: _buildDurationBadge(context)),
         ],
       ),
     );
     if (!hasHeader) return mediaContent;
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       padding: EdgeInsets.zero,
       clipContent: true, // Clip content to bubble shape
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: header,
-          ),
+          Padding(padding: const EdgeInsets.all(8), child: header),
           mediaContent,
         ],
       ),
@@ -135,8 +130,11 @@ class VVideoBubble extends BaseBubble {
         height: 200,
         color: Colors.black,
         child: Center(
-          child: Icon(Icons.videocam,
-              color: Colors.white54, size: BubbleSizes.iconHuge),
+          child: Icon(
+            Icons.videocam,
+            color: Colors.white54,
+            size: BubbleSizes.iconHuge,
+          ),
         ),
       );
       if (aspectRatio != null) {
@@ -183,8 +181,11 @@ class VVideoBubble extends BaseBubble {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 2),
             ),
-            child: Icon(Icons.play_arrow,
-                color: Colors.white, size: BubbleSizes.iconXXL),
+            child: Icon(
+              Icons.play_arrow,
+              color: Colors.white,
+              size: BubbleSizes.iconXXL,
+            ),
           ),
         ),
       ),
@@ -222,21 +223,21 @@ class VVideoBubble extends BaseBubble {
       onCancel: isSelectionMode
           ? null
           : () => callbacks.onTransferStateChanged?.call(
-                messageId,
-                VMediaTransferAction.cancel,
-              ),
+              messageId,
+              VMediaTransferAction.cancel,
+            ),
       onRetry: isSelectionMode
           ? null
           : () => callbacks.onTransferStateChanged?.call(
-                messageId,
-                VMediaTransferAction.retry,
-              ),
+              messageId,
+              VMediaTransferAction.retry,
+            ),
       onDownload: isSelectionMode
           ? null
           : () => callbacks.onTransferStateChanged?.call(
-                messageId,
-                VMediaTransferAction.download,
-              ),
+              messageId,
+              VMediaTransferAction.download,
+            ),
     );
   }
 
@@ -251,8 +252,11 @@ class VVideoBubble extends BaseBubble {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.videocam,
-              color: Colors.white, size: BubbleSizes.iconSmall),
+          Icon(
+            Icons.videocam,
+            color: Colors.white,
+            size: BubbleSizes.iconSmall,
+          ),
           BubbleSpacing.gapS,
           Text(
             formatDuration(duration),

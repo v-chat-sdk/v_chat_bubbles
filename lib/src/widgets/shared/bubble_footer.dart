@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants.dart';
 import '../../core/enums.dart';
+import '../../core/modern_message_models.dart';
 import '../bubble_scope.dart';
 
 class VBubbleFooter extends StatelessWidget {
@@ -11,6 +12,7 @@ class VBubbleFooter extends StatelessWidget {
   final bool isStarred;
   final bool isPinned;
   final bool isEdited;
+  final VMessageLifecycleData? lifecycle;
   final Color? overrideColor;
 
   const VBubbleFooter({
@@ -21,6 +23,7 @@ class VBubbleFooter extends StatelessWidget {
     this.isStarred = false,
     this.isPinned = false,
     this.isEdited = false,
+    this.lifecycle,
     this.overrideColor,
   });
 
@@ -82,7 +85,11 @@ class VBubbleFooter extends StatelessWidget {
     // So we need to reconstruct the logic to respect specific status colors if overrideColor was null.
 
     Color iconColor = color;
-    if (overrideColor == null) {
+    if (lifecycle?.stage == VMessageLifecycleStage.error) {
+      iconColor = theme.errorColor;
+    } else if (lifecycle?.stage == VMessageLifecycleStage.queued) {
+      iconColor = theme.pendingIconColor;
+    } else if (overrideColor == null) {
       switch (status) {
         case VMessageStatus.sending:
           iconColor = theme.pendingIconColor;
@@ -97,10 +104,13 @@ class VBubbleFooter extends StatelessWidget {
       }
     }
 
-    return Icon(
-      statusConfig.iconFor(status),
-      size: statusConfig.size,
-      color: iconColor,
-    );
+    final lifecycleIcon = switch (lifecycle?.stage) {
+      VMessageLifecycleStage.queued => Icons.schedule_rounded,
+      VMessageLifecycleStage.error => Icons.sync_problem_rounded,
+      _ => statusConfig.iconFor(status),
+    };
+    final icon = Icon(lifecycleIcon, size: statusConfig.size, color: iconColor);
+    if (lifecycle == null) return icon;
+    return Tooltip(message: lifecycle!.semanticLabel, child: icon);
   }
 }

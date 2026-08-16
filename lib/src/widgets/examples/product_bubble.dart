@@ -172,6 +172,7 @@ class VProductBubble extends BaseBubble {
     this.onImageTap,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -179,6 +180,7 @@ class VProductBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -195,7 +197,7 @@ class VProductBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return buildBubbleContainer(
       context: context,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,8 +265,9 @@ class VProductBubble extends BaseBubble {
                   const SizedBox(height: 4),
                   Text(
                     productData.description!,
-                    style:
-                        theme.captionTextStyle.copyWith(color: secondaryColor),
+                    style: theme.captionTextStyle.copyWith(
+                      color: secondaryColor,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -293,7 +296,9 @@ class VProductBubble extends BaseBubble {
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.green.shade100,
                           borderRadius: BubbleRadius.tiny,
@@ -319,13 +324,13 @@ class VProductBubble extends BaseBubble {
                         final filled = index < productData.rating!.floor();
                         final halfFilled =
                             index == productData.rating!.floor() &&
-                                productData.rating! % 1 >= 0.5;
+                            productData.rating! % 1 >= 0.5;
                         return Icon(
                           filled
                               ? Icons.star
                               : halfFilled
-                                  ? Icons.star_half
-                                  : Icons.star_border,
+                              ? Icons.star_half
+                              : Icons.star_border,
                           size: 16,
                           color: Colors.amber,
                         );
@@ -333,15 +338,17 @@ class VProductBubble extends BaseBubble {
                       const SizedBox(width: 4),
                       Text(
                         productData.rating!.toStringAsFixed(1),
-                        style:
-                            theme.captionTextStyle.copyWith(color: textColor),
+                        style: theme.captionTextStyle.copyWith(
+                          color: textColor,
+                        ),
                       ),
                       if (productData.reviewCount != null) ...[
                         const SizedBox(width: 4),
                         Text(
                           '(${productData.reviewCount})',
-                          style: theme.captionTextStyle
-                              .copyWith(color: secondaryColor),
+                          style: theme.captionTextStyle.copyWith(
+                            color: secondaryColor,
+                          ),
                         ),
                       ],
                     ],
