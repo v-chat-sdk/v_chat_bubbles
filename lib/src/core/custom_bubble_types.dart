@@ -3,6 +3,9 @@ import 'package:v_platform/v_platform.dart';
 
 import 'enums.dart';
 import 'models.dart';
+import 'modern_message_models.dart';
+
+const _commonPropsSentinel = Object();
 
 /// Base class for custom bubble data
 ///
@@ -43,6 +46,9 @@ class CommonBubbleProps {
   /// Whether this message is from the same sender as the previous message
   final bool isSameSender;
 
+  /// Automatically resolved position in a sender/time-based message group.
+  final VMessageGroupPosition? groupPosition;
+
   /// Sender avatar image source
   final VPlatformFile? avatar;
 
@@ -64,6 +70,9 @@ class CommonBubbleProps {
   /// Whether message is edited
   final bool isEdited;
 
+  /// Detailed delivery, retry, receipt, and edit metadata.
+  final VMessageLifecycleData? lifecycle;
+
   /// Whether message is pinned
   final bool isPinned;
 
@@ -76,6 +85,7 @@ class CommonBubbleProps {
   const CommonBubbleProps({
     this.status = VMessageStatus.sent,
     this.isSameSender = false,
+    this.groupPosition,
     this.avatar,
     this.senderName,
     this.senderColor,
@@ -83,6 +93,7 @@ class CommonBubbleProps {
     this.forwardedFrom,
     this.reactions = const [],
     this.isEdited = false,
+    this.lifecycle,
     this.isPinned = false,
     this.isStarred = false,
     this.isHighlighted = false,
@@ -92,6 +103,7 @@ class CommonBubbleProps {
   CommonBubbleProps copyWith({
     VMessageStatus? status,
     bool? isSameSender,
+    VMessageGroupPosition? groupPosition,
     VPlatformFile? avatar,
     String? senderName,
     Color? senderColor,
@@ -99,6 +111,7 @@ class CommonBubbleProps {
     VForwardData? forwardedFrom,
     List<VBubbleReaction>? reactions,
     bool? isEdited,
+    Object? lifecycle = _commonPropsSentinel,
     bool? isPinned,
     bool? isStarred,
     bool? isHighlighted,
@@ -106,6 +119,7 @@ class CommonBubbleProps {
     return CommonBubbleProps(
       status: status ?? this.status,
       isSameSender: isSameSender ?? this.isSameSender,
+      groupPosition: groupPosition ?? this.groupPosition,
       avatar: avatar ?? this.avatar,
       senderName: senderName ?? this.senderName,
       senderColor: senderColor ?? this.senderColor,
@@ -113,6 +127,9 @@ class CommonBubbleProps {
       forwardedFrom: forwardedFrom ?? this.forwardedFrom,
       reactions: reactions ?? this.reactions,
       isEdited: isEdited ?? this.isEdited,
+      lifecycle: lifecycle == _commonPropsSentinel
+          ? this.lifecycle
+          : lifecycle as VMessageLifecycleData?,
       isPinned: isPinned ?? this.isPinned,
       isStarred: isStarred ?? this.isStarred,
       isHighlighted: isHighlighted ?? this.isHighlighted,
@@ -125,12 +142,14 @@ class CommonBubbleProps {
     if (other is! CommonBubbleProps) return false;
     return status == other.status &&
         isSameSender == other.isSameSender &&
+        groupPosition == other.groupPosition &&
         avatar == other.avatar &&
         senderName == other.senderName &&
         senderColor == other.senderColor &&
         replyTo == other.replyTo &&
         forwardedFrom == other.forwardedFrom &&
         isEdited == other.isEdited &&
+        lifecycle == other.lifecycle &&
         isPinned == other.isPinned &&
         isStarred == other.isStarred &&
         isHighlighted == other.isHighlighted;
@@ -138,18 +157,20 @@ class CommonBubbleProps {
 
   @override
   int get hashCode => Object.hash(
-        status,
-        isSameSender,
-        avatar,
-        senderName,
-        senderColor,
-        replyTo,
-        forwardedFrom,
-        isEdited,
-        isPinned,
-        isStarred,
-        isHighlighted,
-      );
+    status,
+    isSameSender,
+    groupPosition,
+    avatar,
+    senderName,
+    senderColor,
+    replyTo,
+    forwardedFrom,
+    isEdited,
+    lifecycle,
+    isPinned,
+    isStarred,
+    isHighlighted,
+  );
 }
 
 /// Builder function for custom bubbles
@@ -180,11 +201,12 @@ class CommonBubbleProps {
 ///   );
 /// };
 /// ```
-typedef CustomBubbleBuilder = Widget Function(
-  BuildContext context,
-  String messageId,
-  bool isMeSender,
-  String time,
-  VCustomBubbleData data,
-  CommonBubbleProps props,
-);
+typedef CustomBubbleBuilder =
+    Widget Function(
+      BuildContext context,
+      String messageId,
+      bool isMeSender,
+      String time,
+      VCustomBubbleData data,
+      CommonBubbleProps props,
+    );

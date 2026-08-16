@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../core/enums.dart';
 import '../core/models.dart';
+import '../core/modern_message_models.dart';
 import '../utils/shimmer_helper.dart';
 import '../utils/platform_image_builder.dart';
 import '../viewers/media_viewer_route.dart';
@@ -27,6 +29,9 @@ import 'shared/shimmer_loading.dart';
 class VGalleryBubble extends BaseBubble {
   /// List of gallery items - each with unique messageId and metadata
   final List<VGalleryItemData> items;
+
+  /// Optional shared-album metadata, quality, and collaboration state.
+  final VMediaCollectionData? collection;
   @override
   String get messageType => 'gallery';
   const VGalleryBubble({
@@ -35,8 +40,10 @@ class VGalleryBubble extends BaseBubble {
     required super.isMeSender,
     required super.time,
     required this.items,
+    this.collection,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -44,6 +51,7 @@ class VGalleryBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -59,6 +67,7 @@ class VGalleryBubble extends BaseBubble {
     final galleryContent = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (collection != null) _buildCollectionHeader(context),
         _buildGalleryGrid(context, maxWidth),
         if (_hasAnyCaption) _buildCaptions(context),
       ],
@@ -76,17 +85,14 @@ class VGalleryBubble extends BaseBubble {
     if (!hasHeader) return mediaContent;
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       padding: EdgeInsets.zero,
       clipContent: true, // Clip content to bubble shape
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: header,
-          ),
+          Padding(padding: const EdgeInsets.all(8), child: header),
           mediaContent,
         ],
       ),
@@ -127,7 +133,8 @@ class VGalleryBubble extends BaseBubble {
         ],
       );
     }
-    final showMore = items.length > 4;
+    final totalItemCount = collection?.totalItemCount ?? items.length;
+    final showMore = totalItemCount > 4;
     return Column(
       children: [
         Row(
@@ -156,7 +163,7 @@ class VGalleryBubble extends BaseBubble {
                           color: Colors.black45,
                           child: Center(
                             child: Text(
-                              '+${items.length - 4}',
+                              '+${totalItemCount - 4}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 28,
@@ -176,17 +183,83 @@ class VGalleryBubble extends BaseBubble {
     );
   }
 
+  Widget _buildCollectionHeader(BuildContext context) {
+    final theme = context.bubbleTheme;
+    final callbacks = context.bubbleCallbacks;
+    final textColor = selectTextColor(theme);
+    final secondaryColor = selectSecondaryTextColor(theme);
+    final data = collection!;
+    final qualityLabel = switch (data.quality) {
+      VMediaQuality.standard => null,
+      VMediaQuality.highDefinition => 'HD',
+      VMediaQuality.original => 'Original',
+    };
+    return Container(
+      key: ValueKey('v-media-collection-${data.collectionId}'),
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      color: selectBubbleColor(theme),
+      child: Row(
+        children: [
+          Icon(Icons.photo_library_outlined, color: textColor),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  data.title ?? 'Shared album',
+                  style: theme.messageTextStyle.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  '${data.totalItemCount} items'
+                  '${data.contributors.isEmpty ? '' : ' · ${data.contributors.length} contributors'}',
+                  style: theme.timeTextStyle.copyWith(color: secondaryColor),
+                ),
+              ],
+            ),
+          ),
+          if (qualityLabel != null)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+              decoration: BoxDecoration(
+                color: textColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                qualityLabel,
+                style: theme.timeTextStyle.copyWith(
+                  color: textColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          if (data.canAddItems && callbacks.onMediaCollectionAdd != null)
+            IconButton(
+              key: ValueKey('v-media-collection-add-${data.collectionId}'),
+              tooltip: 'Add media',
+              onPressed: () =>
+                  callbacks.onMediaCollectionAdd!(messageId, data.collectionId),
+              icon: Icon(Icons.add_photo_alternate_outlined, color: textColor),
+            ),
+        ],
+      ),
+    );
+  }
+
   void _onItemTap(BuildContext context, VGalleryItemData item, int index) {
     final isSelectionMode = context.bubbleScope.isSelectionMode;
     if (isSelectionMode) return;
     final callbacks = context.bubbleCallbacks;
     // If user provided onMediaTap callback, use it instead of internal viewer
     if (callbacks.onMediaTap != null) {
-      callbacks.onMediaTap!(VMediaTapData(
-        messageId: messageId,
-        index: index,
-        galleryItem: item,
-      ));
+      callbacks.onMediaTap!(
+        VMediaTapData(messageId: messageId, index: index, galleryItem: item),
+      );
       return;
     }
     // Open internal gallery viewer
@@ -260,17 +333,16 @@ class VGalleryBubble extends BaseBubble {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ...captions.map((item) => Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  item.caption!,
-                  style: theme.captionTextStyle.copyWith(color: textColor),
-                ),
-              )),
-          Align(
-            alignment: Alignment.centerRight,
-            child: buildMeta(context),
+          ...captions.map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Text(
+                item.caption!,
+                style: theme.captionTextStyle.copyWith(color: textColor),
+              ),
+            ),
           ),
+          Align(alignment: Alignment.centerRight, child: buildMeta(context)),
         ],
       ),
     );

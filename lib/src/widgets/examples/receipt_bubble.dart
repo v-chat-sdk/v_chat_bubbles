@@ -179,6 +179,7 @@ class VReceiptBubble extends BaseBubble {
     this.onReceiptTap,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -186,6 +187,7 @@ class VReceiptBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -202,7 +204,7 @@ class VReceiptBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return buildBubbleContainer(
       context: context,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       child: GestureDetector(
         onTap: onReceiptTap,
         child: Column(

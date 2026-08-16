@@ -28,6 +28,7 @@ class VCallBubble extends BaseBubble {
     required this.callData,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -35,6 +36,7 @@ class VCallBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -48,7 +50,7 @@ class VCallBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

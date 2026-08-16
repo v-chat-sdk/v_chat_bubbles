@@ -21,6 +21,9 @@ class VTextBubble extends BaseBubble {
   /// Optional link preview data
   final VLinkPreviewData? linkPreview;
 
+  /// Optional translated-text state rendered below the original message.
+  final VMessageTranslationData? translation;
+
   @override
   String get messageType => 'text message';
 
@@ -31,8 +34,10 @@ class VTextBubble extends BaseBubble {
     required super.time,
     required this.text,
     this.linkPreview,
+    this.translation,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -40,6 +45,7 @@ class VTextBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -50,24 +56,39 @@ class VTextBubble extends BaseBubble {
     final theme = context.bubbleTheme;
     final textColor = selectTextColor(theme);
     final header = buildBubbleHeader(context);
-    final showTail = !isSameSender;
+    final showTail = showsGroupEnd;
+    final textContent = _ExpandableTextWithPreview(
+      messageId: messageId,
+      text: text,
+      linkPreview: linkPreview,
+      isMeSender: isMeSender,
+      textColor: textColor,
+      header: header,
+      // Meta values for proper didUpdateWidget comparison
+      time: time,
+      status: status,
+      isEdited: isEdited,
+      lifecycle: lifecycle,
+      isPinned: isPinned,
+      isStarred: isStarred,
+    );
     return VBubbleWrapper(
       isMeSender: isMeSender,
       showTail: showTail,
-      child: _ExpandableTextWithPreview(
-        messageId: messageId,
-        text: text,
-        linkPreview: linkPreview,
-        isMeSender: isMeSender,
-        textColor: textColor,
-        header: header,
-        // Meta values for proper didUpdateWidget comparison
-        time: time,
-        status: status,
-        isEdited: isEdited,
-        isPinned: isPinned,
-        isStarred: isStarred,
-      ),
+      child: translation == null
+          ? textContent
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                textContent,
+                VTranslatedTextPanel(
+                  messageId: messageId,
+                  translation: translation!,
+                  textColor: textColor,
+                ),
+              ],
+            ),
     );
   }
 }

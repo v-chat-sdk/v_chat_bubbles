@@ -12,6 +12,7 @@ class _ExpandableTextWithPreview extends StatefulWidget {
   final String time;
   final VMessageStatus status;
   final bool isEdited;
+  final VMessageLifecycleData? lifecycle;
   final bool isPinned;
   final bool isStarred;
 
@@ -25,6 +26,7 @@ class _ExpandableTextWithPreview extends StatefulWidget {
     required this.time,
     required this.status,
     required this.isEdited,
+    this.lifecycle,
     required this.isPinned,
     required this.isStarred,
   });
@@ -72,6 +74,7 @@ class _ExpandableTextWithPreviewState
       isStarred: widget.isStarred,
       isPinned: widget.isPinned,
       isEdited: widget.isEdited,
+      lifecycle: widget.lifecycle,
     );
   }
 

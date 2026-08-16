@@ -4,6 +4,7 @@
 .vscode/
 build/
 coverage/
+doc/api/
 example/.dart_tool/
 example/build/
 example/pubspec.lock

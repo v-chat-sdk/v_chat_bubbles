@@ -1,4 +1,6 @@
 // Public utilities for building custom bubbles
+export 'adaptive_bubble_interaction.dart';
+export 'animated_media_surface.dart';
 export 'block_format_widgets.dart';
 export 'bubble_avatar.dart';
 export 'bubble_footer.dart';
@@ -9,6 +11,9 @@ export 'media_container.dart';
 export 'media_error_placeholder.dart';
 export 'media_overlay_info.dart';
 export 'message_status_icon.dart';
+export 'protected_content_overlay.dart';
 export 'shimmer_loading.dart';
 export 'transfer_overlay.dart';
+export 'translated_text_panel.dart';
 export 'unified_image.dart';
+export 'voice_transcript_panel.dart';

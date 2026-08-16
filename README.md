@@ -52,6 +52,7 @@ A comprehensive Flutter package for building chat interfaces with multiple messa
 
 - [Installation](#installation)
 - [Quick Start](#quick-start)
+- [Modern Chat Features](#modern-chat-features)
 - [Architecture Overview](#architecture-overview)
 - [VBubbleScope](#vbubblescope)
 - [VBubbleConfig](#vbubbleconfig)
@@ -72,7 +73,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  v_chat_bubbles: ^2.0.0
+  v_chat_bubbles: ^2.1.0
 ```
 
 Version 2 requires Flutter 3.44.0 or newer and Dart 3.12.0 or newer.
@@ -123,6 +124,51 @@ class ChatScreen extends StatelessWidget {
   }
 }
 ```
+
+---
+
+## Modern Chat Features
+
+The package includes optional, backward-compatible models and widgets for
+current messaging experiences:
+
+- Automatic sender/time grouping with `VMessageGrouping.resolve` and
+  `VMessageGroupPosition`.
+- Pointer hover actions, secondary-click menus, keyboard shortcuts, high
+  contrast, and reduced-motion behavior.
+- Delivery timelines, per-recipient receipts, retry state, edit history,
+  view-once media, spoilers, and expiry countdowns.
+- Actor-aware reactions, selective quote ranges, nested replies, threads,
+  translation, voice transcripts, GIFs, and animated stickers.
+- Rich link layouts, HD/shared albums, checklists, events, and live location.
+
+```dart
+final positions = VMessageGrouping.resolve(
+  messages
+      .map((m) => VMessageGroupingInfo(
+            senderId: m.senderId,
+            sentAt: m.sentAt,
+          ))
+      .toList(),
+  timeThreshold: const Duration(minutes: 2),
+);
+
+VTextBubble(
+  messageId: message.id,
+  isMeSender: message.isMine,
+  time: '12:30',
+  text: message.text,
+  groupPosition: positions[index],
+  translation: const VMessageTranslationData(
+    state: VTranslationState.translated,
+    sourceLanguageCode: 'en',
+    targetLanguageCode: 'es',
+    translatedText: 'Hola',
+  ),
+)
+```
+
+See `example/lib/pages/modern_features_page.dart` for an integrated showcase.
 
 ---
 
@@ -305,6 +351,9 @@ Controls gesture interactions.
 | `enableLongPress` | `bool` | `true` | Long press for context menu |
 | `enableDoubleTapToReact` | `bool` | `false` | Double tap to add reaction |
 | `enableHapticFeedback` | `bool` | `true` | Vibration on interactions |
+| `enableHoverActions` | `bool` | `true` | Show reply/reaction/retry actions on pointer hover |
+| `enableSecondaryTap` | `bool` | `true` | Open the message menu with a secondary click |
+| `enableKeyboardShortcuts` | `bool` | `true` | Enable Enter/Space, Alt+R, and Shift+F10 |
 | `swipeThreshold` | `double` | `64` | Swipe distance to trigger reply |
 
 **Presets:**
@@ -558,23 +607,28 @@ VBubbleCallbacks(
   onTap: (String messageId) { },
   onLongPress: (String messageId, Offset position) { }, // Replaces built-in menu when set
   onSwipeReply: (String messageId) { },
+  onRetryMessage: (String messageId) { },
   onSelectionChanged: (String messageId, bool isSelected) { },
   onAvatarTap: (String senderId) { },
   onReplyPreviewTap: (String originalMessageId) { },
+  onThreadTap: (String threadId) { },
 
   // === Grouped Callbacks ===
-  onReaction: (String messageId, String emoji, ReactionAction action) { },
+  onReaction: (String messageId, String emoji, VReactionAction action) { },
   onReactionTap: (String messageId, String emoji, Offset position) { },
+  onReactionDetailsTap: (String messageId, VBubbleReaction reaction, Offset position) { },
   onPatternTap: (VPatternMatch match) { },
   onMediaTap: (VMediaTapData data) { },
   onMenuItemSelected: (String messageId, VBubbleMenuItem item) { },
 
   // === Type-Specific Callbacks ===
   onPollVote: (String messageId, String optionId) { },
-  onLocationTap: (VLocationTapData data) { },
-  onContactTap: (VContactTapData data) { },
-  onCallTap: (String messageId, bool isVideo) { },
   onExpandToggle: (String messageId, bool isExpanded) { },
+  onTranslationToggle: (String messageId, bool showTranslation) { },
+  onTranscriptSegmentTap: (String messageId, Duration start) { },
+  onChecklistItemToggle: (String messageId, String itemId, bool completed) { },
+  onEventResponse: (String messageId, VEventResponse response) { },
+  onLiveLocationTap: (String messageId, String sessionId) { },
   onDownload: (String messageId) { },
   onTransferStateChanged: (String messageId, VMediaTransferAction action) { },
 )
@@ -630,6 +684,7 @@ All bubble widgets share these properties:
 | `time` | `String` | Yes | Display time (e.g., "12:30") |
 | `status` | `VMessageStatus?` | No | Delivery status |
 | `isSameSender` | `bool` | No | Same sender as previous message |
+| `groupPosition` | `VMessageGroupPosition?` | No | Resolved single/first/middle/last group position |
 | `avatar` | `VPlatformFile?` | No | Sender avatar image |
 | `senderName` | `String?` | No | Sender display name |
 | `senderColor` | `Color?` | No | Sender name color |
@@ -637,6 +692,7 @@ All bubble widgets share these properties:
 | `forwardedFrom` | `VForwardData?` | No | Forward info |
 | `reactions` | `List<VBubbleReaction>` | No | Message reactions |
 | `isEdited` | `bool` | No | Show "edited" label |
+| `lifecycle` | `VMessageLifecycleData?` | No | Receipts, retry state, and edit history |
 | `isPinned` | `bool` | No | Show pin indicator |
 | `isStarred` | `bool` | No | Show star indicator |
 | `isHighlighted` | `bool` | No | Highlight animation |
@@ -653,9 +709,16 @@ VTextBubble(
     url: 'https://flutter.dev',
     title: 'Flutter',
     description: 'Build apps for any screen',
+    layout: VLinkPreviewLayout.sideMedia,
     image: VPlatformFile.fromUrl(networkUrl: '...'),
   ),
   status: VMessageStatus.read,
+  translation: VMessageTranslationData(
+    state: VTranslationState.translated,
+    sourceLanguageCode: 'en',
+    targetLanguageCode: 'es',
+    translatedText: 'Hola mundo',
+  ),
 )
 ```
 
@@ -669,6 +732,7 @@ VImageBubble(
   imageFile: VPlatformFile.fromUrl(networkUrl: 'https://example.com/image.jpg'),
   caption: 'Beautiful sunset!',
   aspectRatio: 16/9,
+  protection: VContentProtectionData.viewOnce(),
 )
 ```
 
@@ -697,9 +761,16 @@ VVoiceBubble(
   isMeSender: false,
   time: '12:33',
   controller: VVoiceMessageController(
-    audioSrc: 'https://example.com/voice.mp3',
+    id: 'msg_4',
+    audioSrc: VPlatformFile.fromUrl(
+      networkUrl: 'https://example.com/voice.mp3',
+    ),
     maxDuration: Duration(minutes: 1, seconds: 30),
-    waveform: [0.2, 0.5, 0.8, 0.3, 0.6, ...], // Optional waveform data
+  ),
+  transcript: VVoiceTranscriptData(
+    state: VTranscriptState.ready,
+    text: 'Transcribed voice message',
+    isExpanded: true,
   ),
 )
 ```
@@ -794,10 +865,39 @@ VGalleryBubble(
   isMeSender: false,
   time: '12:39',
   items: [
-    VGalleryItemData(messageId: 'img_1', file: VPlatformFile.fromUrl(...)),
-    VGalleryItemData(messageId: 'img_2', file: VPlatformFile.fromUrl(...)),
-    VGalleryItemData(messageId: 'img_3', file: VPlatformFile.fromUrl(...)),
+    VGalleryItemData(messageId: 'img_1', file: VPlatformFile.fromUrl(...), time: '12:39'),
+    VGalleryItemData(messageId: 'img_2', file: VPlatformFile.fromUrl(...), time: '12:39'),
+    VGalleryItemData(messageId: 'img_3', file: VPlatformFile.fromUrl(...), time: '12:39'),
   ],
+  collection: VMediaCollectionData(
+    collectionId: 'trip',
+    title: 'Summer trip',
+    totalItemCount: 12,
+    quality: VMediaQuality.highDefinition,
+    canAddItems: true,
+  ),
+)
+```
+
+### Modern Structured Messages
+
+Use `VGifBubble` for controlled animated media, `VChecklistBubble` for shared
+tasks, `VEventBubble` for RSVP workflows, and `VLiveLocationBubble` for an
+expiring location session. All interaction state is controlled through their
+data models and `VBubbleCallbacks`, so server state remains authoritative.
+
+```dart
+VChecklistBubble(
+  messageId: 'tasks',
+  isMeSender: false,
+  time: '12:40',
+  checklist: const VChecklistData(
+    title: 'Release checklist',
+    items: [
+      VChecklistItem(id: 'test', text: 'Run tests', isCompleted: true),
+      VChecklistItem(id: 'notes', text: 'Review release notes'),
+    ],
+  ),
 )
 ```
 

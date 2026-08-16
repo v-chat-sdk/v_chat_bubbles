@@ -6,6 +6,7 @@ import '../utils/platform_image_builder.dart';
 import 'base_bubble.dart';
 import 'bubble_scope.dart';
 import 'bubble_wrapper.dart';
+import 'shared/animated_media_surface.dart';
 import 'shared/media_error_placeholder.dart';
 import 'shared/message_status_icon.dart';
 import 'shared/shimmer_loading.dart';
@@ -34,6 +35,15 @@ class VStickerBubble extends BaseBubble {
   /// Sticker size
   final double size;
 
+  /// Whether [stickerFile] contains animated content.
+  final bool isAnimated;
+
+  /// Static preview used while an animated sticker is paused.
+  final VPlatformFile? previewFile;
+
+  /// Start animated stickers automatically unless reduced motion is enabled.
+  final bool autoplay;
+
   const VStickerBubble({
     super.key,
     required super.messageId,
@@ -41,8 +51,12 @@ class VStickerBubble extends BaseBubble {
     required super.time,
     required this.stickerFile,
     this.size = 160,
+    this.isAnimated = false,
+    this.previewFile,
+    this.autoplay = true,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -50,6 +64,7 @@ class VStickerBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -60,8 +75,9 @@ class VStickerBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     // Sticker normally doesn't use VBubbleWrapper - no background
     final stickerContent = Column(
-      crossAxisAlignment:
-          isMeSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: isMeSender
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildStickerImage(context),
@@ -72,15 +88,12 @@ class VStickerBubble extends BaseBubble {
     if (header == null) return stickerContent;
     // When there's a header (reply/forward), show it in a bubble above the sticker
     return Column(
-      crossAxisAlignment:
-          isMeSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: isMeSender
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        VBubbleWrapper(
-          isMeSender: isMeSender,
-          showTail: false,
-          child: header,
-        ),
+        VBubbleWrapper(isMeSender: isMeSender, showTail: false, child: header),
         BubbleSpacing.vGapS,
         stickerContent,
       ],
@@ -93,39 +106,56 @@ class VStickerBubble extends BaseBubble {
     final theme = context.bubbleTheme;
     final config = context.bubbleConfig;
     final shimmerBase = theme.systemMessageBackground.withValues(alpha: 0.3);
-    final shimmerHighlight =
-        theme.systemMessageBackground.withValues(alpha: 0.1);
+    final shimmerHighlight = theme.systemMessageBackground.withValues(
+      alpha: 0.1,
+    );
     return GestureDetector(
       onTap: isSelectionMode
           ? null
           : () =>
-              callbacks.onMediaTap?.call(VMediaTapData(messageId: messageId)),
+                callbacks.onMediaTap?.call(VMediaTapData(messageId: messageId)),
       child: SizedBox(
         width: size,
         height: size,
-        child: VPlatformImageBuilder.build(
-          stickerFile,
-          fit: BoxFit.contain,
-          config: const VImageRenderConfig(
-            filterQuality: FilterQuality.high,
-            fadeInDuration: Duration(milliseconds: 200),
-          ),
-          cacheNetworkImages: config.media.cacheNetworkImages,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return VShimmerLoading(
-              width: size,
-              height: size,
-              baseColor: shimmerBase,
-              highlightColor: shimmerHighlight,
-              borderRadius: BubbleRadius.chip,
-              child: Icon(Icons.emoji_emotions,
-                  size: BubbleSizes.iconXXL, color: Colors.white38),
-            );
-          },
-          errorBuilder: (context, error, stack) =>
-              const VMediaErrorPlaceholder.sticker(),
-        ),
+        child: isAnimated
+            ? VAnimatedMediaSurface(
+                messageId: messageId,
+                animatedFile: stickerFile,
+                previewFile: previewFile,
+                width: size,
+                height: size,
+                autoplay: autoplay,
+                showPlaybackControl: !isSelectionMode,
+                onPlaybackChanged: (isPlaying) => callbacks
+                    .onAnimatedMediaPlaybackChanged
+                    ?.call(messageId, isPlaying),
+              )
+            : VPlatformImageBuilder.build(
+                stickerFile,
+                fit: BoxFit.contain,
+                config: const VImageRenderConfig(
+                  filterQuality: FilterQuality.high,
+                  fadeInDuration: Duration(milliseconds: 200),
+                ),
+                cacheNetworkImages: config.media.cacheNetworkImages,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return VShimmerLoading(
+                    width: size,
+                    height: size,
+                    baseColor: shimmerBase,
+                    highlightColor: shimmerHighlight,
+                    borderRadius: BubbleRadius.chip,
+                    child: Icon(
+                      Icons.emoji_emotions,
+                      size: BubbleSizes.iconXXL,
+                      color: Colors.white38,
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stack) =>
+                    const VMediaErrorPlaceholder.sticker(),
+              ),
       ),
     );
   }
@@ -141,14 +171,8 @@ class VStickerBubble extends BaseBubble {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            time,
-            style: theme.timeTextStyle.copyWith(color: Colors.white),
-          ),
-          if (isMeSender) ...[
-            BubbleSpacing.gapS,
-            _buildStatusIcon(context),
-          ],
+          Text(time, style: theme.timeTextStyle.copyWith(color: Colors.white)),
+          if (isMeSender) ...[BubbleSpacing.gapS, _buildStatusIcon(context)],
         ],
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:v_platform/v_platform.dart';
 
 import 'enums.dart';
+import 'modern_message_models.dart';
 
 const _sentinel = Object();
 
@@ -11,28 +13,61 @@ class VBubbleReaction {
   final String emoji;
   final int count;
   final bool isSelected;
+
+  /// Known participants for this reaction. The list may be truncated.
+  final List<VReactionActor> actors;
+
+  /// Stable server-side identifier for custom emoji or workspace reactions.
+  final String? customEmojiId;
+
+  /// Whether more participants exist than are included in [actors].
+  final bool hasMoreActors;
   const VBubbleReaction({
     required this.emoji,
     this.count = 1,
     this.isSelected = false,
-  });
-  VBubbleReaction copyWith({String? emoji, int? count, bool? isSelected}) =>
-      VBubbleReaction(
-        emoji: emoji ?? this.emoji,
-        count: count ?? this.count,
-        isSelected: isSelected ?? this.isSelected,
-      );
+    this.actors = const [],
+    this.customEmojiId,
+    this.hasMoreActors = false,
+  }) : assert(count >= 0, 'count must not be negative');
+  VBubbleReaction copyWith({
+    String? emoji,
+    int? count,
+    bool? isSelected,
+    List<VReactionActor>? actors,
+    Object? customEmojiId = _sentinel,
+    bool? hasMoreActors,
+  }) => VBubbleReaction(
+    emoji: emoji ?? this.emoji,
+    count: count ?? this.count,
+    isSelected: isSelected ?? this.isSelected,
+    actors: actors ?? this.actors,
+    customEmojiId: customEmojiId == _sentinel
+        ? this.customEmojiId
+        : customEmojiId as String?,
+    hasMoreActors: hasMoreActors ?? this.hasMoreActors,
+  );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is VBubbleReaction &&
         other.emoji == emoji &&
         other.count == count &&
-        other.isSelected == isSelected;
+        other.isSelected == isSelected &&
+        listEquals(other.actors, actors) &&
+        other.customEmojiId == customEmojiId &&
+        other.hasMoreActors == hasMoreActors;
   }
 
   @override
-  int get hashCode => Object.hash(emoji, count, isSelected);
+  int get hashCode => Object.hash(
+    emoji,
+    count,
+    isSelected,
+    Object.hashAll(actors),
+    customEmojiId,
+    hasMoreActors,
+  );
 }
 
 /// Menu item for long press menu
@@ -84,11 +119,12 @@ class VBubbleMenuItem {
 /// - [isMeSender]: Whether the message was sent by the current user
 ///
 /// Return null to use default menu items, or return a list to override
-typedef VMenuItemsBuilder = List<VBubbleMenuItem>? Function(
-  String messageId,
-  String messageType,
-  bool isMeSender,
-);
+typedef VMenuItemsBuilder =
+    List<VBubbleMenuItem>? Function(
+      String messageId,
+      String messageType,
+      bool isMeSender,
+    );
 
 /// Default menu items for context menu
 class VDefaultMenuItems {
@@ -202,6 +238,15 @@ class VReplyData {
   final String previewText;
   final VPlatformFile? previewImage;
   final VMessageType originalType;
+
+  /// Optional selected range instead of quoting the entire message.
+  final VReplyQuoteRange? quoteRange;
+
+  /// Parent reply context for nested reply previews.
+  final VReplyData? parentReply;
+
+  /// Thread activity connected to the original message.
+  final VThreadSummary? threadSummary;
   const VReplyData({
     required this.originalMessageId,
     required this.senderId,
@@ -210,6 +255,9 @@ class VReplyData {
     required this.previewText,
     this.previewImage,
     this.originalType = VMessageType.text,
+    this.quoteRange,
+    this.parentReply,
+    this.threadSummary,
   });
   VReplyData copyWith({
     String? originalMessageId,
@@ -219,18 +267,31 @@ class VReplyData {
     String? previewText,
     Object? previewImage = _sentinel,
     VMessageType? originalType,
+    Object? quoteRange = _sentinel,
+    Object? parentReply = _sentinel,
+    Object? threadSummary = _sentinel,
   }) {
     return VReplyData(
       originalMessageId: originalMessageId ?? this.originalMessageId,
       senderId: senderId ?? this.senderId,
       senderName: senderName ?? this.senderName,
-      senderColor:
-          senderColor == _sentinel ? this.senderColor : senderColor as Color?,
+      senderColor: senderColor == _sentinel
+          ? this.senderColor
+          : senderColor as Color?,
       previewText: previewText ?? this.previewText,
       previewImage: previewImage == _sentinel
           ? this.previewImage
           : previewImage as VPlatformFile?,
       originalType: originalType ?? this.originalType,
+      quoteRange: quoteRange == _sentinel
+          ? this.quoteRange
+          : quoteRange as VReplyQuoteRange?,
+      parentReply: parentReply == _sentinel
+          ? this.parentReply
+          : parentReply as VReplyData?,
+      threadSummary: threadSummary == _sentinel
+          ? this.threadSummary
+          : threadSummary as VThreadSummary?,
     );
   }
 
@@ -244,19 +305,25 @@ class VReplyData {
         other.senderColor == senderColor &&
         other.previewText == previewText &&
         other.previewImage == previewImage &&
-        other.originalType == originalType;
+        other.originalType == originalType &&
+        other.quoteRange == quoteRange &&
+        other.parentReply == parentReply &&
+        other.threadSummary == threadSummary;
   }
 
   @override
   int get hashCode => Object.hash(
-        originalMessageId,
-        senderId,
-        senderName,
-        senderColor,
-        previewText,
-        previewImage,
-        originalType,
-      );
+    originalMessageId,
+    senderId,
+    senderName,
+    senderColor,
+    previewText,
+    previewImage,
+    originalType,
+    quoteRange,
+    parentReply,
+    threadSummary,
+  );
 }
 
 /// Quoted content data for sharing external content (stories, products, posts)
@@ -274,9 +341,9 @@ class QuotedContentData {
     this.contentId,
     this.extraData,
   }) : assert(
-          title != null || subtitle != null,
-          'At least one of title or subtitle must be provided',
-        );
+         title != null || subtitle != null,
+         'At least one of title or subtitle must be provided',
+       );
   QuotedContentData copyWith({
     Object? title = _sentinel,
     Object? subtitle = _sentinel,
@@ -353,31 +420,68 @@ class VForwardData {
 @immutable
 class VLinkPreviewData {
   final String url;
+  final String? displayUrl;
   final String? siteName;
+  final String? authorName;
   final String? title;
   final String? description;
   final VPlatformFile? image;
+  final VPlatformFile? favicon;
+  final VLinkPreviewLayout layout;
+  final Color? accentColor;
+  final Duration? mediaDuration;
+  final bool isVerified;
   const VLinkPreviewData({
     required this.url,
+    this.displayUrl,
     this.siteName,
+    this.authorName,
     this.title,
     this.description,
     this.image,
+    this.favicon,
+    this.layout = VLinkPreviewLayout.largeMedia,
+    this.accentColor,
+    this.mediaDuration,
+    this.isVerified = false,
   });
   VLinkPreviewData copyWith({
     String? url,
+    Object? displayUrl = _sentinel,
     Object? siteName = _sentinel,
+    Object? authorName = _sentinel,
     Object? title = _sentinel,
     Object? description = _sentinel,
     Object? image = _sentinel,
+    Object? favicon = _sentinel,
+    VLinkPreviewLayout? layout,
+    Object? accentColor = _sentinel,
+    Object? mediaDuration = _sentinel,
+    bool? isVerified,
   }) {
     return VLinkPreviewData(
       url: url ?? this.url,
+      displayUrl: displayUrl == _sentinel
+          ? this.displayUrl
+          : displayUrl as String?,
       siteName: siteName == _sentinel ? this.siteName : siteName as String?,
+      authorName: authorName == _sentinel
+          ? this.authorName
+          : authorName as String?,
       title: title == _sentinel ? this.title : title as String?,
-      description:
-          description == _sentinel ? this.description : description as String?,
+      description: description == _sentinel
+          ? this.description
+          : description as String?,
       image: image == _sentinel ? this.image : image as VPlatformFile?,
+      favicon: favicon == _sentinel ? this.favicon : favicon as VPlatformFile?,
+      layout: layout ?? this.layout,
+      accentColor: accentColor == _sentinel
+          ? this.accentColor
+          : accentColor as Color?,
+      mediaDuration: mediaDuration == _sentinel
+          ? this.mediaDuration
+          : mediaDuration as Duration?,
+      isVerified: isVerified ?? this.isVerified,
     );
   }
 
@@ -386,14 +490,34 @@ class VLinkPreviewData {
     if (identical(this, other)) return true;
     return other is VLinkPreviewData &&
         other.url == url &&
+        other.displayUrl == displayUrl &&
         other.siteName == siteName &&
+        other.authorName == authorName &&
         other.title == title &&
         other.description == description &&
-        other.image == image;
+        other.image == image &&
+        other.favicon == favicon &&
+        other.layout == layout &&
+        other.accentColor == accentColor &&
+        other.mediaDuration == mediaDuration &&
+        other.isVerified == isVerified;
   }
 
   @override
-  int get hashCode => Object.hash(url, siteName, title, description, image);
+  int get hashCode => Object.hash(
+    url,
+    displayUrl,
+    siteName,
+    authorName,
+    title,
+    description,
+    image,
+    favicon,
+    layout,
+    accentColor,
+    mediaDuration,
+    isVerified,
+  );
 }
 
 /// Contact data
@@ -410,8 +534,9 @@ class VContactData {
   }) {
     return VContactData(
       name: name ?? this.name,
-      phoneNumber:
-          phoneNumber == _sentinel ? this.phoneNumber : phoneNumber as String?,
+      phoneNumber: phoneNumber == _sentinel
+          ? this.phoneNumber
+          : phoneNumber as String?,
       avatar: avatar == _sentinel ? this.avatar : avatar as VPlatformFile?,
     );
   }
@@ -578,14 +703,14 @@ class VPollData {
 
   @override
   int get hashCode => Object.hash(
-        question,
-        Object.hashAll(options),
-        mode,
-        totalVotes,
-        isClosed,
-        isAnonymous,
-        hasVoted,
-      );
+    question,
+    Object.hashAll(options),
+    mode,
+    totalVotes,
+    isClosed,
+    isAnonymous,
+    hasVoted,
+  );
 }
 
 bool _listEquals<T>(List<T>? a, List<T>? b) {
@@ -663,18 +788,17 @@ class VGalleryItemData {
     VMessageStatus? status,
     bool? isEdited,
     Object? caption = _sentinel,
-  }) =>
-      VGalleryItemData(
-        messageId: messageId ?? this.messageId,
-        file: file ?? this.file,
-        width: width == _sentinel ? this.width : width as int?,
-        height: height == _sentinel ? this.height : height as int?,
-        fileSize: fileSize == _sentinel ? this.fileSize : fileSize as int?,
-        time: time ?? this.time,
-        status: status ?? this.status,
-        isEdited: isEdited ?? this.isEdited,
-        caption: caption == _sentinel ? this.caption : caption as String?,
-      );
+  }) => VGalleryItemData(
+    messageId: messageId ?? this.messageId,
+    file: file ?? this.file,
+    width: width == _sentinel ? this.width : width as int?,
+    height: height == _sentinel ? this.height : height as int?,
+    fileSize: fileSize == _sentinel ? this.fileSize : fileSize as int?,
+    time: time ?? this.time,
+    status: status ?? this.status,
+    isEdited: isEdited ?? this.isEdited,
+    caption: caption == _sentinel ? this.caption : caption as String?,
+  );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -692,16 +816,16 @@ class VGalleryItemData {
 
   @override
   int get hashCode => Object.hash(
-        messageId,
-        file,
-        width,
-        height,
-        fileSize,
-        time,
-        status,
-        isEdited,
-        caption,
-      );
+    messageId,
+    file,
+    width,
+    height,
+    fileSize,
+    time,
+    status,
+    isEdited,
+    caption,
+  );
 }
 
 /// Data for media tap callback (unified for images, videos, galleries)
@@ -715,14 +839,13 @@ class VMediaTapData {
     String? messageId,
     Object? index = _sentinel,
     Object? galleryItem = _sentinel,
-  }) =>
-      VMediaTapData(
-        messageId: messageId ?? this.messageId,
-        index: index == _sentinel ? this.index : index as int?,
-        galleryItem: galleryItem == _sentinel
-            ? this.galleryItem
-            : galleryItem as VGalleryItemData?,
-      );
+  }) => VMediaTapData(
+    messageId: messageId ?? this.messageId,
+    index: index == _sentinel ? this.index : index as int?,
+    galleryItem: galleryItem == _sentinel
+        ? this.galleryItem
+        : galleryItem as VGalleryItemData?,
+  );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -776,16 +899,15 @@ class VCustomPattern {
     int? markerLength,
     bool? isTappable,
     String Function(String)? valueTransformer,
-  }) =>
-      VCustomPattern(
-        id: id ?? this.id,
-        pattern: pattern ?? this.pattern,
-        style: style ?? this.style,
-        removeMarkers: removeMarkers ?? this.removeMarkers,
-        markerLength: markerLength ?? this.markerLength,
-        isTappable: isTappable ?? this.isTappable,
-        valueTransformer: valueTransformer ?? this.valueTransformer,
-      );
+  }) => VCustomPattern(
+    id: id ?? this.id,
+    pattern: pattern ?? this.pattern,
+    style: style ?? this.style,
+    removeMarkers: removeMarkers ?? this.removeMarkers,
+    markerLength: markerLength ?? this.markerLength,
+    isTappable: isTappable ?? this.isTappable,
+    valueTransformer: valueTransformer ?? this.valueTransformer,
+  );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -800,13 +922,13 @@ class VCustomPattern {
 
   @override
   int get hashCode => Object.hash(
-        id,
-        pattern.pattern,
-        style,
-        removeMarkers,
-        markerLength,
-        isTappable,
-      );
+    id,
+    pattern.pattern,
+    style,
+    removeMarkers,
+    markerLength,
+    isTappable,
+  );
 }
 
 /// Data for full-screen media viewer
@@ -839,19 +961,18 @@ class VMediaViewerData {
     String? time,
     Object? index = _sentinel,
     Object? items = _sentinel,
-  }) =>
-      VMediaViewerData(
-        messageId: messageId ?? this.messageId,
-        file: file ?? this.file,
-        isVideo: isVideo ?? this.isVideo,
-        caption: caption == _sentinel ? this.caption : caption as String?,
-        senderName:
-            senderName == _sentinel ? this.senderName : senderName as String?,
-        time: time ?? this.time,
-        index: index == _sentinel ? this.index : index as int?,
-        items:
-            items == _sentinel ? this.items : items as List<VGalleryItemData>?,
-      );
+  }) => VMediaViewerData(
+    messageId: messageId ?? this.messageId,
+    file: file ?? this.file,
+    isVideo: isVideo ?? this.isVideo,
+    caption: caption == _sentinel ? this.caption : caption as String?,
+    senderName: senderName == _sentinel
+        ? this.senderName
+        : senderName as String?,
+    time: time ?? this.time,
+    index: index == _sentinel ? this.index : index as int?,
+    items: items == _sentinel ? this.items : items as List<VGalleryItemData>?,
+  );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -868,15 +989,15 @@ class VMediaViewerData {
 
   @override
   int get hashCode => Object.hash(
-        messageId,
-        file,
-        isVideo,
-        caption,
-        senderName,
-        time,
-        index,
-        items != null ? Object.hashAll(items!) : null,
-      );
+    messageId,
+    file,
+    isVideo,
+    caption,
+    senderName,
+    time,
+    index,
+    items != null ? Object.hashAll(items!) : null,
+  );
 }
 
 /// Data passed to pattern tap callback
@@ -904,14 +1025,12 @@ class VPatternMatch {
     String? matchedText,
     String? rawText,
     Object? messageId = _sentinel,
-  }) =>
-      VPatternMatch(
-        patternId: patternId ?? this.patternId,
-        matchedText: matchedText ?? this.matchedText,
-        rawText: rawText ?? this.rawText,
-        messageId:
-            messageId == _sentinel ? this.messageId : messageId as String?,
-      );
+  }) => VPatternMatch(
+    patternId: patternId ?? this.patternId,
+    matchedText: matchedText ?? this.matchedText,
+    rawText: rawText ?? this.rawText,
+    messageId: messageId == _sentinel ? this.messageId : messageId as String?,
+  );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

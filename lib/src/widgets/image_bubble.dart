@@ -3,6 +3,7 @@ import 'package:v_platform/v_platform.dart';
 
 import '../core/enums.dart';
 import '../core/models.dart';
+import '../core/modern_message_models.dart';
 import '../utils/platform_image_builder.dart';
 import '../utils/shimmer_helper.dart';
 import '../viewers/media_viewer_route.dart';
@@ -12,6 +13,7 @@ import 'bubble_wrapper.dart';
 import 'shared/media_container.dart';
 import 'shared/media_error_placeholder.dart';
 import 'shared/media_overlay_info.dart';
+import 'shared/protected_content_overlay.dart';
 import 'shared/shimmer_loading.dart';
 import 'shared/transfer_overlay.dart';
 
@@ -49,6 +51,9 @@ class VImageBubble extends BaseBubble {
   /// Whether image is blurred (NSFW/spoiler)
   final bool isBlurred;
 
+  /// Optional spoiler, view-once, or expiry behavior.
+  final VContentProtectionData? protection;
+
   const VImageBubble({
     super.key,
     required super.messageId,
@@ -60,8 +65,10 @@ class VImageBubble extends BaseBubble {
     this.progress,
     this.transferState = VTransferState.completed,
     this.isBlurred = false,
+    this.protection,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -69,6 +76,7 @@ class VImageBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -79,6 +87,9 @@ class VImageBubble extends BaseBubble {
     final config = context.bubbleConfig;
     final header = buildBubbleHeader(context);
     final hasHeader = header != null;
+    final effectiveProtection =
+        protection ??
+        (isBlurred ? const VContentProtectionData.spoiler() : null);
     final mediaContent = VMediaContainer(
       messageId: messageId,
       maxHeight: config.media.imageMaxHeight,
@@ -87,15 +98,22 @@ class VImageBubble extends BaseBubble {
       child: Stack(
         children: [
           _buildImage(context),
-          if (isBlurred) _buildBlurOverlay(context),
           if (transferState != VTransferState.completed)
             _buildTransferOverlay(context),
           _buildOverlayInfo(context),
+          if (effectiveProtection != null)
+            VProtectedContentOverlay(
+              protection: effectiveProtection,
+              onReveal: () => context.bubbleCallbacks.onProtectedContentReveal
+                  ?.call(messageId, effectiveProtection),
+              onExpired: () => context.bubbleCallbacks.onProtectedContentExpired
+                  ?.call(messageId, effectiveProtection),
+            ),
         ],
       ),
     );
     if (!hasHeader) return mediaContent;
-    final showTail = !isSameSender;
+    final showTail = showsGroupEnd;
     return VBubbleWrapper(
       isMeSender: isMeSender,
       showTail: showTail,
@@ -146,7 +164,7 @@ class VImageBubble extends BaseBubble {
         if (loadingProgress == null) return child;
         final progressValue = loadingProgress.expectedTotalBytes != null
             ? loadingProgress.cumulativeBytesLoaded /
-                loadingProgress.expectedTotalBytes!
+                  loadingProgress.expectedTotalBytes!
             : null;
         return Stack(
           alignment: Alignment.center,
@@ -193,27 +211,6 @@ class VImageBubble extends BaseBubble {
     );
   }
 
-  Widget _buildBlurOverlay(BuildContext context) {
-    return Positioned.fill(
-      child: Container(
-        color: Colors.black54,
-        child: const Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.visibility_off, color: Colors.white, size: 32),
-              SizedBox(height: 8),
-              Text(
-                'Tap to reveal',
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildTransferOverlay(BuildContext context) {
     final callbacks = context.bubbleCallbacks;
     final isSelectionMode = context.bubbleScope.isSelectionMode;
@@ -223,21 +220,21 @@ class VImageBubble extends BaseBubble {
       onCancel: isSelectionMode
           ? null
           : () => callbacks.onTransferStateChanged?.call(
-                messageId,
-                VMediaTransferAction.cancel,
-              ),
+              messageId,
+              VMediaTransferAction.cancel,
+            ),
       onRetry: isSelectionMode
           ? null
           : () => callbacks.onTransferStateChanged?.call(
-                messageId,
-                VMediaTransferAction.retry,
-              ),
+              messageId,
+              VMediaTransferAction.retry,
+            ),
       onDownload: isSelectionMode
           ? null
           : () => callbacks.onTransferStateChanged?.call(
-                messageId,
-                VMediaTransferAction.download,
-              ),
+              messageId,
+              VMediaTransferAction.download,
+            ),
     );
   }
 

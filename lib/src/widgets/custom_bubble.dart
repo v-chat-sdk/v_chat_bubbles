@@ -110,6 +110,7 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
     this.showMeta = true,
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -117,6 +118,7 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -131,7 +133,7 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
     final header = showHeader ? buildBubbleHeader(context) : null;
     return buildBubbleContainer(
       context: context,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,6 +157,7 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
     return CommonBubbleProps(
       status: status,
       isSameSender: isSameSender,
+      groupPosition: groupPosition,
       avatar: avatar,
       senderName: senderName,
       senderColor: senderColor,
@@ -162,6 +165,7 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
       forwardedFrom: forwardedFrom,
       reactions: reactions,
       isEdited: isEdited,
+      lifecycle: lifecycle,
       isPinned: isPinned,
       isStarred: isStarred,
       isHighlighted: isHighlighted,
@@ -197,6 +201,7 @@ extension CustomBubblePropsExtension on CommonBubbleProps {
       showMeta: showMeta,
       status: status,
       isSameSender: isSameSender,
+      groupPosition: groupPosition,
       avatar: avatar,
       senderName: senderName,
       senderColor: senderColor,
@@ -204,6 +209,7 @@ extension CustomBubblePropsExtension on CommonBubbleProps {
       forwardedFrom: forwardedFrom,
       reactions: reactions,
       isEdited: isEdited,
+      lifecycle: lifecycle,
       isPinned: isPinned,
       isStarred: isStarred,
       isHighlighted: isHighlighted,

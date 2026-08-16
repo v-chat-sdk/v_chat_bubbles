@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:v_chat_voice_player/v_chat_voice_player.dart';
 
+import '../core/modern_message_models.dart';
 import 'base_bubble.dart';
 import 'bubble_scope.dart';
 import 'bubble_wrapper.dart';
+import 'shared/voice_transcript_panel.dart';
 
 /// Voice message bubble using v_chat_voice_player
 ///
@@ -16,6 +18,12 @@ import 'bubble_wrapper.dart';
 class VVoiceBubble extends BaseBubble {
   /// Voice message controller from v_chat_voice_player
   final VVoiceMessageController controller;
+
+  /// Optional speech-recognition state and time-aligned transcript.
+  final VVoiceTranscriptData? transcript;
+
+  /// Localizable heading for the transcript panel.
+  final String transcriptLabel;
   @override
   String get messageType => 'voice message';
   const VVoiceBubble({
@@ -24,8 +32,11 @@ class VVoiceBubble extends BaseBubble {
     required super.isMeSender,
     required super.time,
     required this.controller,
+    this.transcript,
+    this.transcriptLabel = 'Transcript',
     super.status,
     super.isSameSender,
+    super.groupPosition,
     super.avatar,
     super.senderName,
     super.senderColor,
@@ -33,6 +44,7 @@ class VVoiceBubble extends BaseBubble {
     super.forwardedFrom,
     super.reactions,
     super.isEdited,
+    super.lifecycle,
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
@@ -45,7 +57,7 @@ class VVoiceBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: !isSameSender,
+      showTail: showsGroupEnd,
       child: SizedBox(
         width: config.media.voiceMessageWidth,
         child: Column(
@@ -96,6 +108,13 @@ class VVoiceBubble extends BaseBubble {
                 enableBarAnimations: voiceTheme.enableBarAnimations,
               ),
             ),
+            if (transcript != null)
+              VVoiceTranscriptPanel(
+                messageId: messageId,
+                transcript: transcript!,
+                textColor: selectTextColor(theme),
+                label: transcriptLabel,
+              ),
             const SizedBox(height: 4),
             Align(alignment: Alignment.centerRight, child: buildMeta(context)),
           ],

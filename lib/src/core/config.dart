@@ -65,16 +65,15 @@ class VAnimationConfig {
     Duration? highlight,
     Duration? swipe,
     Curve? defaultCurve,
-  }) =>
-      VAnimationConfig(
-        fadeIn: fadeIn ?? this.fadeIn,
-        fadeOut: fadeOut ?? this.fadeOut,
-        expand: expand ?? this.expand,
-        collapse: collapse ?? this.collapse,
-        highlight: highlight ?? this.highlight,
-        swipe: swipe ?? this.swipe,
-        defaultCurve: defaultCurve ?? this.defaultCurve,
-      );
+  }) => VAnimationConfig(
+    fadeIn: fadeIn ?? this.fadeIn,
+    fadeOut: fadeOut ?? this.fadeOut,
+    expand: expand ?? this.expand,
+    collapse: collapse ?? this.collapse,
+    highlight: highlight ?? this.highlight,
+    swipe: swipe ?? this.swipe,
+    defaultCurve: defaultCurve ?? this.defaultCurve,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -89,14 +88,14 @@ class VAnimationConfig {
           defaultCurve == other.defaultCurve;
   @override
   int get hashCode => Object.hash(
-        fadeIn,
-        fadeOut,
-        expand,
-        collapse,
-        highlight,
-        swipe,
-        defaultCurve,
-      );
+    fadeIn,
+    fadeOut,
+    expand,
+    collapse,
+    highlight,
+    swipe,
+    defaultCurve,
+  );
 }
 
 /// Configuration for accessibility features
@@ -113,7 +112,7 @@ class VAccessibilityConfig {
 
   /// Custom semantic label builder for messages
   final String Function(String messageType, String content)?
-      semanticLabelBuilder;
+  semanticLabelBuilder;
   const VAccessibilityConfig({
     this.enableSemanticLabels = true,
     this.minTapTargetSize = 48,
@@ -140,13 +139,12 @@ class VAccessibilityConfig {
     double? minTapTargetSize,
     bool? enableHighContrast,
     String Function(String messageType, String content)? semanticLabelBuilder,
-  }) =>
-      VAccessibilityConfig(
-        enableSemanticLabels: enableSemanticLabels ?? this.enableSemanticLabels,
-        minTapTargetSize: minTapTargetSize ?? this.minTapTargetSize,
-        enableHighContrast: enableHighContrast ?? this.enableHighContrast,
-        semanticLabelBuilder: semanticLabelBuilder ?? this.semanticLabelBuilder,
-      );
+  }) => VAccessibilityConfig(
+    enableSemanticLabels: enableSemanticLabels ?? this.enableSemanticLabels,
+    minTapTargetSize: minTapTargetSize ?? this.minTapTargetSize,
+    enableHighContrast: enableHighContrast ?? this.enableHighContrast,
+    semanticLabelBuilder: semanticLabelBuilder ?? this.semanticLabelBuilder,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -158,11 +156,11 @@ class VAccessibilityConfig {
           semanticLabelBuilder == other.semanticLabelBuilder;
   @override
   int get hashCode => Object.hash(
-        enableSemanticLabels,
-        minTapTargetSize,
-        enableHighContrast,
-        semanticLabelBuilder,
-      );
+    enableSemanticLabels,
+    minTapTargetSize,
+    enableHighContrast,
+    semanticLabelBuilder,
+  );
 }
 
 /// Configuration for text pattern detection and formatting
@@ -277,9 +275,7 @@ class VPatternConfig {
   );
 
   /// Code blocks only
-  static const codeBlocksOnly = VPatternConfig(
-    enableCodeBlocks: true,
-  );
+  static const codeBlocksOnly = VPatternConfig(enableCodeBlocks: true);
 
   /// Check if any block patterns are enabled
   bool get hasBlockPatterns =>
@@ -316,9 +312,11 @@ class VPatternConfig {
       patterns.add(VPatternPresets.mention(style: mentionStyle ?? linkStyle));
     }
     if (enableMentionWithId) {
-      patterns.add(VPatternPresets.mentionWithId(
-        style: mentionWithIdStyle ?? mentionStyle ?? linkStyle,
-      ));
+      patterns.add(
+        VPatternPresets.mentionWithId(
+          style: mentionWithIdStyle ?? mentionStyle ?? linkStyle,
+        ),
+      );
     }
     if (enableHashtags) {
       patterns.add(VPatternPresets.hashtag(style: linkStyle));
@@ -342,21 +340,20 @@ class VPatternConfig {
     bool? enableBulletLists,
     bool? enableNumberedLists,
     bool? enableMentionWithId,
-  }) =>
-      VPatternConfig(
-        customPatterns: customPatterns ?? this.customPatterns,
-        enableLinks: enableLinks ?? this.enableLinks,
-        enablePhones: enablePhones ?? this.enablePhones,
-        enableEmails: enableEmails ?? this.enableEmails,
-        enableMentions: enableMentions ?? this.enableMentions,
-        enableHashtags: enableHashtags ?? this.enableHashtags,
-        enableFormatting: enableFormatting ?? this.enableFormatting,
-        enableCodeBlocks: enableCodeBlocks ?? this.enableCodeBlocks,
-        enableBlockquotes: enableBlockquotes ?? this.enableBlockquotes,
-        enableBulletLists: enableBulletLists ?? this.enableBulletLists,
-        enableNumberedLists: enableNumberedLists ?? this.enableNumberedLists,
-        enableMentionWithId: enableMentionWithId ?? this.enableMentionWithId,
-      );
+  }) => VPatternConfig(
+    customPatterns: customPatterns ?? this.customPatterns,
+    enableLinks: enableLinks ?? this.enableLinks,
+    enablePhones: enablePhones ?? this.enablePhones,
+    enableEmails: enableEmails ?? this.enableEmails,
+    enableMentions: enableMentions ?? this.enableMentions,
+    enableHashtags: enableHashtags ?? this.enableHashtags,
+    enableFormatting: enableFormatting ?? this.enableFormatting,
+    enableCodeBlocks: enableCodeBlocks ?? this.enableCodeBlocks,
+    enableBlockquotes: enableBlockquotes ?? this.enableBlockquotes,
+    enableBulletLists: enableBulletLists ?? this.enableBulletLists,
+    enableNumberedLists: enableNumberedLists ?? this.enableNumberedLists,
+    enableMentionWithId: enableMentionWithId ?? this.enableMentionWithId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -375,18 +372,18 @@ class VPatternConfig {
           enableMentionWithId == other.enableMentionWithId;
   @override
   int get hashCode => Object.hash(
-        enableLinks,
-        enablePhones,
-        enableEmails,
-        enableMentions,
-        enableHashtags,
-        enableFormatting,
-        enableCodeBlocks,
-        enableBlockquotes,
-        enableBulletLists,
-        enableNumberedLists,
-        enableMentionWithId,
-      );
+    enableLinks,
+    enablePhones,
+    enableEmails,
+    enableMentions,
+    enableHashtags,
+    enableFormatting,
+    enableCodeBlocks,
+    enableBlockquotes,
+    enableBulletLists,
+    enableNumberedLists,
+    enableMentionWithId,
+  );
 }
 
 /// Configuration for gesture interactions
@@ -396,12 +393,25 @@ class VGestureConfig {
   final bool enableLongPress;
   final bool enableDoubleTapToReact;
   final bool enableHapticFeedback;
+
+  /// Show reply and reaction actions when a pointer hovers a bubble.
+  final bool enableHoverActions;
+
+  /// Open the message menu from a secondary click or Shift+F10.
+  final bool enableSecondaryTap;
+
+  /// Enable Enter/Space activation, Alt+R reply, and Shift+F10 menu shortcuts.
+  final bool enableKeyboardShortcuts;
+
   final double swipeThreshold;
   const VGestureConfig({
     this.enableSwipeToReply = true,
     this.enableLongPress = true,
     this.enableDoubleTapToReact = false,
     this.enableHapticFeedback = true,
+    this.enableHoverActions = true,
+    this.enableSecondaryTap = true,
+    this.enableKeyboardShortcuts = true,
     this.swipeThreshold = 64,
   });
 
@@ -414,22 +424,31 @@ class VGestureConfig {
     enableLongPress: false,
     enableDoubleTapToReact: false,
     enableHapticFeedback: false,
+    enableHoverActions: false,
+    enableSecondaryTap: false,
+    enableKeyboardShortcuts: false,
   );
   VGestureConfig copyWith({
     bool? enableSwipeToReply,
     bool? enableLongPress,
     bool? enableDoubleTapToReact,
     bool? enableHapticFeedback,
+    bool? enableHoverActions,
+    bool? enableSecondaryTap,
+    bool? enableKeyboardShortcuts,
     double? swipeThreshold,
-  }) =>
-      VGestureConfig(
-        enableSwipeToReply: enableSwipeToReply ?? this.enableSwipeToReply,
-        enableLongPress: enableLongPress ?? this.enableLongPress,
-        enableDoubleTapToReact:
-            enableDoubleTapToReact ?? this.enableDoubleTapToReact,
-        enableHapticFeedback: enableHapticFeedback ?? this.enableHapticFeedback,
-        swipeThreshold: swipeThreshold ?? this.swipeThreshold,
-      );
+  }) => VGestureConfig(
+    enableSwipeToReply: enableSwipeToReply ?? this.enableSwipeToReply,
+    enableLongPress: enableLongPress ?? this.enableLongPress,
+    enableDoubleTapToReact:
+        enableDoubleTapToReact ?? this.enableDoubleTapToReact,
+    enableHapticFeedback: enableHapticFeedback ?? this.enableHapticFeedback,
+    enableHoverActions: enableHoverActions ?? this.enableHoverActions,
+    enableSecondaryTap: enableSecondaryTap ?? this.enableSecondaryTap,
+    enableKeyboardShortcuts:
+        enableKeyboardShortcuts ?? this.enableKeyboardShortcuts,
+    swipeThreshold: swipeThreshold ?? this.swipeThreshold,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -439,15 +458,21 @@ class VGestureConfig {
           enableLongPress == other.enableLongPress &&
           enableDoubleTapToReact == other.enableDoubleTapToReact &&
           enableHapticFeedback == other.enableHapticFeedback &&
+          enableHoverActions == other.enableHoverActions &&
+          enableSecondaryTap == other.enableSecondaryTap &&
+          enableKeyboardShortcuts == other.enableKeyboardShortcuts &&
           swipeThreshold == other.swipeThreshold;
   @override
   int get hashCode => Object.hash(
-        enableSwipeToReply,
-        enableLongPress,
-        enableDoubleTapToReact,
-        enableHapticFeedback,
-        swipeThreshold,
-      );
+    enableSwipeToReply,
+    enableLongPress,
+    enableDoubleTapToReact,
+    enableHapticFeedback,
+    enableHoverActions,
+    enableSecondaryTap,
+    enableKeyboardShortcuts,
+    swipeThreshold,
+  );
 }
 
 /// Configuration for avatar display
@@ -477,12 +502,11 @@ class VAvatarConfig {
     bool? show,
     VAvatarPosition? position,
     double? size,
-  }) =>
-      VAvatarConfig(
-        show: show ?? this.show,
-        position: position ?? this.position,
-        size: size ?? this.size,
-      );
+  }) => VAvatarConfig(
+    show: show ?? this.show,
+    position: position ?? this.position,
+    size: size ?? this.size,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -548,13 +572,12 @@ class VSizingConfig {
     double? maxWidth,
     double? minWidth,
     double? wideScreenBreakpoint,
-  }) =>
-      VSizingConfig(
-        maxWidthFraction: maxWidthFraction ?? this.maxWidthFraction,
-        maxWidth: maxWidth ?? this.maxWidth,
-        minWidth: minWidth ?? this.minWidth,
-        wideScreenBreakpoint: wideScreenBreakpoint ?? this.wideScreenBreakpoint,
-      );
+  }) => VSizingConfig(
+    maxWidthFraction: maxWidthFraction ?? this.maxWidthFraction,
+    maxWidth: maxWidth ?? this.maxWidth,
+    minWidth: minWidth ?? this.minWidth,
+    wideScreenBreakpoint: wideScreenBreakpoint ?? this.wideScreenBreakpoint,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -643,19 +666,18 @@ class VSpacingConfig {
     double? horizontalMargin,
     double? contentPaddingVertical,
     double? contentPaddingHorizontal,
-  }) =>
-      VSpacingConfig(
-        bubbleRadius: bubbleRadius ?? this.bubbleRadius,
-        tailSize: tailSize ?? this.tailSize,
-        sameSenderSpacing: sameSenderSpacing ?? this.sameSenderSpacing,
-        differentSenderSpacing:
-            differentSenderSpacing ?? this.differentSenderSpacing,
-        horizontalMargin: horizontalMargin ?? this.horizontalMargin,
-        contentPaddingVertical:
-            contentPaddingVertical ?? this.contentPaddingVertical,
-        contentPaddingHorizontal:
-            contentPaddingHorizontal ?? this.contentPaddingHorizontal,
-      );
+  }) => VSpacingConfig(
+    bubbleRadius: bubbleRadius ?? this.bubbleRadius,
+    tailSize: tailSize ?? this.tailSize,
+    sameSenderSpacing: sameSenderSpacing ?? this.sameSenderSpacing,
+    differentSenderSpacing:
+        differentSenderSpacing ?? this.differentSenderSpacing,
+    horizontalMargin: horizontalMargin ?? this.horizontalMargin,
+    contentPaddingVertical:
+        contentPaddingVertical ?? this.contentPaddingVertical,
+    contentPaddingHorizontal:
+        contentPaddingHorizontal ?? this.contentPaddingHorizontal,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -670,14 +692,14 @@ class VSpacingConfig {
           contentPaddingHorizontal == other.contentPaddingHorizontal;
   @override
   int get hashCode => Object.hash(
-        bubbleRadius,
-        tailSize,
-        sameSenderSpacing,
-        differentSenderSpacing,
-        horizontalMargin,
-        contentPaddingVertical,
-        contentPaddingHorizontal,
-      );
+    bubbleRadius,
+    tailSize,
+    sameSenderSpacing,
+    differentSenderSpacing,
+    horizontalMargin,
+    contentPaddingVertical,
+    contentPaddingHorizontal,
+  );
 }
 
 /// Configuration for media display
@@ -732,16 +754,15 @@ class VMediaConfig {
     double? voiceMessageWidth,
     double? fileMessageWidth,
     bool? cacheNetworkImages,
-  }) =>
-      VMediaConfig(
-        cornerRadius: cornerRadius ?? this.cornerRadius,
-        gallerySpacing: gallerySpacing ?? this.gallerySpacing,
-        imageMaxHeight: imageMaxHeight ?? this.imageMaxHeight,
-        videoMaxHeight: videoMaxHeight ?? this.videoMaxHeight,
-        voiceMessageWidth: voiceMessageWidth ?? this.voiceMessageWidth,
-        fileMessageWidth: fileMessageWidth ?? this.fileMessageWidth,
-        cacheNetworkImages: cacheNetworkImages ?? this.cacheNetworkImages,
-      );
+  }) => VMediaConfig(
+    cornerRadius: cornerRadius ?? this.cornerRadius,
+    gallerySpacing: gallerySpacing ?? this.gallerySpacing,
+    imageMaxHeight: imageMaxHeight ?? this.imageMaxHeight,
+    videoMaxHeight: videoMaxHeight ?? this.videoMaxHeight,
+    voiceMessageWidth: voiceMessageWidth ?? this.voiceMessageWidth,
+    fileMessageWidth: fileMessageWidth ?? this.fileMessageWidth,
+    cacheNetworkImages: cacheNetworkImages ?? this.cacheNetworkImages,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -756,14 +777,14 @@ class VMediaConfig {
           cacheNetworkImages == other.cacheNetworkImages;
   @override
   int get hashCode => Object.hash(
-        cornerRadius,
-        gallerySpacing,
-        imageMaxHeight,
-        videoMaxHeight,
-        voiceMessageWidth,
-        fileMessageWidth,
-        cacheNetworkImages,
-      );
+    cornerRadius,
+    gallerySpacing,
+    imageMaxHeight,
+    videoMaxHeight,
+    voiceMessageWidth,
+    fileMessageWidth,
+    cacheNetworkImages,
+  );
 }
 
 /// Configuration for text expansion (See more/less) and selection
@@ -801,12 +822,11 @@ class VTextExpansionConfig {
     bool? enabled,
     int? characterThreshold,
     bool? enableTextSelection,
-  }) =>
-      VTextExpansionConfig(
-        enabled: enabled ?? this.enabled,
-        characterThreshold: characterThreshold ?? this.characterThreshold,
-        enableTextSelection: enableTextSelection ?? this.enableTextSelection,
-      );
+  }) => VTextExpansionConfig(
+    enabled: enabled ?? this.enabled,
+    characterThreshold: characterThreshold ?? this.characterThreshold,
+    enableTextSelection: enableTextSelection ?? this.enableTextSelection,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1306,60 +1326,59 @@ class VTranslationConfig {
     String? receiptSubtotal,
     String? receiptTax,
     String? receiptTotal,
-  }) =>
-      VTranslationConfig(
-        actionReply: actionReply ?? this.actionReply,
-        actionForward: actionForward ?? this.actionForward,
-        actionCopy: actionCopy ?? this.actionCopy,
-        actionDownload: actionDownload ?? this.actionDownload,
-        actionEdit: actionEdit ?? this.actionEdit,
-        actionDelete: actionDelete ?? this.actionDelete,
-        actionPin: actionPin ?? this.actionPin,
-        actionUnpin: actionUnpin ?? this.actionUnpin,
-        actionStar: actionStar ?? this.actionStar,
-        actionUnstar: actionUnstar ?? this.actionUnstar,
-        actionReport: actionReport ?? this.actionReport,
-        actionSelect: actionSelect ?? this.actionSelect,
-        actionShare: actionShare ?? this.actionShare,
-        actionSave: actionSave ?? this.actionSave,
-        actionInfo: actionInfo ?? this.actionInfo,
-        actionTranslate: actionTranslate ?? this.actionTranslate,
-        actionSpeak: actionSpeak ?? this.actionSpeak,
-        statusSent: statusSent ?? this.statusSent,
-        statusReceived: statusReceived ?? this.statusReceived,
-        statusEdited: statusEdited ?? this.statusEdited,
-        statusPinned: statusPinned ?? this.statusPinned,
-        statusStarred: statusStarred ?? this.statusStarred,
-        pollQuiz: pollQuiz ?? this.pollQuiz,
-        pollMultipleChoice: pollMultipleChoice ?? this.pollMultipleChoice,
-        pollDefault: pollDefault ?? this.pollDefault,
-        pollAnonymous: pollAnonymous ?? this.pollAnonymous,
-        callVideo: callVideo ?? this.callVideo,
-        callVoice: callVoice ?? this.callVoice,
-        callIncoming: callIncoming ?? this.callIncoming,
-        callOutgoing: callOutgoing ?? this.callOutgoing,
-        callMissed: callMissed ?? this.callMissed,
-        callDeclined: callDeclined ?? this.callDeclined,
-        callCancelled: callCancelled ?? this.callCancelled,
-        callNotAnswered: callNotAnswered ?? this.callNotAnswered,
-        callDeclinedStatus: callDeclinedStatus ?? this.callDeclinedStatus,
-        callCancelledStatus: callCancelledStatus ?? this.callCancelledStatus,
-        callTapToCallBack: callTapToCallBack ?? this.callTapToCallBack,
-        deletedMessage: deletedMessage ?? this.deletedMessage,
-        unreadSingular: unreadSingular ?? this.unreadSingular,
-        unreadPlural: unreadPlural ?? this.unreadPlural,
-        locationTapToOpen: locationTapToOpen ?? this.locationTapToOpen,
-        viewerClose: viewerClose ?? this.viewerClose,
-        viewerDownload: viewerDownload ?? this.viewerDownload,
-        viewerShare: viewerShare ?? this.viewerShare,
-        viewerRetry: viewerRetry ?? this.viewerRetry,
-        contextMenuCancel: contextMenuCancel ?? this.contextMenuCancel,
-        receiptTitle: receiptTitle ?? this.receiptTitle,
-        receiptOrderPrefix: receiptOrderPrefix ?? this.receiptOrderPrefix,
-        receiptSubtotal: receiptSubtotal ?? this.receiptSubtotal,
-        receiptTax: receiptTax ?? this.receiptTax,
-        receiptTotal: receiptTotal ?? this.receiptTotal,
-      );
+  }) => VTranslationConfig(
+    actionReply: actionReply ?? this.actionReply,
+    actionForward: actionForward ?? this.actionForward,
+    actionCopy: actionCopy ?? this.actionCopy,
+    actionDownload: actionDownload ?? this.actionDownload,
+    actionEdit: actionEdit ?? this.actionEdit,
+    actionDelete: actionDelete ?? this.actionDelete,
+    actionPin: actionPin ?? this.actionPin,
+    actionUnpin: actionUnpin ?? this.actionUnpin,
+    actionStar: actionStar ?? this.actionStar,
+    actionUnstar: actionUnstar ?? this.actionUnstar,
+    actionReport: actionReport ?? this.actionReport,
+    actionSelect: actionSelect ?? this.actionSelect,
+    actionShare: actionShare ?? this.actionShare,
+    actionSave: actionSave ?? this.actionSave,
+    actionInfo: actionInfo ?? this.actionInfo,
+    actionTranslate: actionTranslate ?? this.actionTranslate,
+    actionSpeak: actionSpeak ?? this.actionSpeak,
+    statusSent: statusSent ?? this.statusSent,
+    statusReceived: statusReceived ?? this.statusReceived,
+    statusEdited: statusEdited ?? this.statusEdited,
+    statusPinned: statusPinned ?? this.statusPinned,
+    statusStarred: statusStarred ?? this.statusStarred,
+    pollQuiz: pollQuiz ?? this.pollQuiz,
+    pollMultipleChoice: pollMultipleChoice ?? this.pollMultipleChoice,
+    pollDefault: pollDefault ?? this.pollDefault,
+    pollAnonymous: pollAnonymous ?? this.pollAnonymous,
+    callVideo: callVideo ?? this.callVideo,
+    callVoice: callVoice ?? this.callVoice,
+    callIncoming: callIncoming ?? this.callIncoming,
+    callOutgoing: callOutgoing ?? this.callOutgoing,
+    callMissed: callMissed ?? this.callMissed,
+    callDeclined: callDeclined ?? this.callDeclined,
+    callCancelled: callCancelled ?? this.callCancelled,
+    callNotAnswered: callNotAnswered ?? this.callNotAnswered,
+    callDeclinedStatus: callDeclinedStatus ?? this.callDeclinedStatus,
+    callCancelledStatus: callCancelledStatus ?? this.callCancelledStatus,
+    callTapToCallBack: callTapToCallBack ?? this.callTapToCallBack,
+    deletedMessage: deletedMessage ?? this.deletedMessage,
+    unreadSingular: unreadSingular ?? this.unreadSingular,
+    unreadPlural: unreadPlural ?? this.unreadPlural,
+    locationTapToOpen: locationTapToOpen ?? this.locationTapToOpen,
+    viewerClose: viewerClose ?? this.viewerClose,
+    viewerDownload: viewerDownload ?? this.viewerDownload,
+    viewerShare: viewerShare ?? this.viewerShare,
+    viewerRetry: viewerRetry ?? this.viewerRetry,
+    contextMenuCancel: contextMenuCancel ?? this.contextMenuCancel,
+    receiptTitle: receiptTitle ?? this.receiptTitle,
+    receiptOrderPrefix: receiptOrderPrefix ?? this.receiptOrderPrefix,
+    receiptSubtotal: receiptSubtotal ?? this.receiptSubtotal,
+    receiptTax: receiptTax ?? this.receiptTax,
+    receiptTotal: receiptTotal ?? this.receiptTotal,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -1420,58 +1439,58 @@ class VTranslationConfig {
 
   @override
   int get hashCode => Object.hashAll([
-        actionReply,
-        actionForward,
-        actionCopy,
-        actionDownload,
-        actionEdit,
-        actionDelete,
-        actionPin,
-        actionUnpin,
-        actionStar,
-        actionUnstar,
-        actionReport,
-        actionSelect,
-        actionShare,
-        actionSave,
-        actionInfo,
-        actionTranslate,
-        actionSpeak,
-        statusSent,
-        statusReceived,
-        statusEdited,
-        statusPinned,
-        statusStarred,
-        pollQuiz,
-        pollMultipleChoice,
-        pollDefault,
-        pollAnonymous,
-        callVideo,
-        callVoice,
-        callIncoming,
-        callOutgoing,
-        callMissed,
-        callDeclined,
-        callCancelled,
-        callNotAnswered,
-        callDeclinedStatus,
-        callCancelledStatus,
-        callTapToCallBack,
-        deletedMessage,
-        unreadSingular,
-        unreadPlural,
-        locationTapToOpen,
-        viewerClose,
-        viewerDownload,
-        viewerShare,
-        viewerRetry,
-        contextMenuCancel,
-        receiptTitle,
-        receiptOrderPrefix,
-        receiptSubtotal,
-        receiptTax,
-        receiptTotal,
-      ]);
+    actionReply,
+    actionForward,
+    actionCopy,
+    actionDownload,
+    actionEdit,
+    actionDelete,
+    actionPin,
+    actionUnpin,
+    actionStar,
+    actionUnstar,
+    actionReport,
+    actionSelect,
+    actionShare,
+    actionSave,
+    actionInfo,
+    actionTranslate,
+    actionSpeak,
+    statusSent,
+    statusReceived,
+    statusEdited,
+    statusPinned,
+    statusStarred,
+    pollQuiz,
+    pollMultipleChoice,
+    pollDefault,
+    pollAnonymous,
+    callVideo,
+    callVoice,
+    callIncoming,
+    callOutgoing,
+    callMissed,
+    callDeclined,
+    callCancelled,
+    callNotAnswered,
+    callDeclinedStatus,
+    callCancelledStatus,
+    callTapToCallBack,
+    deletedMessage,
+    unreadSingular,
+    unreadPlural,
+    locationTapToOpen,
+    viewerClose,
+    viewerDownload,
+    viewerShare,
+    viewerRetry,
+    contextMenuCancel,
+    receiptTitle,
+    receiptOrderPrefix,
+    receiptSubtotal,
+    receiptTax,
+    receiptTotal,
+  ]);
 }
 
 /// Configuration for bubble behavior
@@ -1533,21 +1552,21 @@ class VBubbleConfig {
 
   /// Preset for compact chat (dense layout, smaller elements)
   factory VBubbleConfig.compact() => const VBubbleConfig(
-        sizing: VSizingConfig.compact,
-        spacing: VSpacingConfig.compact,
-        media: VMediaConfig.compact,
-        avatar: VAvatarConfig.small,
-        textExpansion: VTextExpansionConfig.short,
-        animation: VAnimationConfig.fast,
-      );
+    sizing: VSizingConfig.compact,
+    spacing: VSpacingConfig.compact,
+    media: VMediaConfig.compact,
+    avatar: VAvatarConfig.small,
+    textExpansion: VTextExpansionConfig.short,
+    animation: VAnimationConfig.fast,
+  );
 
   /// Preset for desktop/tablet (wider bubbles, more space)
   factory VBubbleConfig.desktop() => const VBubbleConfig(
-        sizing: VSizingConfig.wide,
-        spacing: VSpacingConfig.loose,
-        media: VMediaConfig.large,
-        avatar: VAvatarConfig.large,
-      );
+    sizing: VSizingConfig.wide,
+    spacing: VSpacingConfig.loose,
+    media: VMediaConfig.large,
+    avatar: VAvatarConfig.large,
+  );
 
   /// Preset for read-only mode (no gestures)
   factory VBubbleConfig.readOnly() =>
@@ -1559,30 +1578,30 @@ class VBubbleConfig {
 
   /// Preset for minimal iMessage-like style (no tails, clean look)
   factory VBubbleConfig.minimal() => const VBubbleConfig(
-        spacing: VSpacingConfig.minimal,
-        avatar: VAvatarConfig.hidden,
-        textExpansion: VTextExpansionConfig.disabled,
-      );
+    spacing: VSpacingConfig.minimal,
+    avatar: VAvatarConfig.hidden,
+    textExpansion: VTextExpansionConfig.disabled,
+  );
 
   /// Preset for group chat (always show avatars and names)
   factory VBubbleConfig.groupChat() => const VBubbleConfig(
-        avatar: VAvatarConfig.visible,
-        spacing: VSpacingConfig.loose,
-      );
+    avatar: VAvatarConfig.visible,
+    spacing: VSpacingConfig.loose,
+  );
 
   /// Preset with enhanced accessibility
   factory VBubbleConfig.accessible() => const VBubbleConfig(
-        accessibility: VAccessibilityConfig.enhanced,
-        animation: VAnimationConfig.slow,
-        spacing: VSpacingConfig.loose,
-      );
+    accessibility: VAccessibilityConfig.enhanced,
+    animation: VAnimationConfig.slow,
+    spacing: VSpacingConfig.loose,
+  );
 
   /// Preset for performance (no animations, minimal processing)
   factory VBubbleConfig.performance() => const VBubbleConfig(
-        animation: VAnimationConfig.none,
-        patterns: VPatternConfig.none,
-        textExpansion: VTextExpansionConfig.disabled,
-      );
+    animation: VAnimationConfig.none,
+    patterns: VPatternConfig.none,
+    textExpansion: VTextExpansionConfig.disabled,
+  );
   VBubbleConfig copyWith({
     VPatternConfig? patterns,
     VGestureConfig? gestures,
@@ -1596,22 +1615,20 @@ class VBubbleConfig {
     VContextMenuConfig? contextMenu,
     VTranslationConfig? translations,
     Duration? groupingTimeThreshold,
-  }) =>
-      VBubbleConfig(
-        patterns: patterns ?? this.patterns,
-        gestures: gestures ?? this.gestures,
-        avatar: avatar ?? this.avatar,
-        sizing: sizing ?? this.sizing,
-        spacing: spacing ?? this.spacing,
-        media: media ?? this.media,
-        textExpansion: textExpansion ?? this.textExpansion,
-        animation: animation ?? this.animation,
-        accessibility: accessibility ?? this.accessibility,
-        contextMenu: contextMenu ?? this.contextMenu,
-        translations: translations ?? this.translations,
-        groupingTimeThreshold:
-            groupingTimeThreshold ?? this.groupingTimeThreshold,
-      );
+  }) => VBubbleConfig(
+    patterns: patterns ?? this.patterns,
+    gestures: gestures ?? this.gestures,
+    avatar: avatar ?? this.avatar,
+    sizing: sizing ?? this.sizing,
+    spacing: spacing ?? this.spacing,
+    media: media ?? this.media,
+    textExpansion: textExpansion ?? this.textExpansion,
+    animation: animation ?? this.animation,
+    accessibility: accessibility ?? this.accessibility,
+    contextMenu: contextMenu ?? this.contextMenu,
+    translations: translations ?? this.translations,
+    groupingTimeThreshold: groupingTimeThreshold ?? this.groupingTimeThreshold,
+  );
 
   /// Overrides this config with values from another config.
   /// Note: This performs a shallow override - entire nested configs are replaced.
@@ -1654,17 +1671,17 @@ class VBubbleConfig {
 
   @override
   int get hashCode => Object.hash(
-        patterns,
-        gestures,
-        avatar,
-        sizing,
-        spacing,
-        media,
-        textExpansion,
-        animation,
-        accessibility,
-        contextMenu,
-        translations,
-        groupingTimeThreshold,
-      );
+    patterns,
+    gestures,
+    avatar,
+    sizing,
+    spacing,
+    media,
+    textExpansion,
+    animation,
+    accessibility,
+    contextMenu,
+    translations,
+    groupingTimeThreshold,
+  );
 }

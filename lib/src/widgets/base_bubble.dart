@@ -6,6 +6,7 @@ import '../core/config.dart';
 import '../core/constants.dart';
 import '../core/enums.dart';
 import '../core/models.dart';
+import '../core/modern_message_models.dart';
 import '../theme/bubble_theme.dart';
 
 import 'bubble_scope.dart';
@@ -13,6 +14,7 @@ import 'bubble_wrapper.dart';
 import 'package:v_platform/v_platform.dart';
 
 import 'context_menu/bubble_context_menu.dart';
+import 'shared/adaptive_bubble_interaction.dart';
 import 'shared/swipe_to_reply_wrapper.dart';
 import 'shared/bubble_avatar.dart';
 import 'shared/bubble_header.dart';
@@ -39,6 +41,12 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   /// When false: show tail, show avatar, larger spacing (differentSenderSpacing)
   final bool isSameSender;
 
+  /// Automatically resolved position in a sender/time-based message group.
+  ///
+  /// When supplied, this takes precedence over legacy [isSameSender] layout
+  /// behavior. Omitting it preserves the pre-2.0 grouping contract.
+  final VMessageGroupPosition? groupPosition;
+
   /// Sender avatar image source (for incoming messages in groups)
   /// Supports network URLs, local files, assets, and memory images
   final VPlatformFile? avatar;
@@ -61,6 +69,9 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   /// Whether message is edited
   final bool isEdited;
 
+  /// Detailed delivery, receipt, retry, and edit history metadata.
+  final VMessageLifecycleData? lifecycle;
+
   /// Whether message is pinned
   final bool isPinned;
 
@@ -76,6 +87,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     required this.time,
     this.status = VMessageStatus.sent,
     this.isSameSender = false,
+    this.groupPosition,
     this.avatar,
     this.senderName,
     this.senderColor,
@@ -83,10 +95,18 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     this.forwardedFrom,
     this.reactions = const [],
     this.isEdited = false,
+    this.lifecycle,
     this.isPinned = false,
     this.isStarred = false,
     this.isHighlighted = false,
   });
+
+  /// Whether this bubble is visually joined to the preceding message.
+  bool get isGroupedWithPrevious =>
+      groupPosition?.joinsPrevious ?? isSameSender;
+
+  /// Whether this bubble terminates its visual group.
+  bool get showsGroupEnd => groupPosition?.showsGroupEnd ?? !isSameSender;
 
   /// Build the main content of the bubble
   Widget buildContent(BuildContext context);
@@ -98,8 +118,9 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   String _getSemanticLabel(BuildContext context) {
     final config = context.bubbleConfig;
     final translations = config.translations;
-    final direction =
-        isMeSender ? translations.statusSent : translations.statusReceived;
+    final direction = isMeSender
+        ? translations.statusSent
+        : translations.statusReceived;
     final statusText = isMeSender ? ', ${status.name}' : '';
     final editedText = isEdited ? ', ${translations.statusEdited}' : '';
     final pinnedText = isPinned ? ', ${translations.statusPinned}' : '';
@@ -134,13 +155,13 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     // RTL Layout Support - Flutter's Row automatically mirrors in RTL
     // MainAxisAlignment.end becomes LEFT in RTL, which is correct for sender
     // No need to flip isMeSender - let Flutter handle it naturally
-    // Derive showTail and showAvatar from isSameSender
-    final showTail = !isSameSender;
-    final showAvatar = !isSameSender;
+    final showTail = showsGroupEnd;
+    final showAvatar = showsGroupEnd;
     // Build bubble content
     final bubbleContent = Row(
-      mainAxisAlignment:
-          isMeSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: isMeSender
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (!isMeSender && config.avatar.show) ...[
@@ -160,7 +181,8 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
         Flexible(
           child: VSwipeToReplyWrapper(
             isMeSender: isMeSender,
-            onSwipe: (config.gestures.enableSwipeToReply &&
+            onSwipe:
+                (config.gestures.enableSwipeToReply &&
                     callbacks.onSwipeReply != null)
                 ? () => callbacks.onSwipeReply!(messageId)
                 : null,
@@ -183,6 +205,9 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
                 bubbleContent: DecoratedBox(
                   decoration: BoxDecoration(
                     color: isHighlighted ? const Color(0x33FFEB3B) : null,
+                    border: config.accessibility.enableHighContrast
+                        ? Border.all(color: selectTextColor(theme), width: 2)
+                        : null,
                     borderRadius: BorderRadius.circular(
                       config.spacing.bubbleRadius,
                     ),
@@ -224,8 +249,8 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
                     color: isSelected
                         ? theme.selectionCheckmarkColor
                         : isDarkMode
-                            ? Colors.white
-                            : Colors.black54,
+                        ? Colors.white
+                        : Colors.black54,
                     width: 2,
                   ),
                 ),
@@ -246,8 +271,8 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
               left: isSelectionMode
                   ? 0
                   : isMeSender
-                      ? oppositeMargin
-                      : horizontalMargin,
+                  ? oppositeMargin
+                  : horizontalMargin,
               right: isMeSender ? horizontalMargin : oppositeMargin,
             ),
             child: bubbleContent,
@@ -257,7 +282,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     );
     Widget bubble = Padding(
       padding: EdgeInsets.only(
-        top: isSameSender
+        top: isGroupedWithPrevious
             ? config.spacing.sameSenderSpacing
             : config.spacing.differentSenderSpacing,
       ),
@@ -289,7 +314,6 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   ///
   /// Custom bubbles can override this for custom avatar rendering.
   @protected
-
   /// Uses [VBubbleAvatar] widget.
   @protected
   Widget buildAvatarWidget(BuildContext context) {
@@ -321,7 +345,6 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   /// Returns null if no header content is needed.
   /// Custom bubbles can use this to add standard header elements.
   @protected
-
   /// Uses [VBubbleHeader] widget.
   @protected
   Widget? buildBubbleHeader(BuildContext context) {
@@ -356,56 +379,98 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
       builder: (context, _) {
         final effectiveReactions = getEffectiveReactions(reactionStateManager);
         if (effectiveReactions.isEmpty) return const SizedBox.shrink();
+        final maxVisible =
+            context.bubbleConfig.contextMenu.maxVisibleReactionPills;
+        final visibleReactions = effectiveReactions.take(maxVisible).toList();
+        final overflowCount =
+            effectiveReactions.length - visibleReactions.length;
         return Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Wrap(
             spacing: 4,
             runSpacing: 4,
-            children: effectiveReactions.map((reaction) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                // Disable reaction tap in selection mode
-                onTapUp: isSelectionMode
-                    ? null
-                    : (details) {
-                        callbacks.onReactionTap?.call(
-                          messageId,
-                          reaction.emoji,
-                          details.globalPosition,
-                        );
-                      },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: reaction.isSelected
-                        ? theme.reactionSelectedBackground
-                        : theme.reactionBackground,
-                    borderRadius: BubbleRadius.standard,
-                    border: Border.all(
-                      color: theme.reactionTextColor.withValues(alpha: 0.2),
+            children: [
+              ...visibleReactions.map((reaction) {
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  // Disable reaction tap in selection mode
+                  onTapUp: isSelectionMode
+                      ? null
+                      : (details) {
+                          callbacks.onReactionDetailsTap?.call(
+                            messageId,
+                            reaction,
+                            details.globalPosition,
+                          );
+                          callbacks.onReactionTap?.call(
+                            messageId,
+                            reaction.emoji,
+                            details.globalPosition,
+                          );
+                        },
+                  child: Tooltip(
+                    message: reaction.actors.isEmpty
+                        ? reaction.emoji
+                        : reaction.actors
+                              .map((actor) => actor.displayName)
+                              .join(', '),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: reaction.isSelected
+                            ? theme.reactionSelectedBackground
+                            : theme.reactionBackground,
+                        borderRadius: BubbleRadius.standard,
+                        border: Border.all(
+                          color: theme.reactionTextColor.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            reaction.emoji,
+                            style: TextStyle(fontSize: BubbleSizes.iconSmall),
+                          ),
+                          if (reaction.count > 1) ...[
+                            BubbleSpacing.gapXS,
+                            Text(
+                              '${reaction.count}',
+                              style: TextStyle(
+                                fontSize: BubbleSizes.iconTiny,
+                                color: theme.reactionTextColor,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(reaction.emoji,
-                          style: TextStyle(fontSize: BubbleSizes.iconSmall)),
-                      if (reaction.count > 1) ...[
-                        BubbleSpacing.gapXS,
-                        Text(
-                          '${reaction.count}',
-                          style: TextStyle(
-                            fontSize: BubbleSizes.iconTiny,
-                            color: theme.reactionTextColor,
-                          ),
-                        ),
-                      ],
-                    ],
+                );
+              }),
+              if (overflowCount > 0)
+                Container(
+                  key: ValueKey('v-reaction-overflow-$messageId'),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.reactionBackground,
+                    borderRadius: BubbleRadius.standard,
+                  ),
+                  child: Text(
+                    '+$overflowCount',
+                    style: TextStyle(
+                      fontSize: BubbleSizes.iconTiny,
+                      color: theme.reactionTextColor,
+                    ),
                   ),
                 ),
-              );
-            }).toList(),
+            ],
           ),
         );
       },
@@ -417,36 +482,30 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   /// Merges the [reactions] list with user's selection from [stateManager].
   @protected
   List<VBubbleReaction> getEffectiveReactions(
-      ReactionStateManager stateManager) {
-    final userSelectedEmoji = stateManager.getSelectedReaction(messageId);
+    ReactionStateManager stateManager,
+  ) {
+    final userSelectedEmojis = stateManager.getSelectedReactions(messageId);
     // If no user selection and no external reactions, return empty
-    if (userSelectedEmoji == null && reactions.isEmpty) {
+    if (userSelectedEmojis.isEmpty && reactions.isEmpty) {
       return [];
     }
     // If no user selection, return external reactions as-is
-    if (userSelectedEmoji == null) {
+    if (userSelectedEmojis.isEmpty) {
       return reactions;
     }
-    // Check if user's selection exists in external reactions
-    final existingIndex =
-        reactions.indexWhere((r) => r.emoji == userSelectedEmoji);
-    if (existingIndex >= 0) {
-      // Mark the existing reaction as selected
-      return reactions.map((r) {
-        if (r.emoji == userSelectedEmoji) {
-          return r.copyWith(isSelected: true);
-        }
-        return r.copyWith(isSelected: false);
-      }).toList();
+    final externalEmoji = reactions.map((reaction) => reaction.emoji).toSet();
+    final effectiveReactions = reactions
+        .map(
+          (reaction) => reaction.copyWith(
+            isSelected: userSelectedEmojis.contains(reaction.emoji),
+          ),
+        )
+        .toList();
+    for (final emoji in userSelectedEmojis.difference(externalEmoji)) {
+      effectiveReactions.add(
+        VBubbleReaction(emoji: emoji, count: 1, isSelected: true),
+      );
     }
-    // Add user's reaction as a new entry
-    final effectiveReactions =
-        reactions.map((r) => r.copyWith(isSelected: false)).toList();
-    effectiveReactions.add(VBubbleReaction(
-      emoji: userSelectedEmoji,
-      count: 1,
-      isSelected: true,
-    ));
     return effectiveReactions;
   }
 
@@ -455,7 +514,6 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   /// Shows starred/pinned/edited indicators, timestamp, and status icon (for sender).
   /// Custom bubbles should use this for consistent metadata display.
   @protected
-
   /// Uses [VBubbleFooter] widget.
   @protected
   Widget buildMeta(BuildContext context, {Color? overrideColor}) {
@@ -466,6 +524,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
       isStarred: isStarred,
       isPinned: isPinned,
       isEdited: isEdited,
+      lifecycle: lifecycle,
       overrideColor: overrideColor,
     );
   }
@@ -558,7 +617,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   }) {
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showTail ?? !isSameSender,
+      showTail: showTail ?? showsGroupEnd,
       maxWidth: maxWidth,
       backgroundColor: backgroundColor,
       padding: padding,
@@ -585,7 +644,8 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     // Check if user provided custom onLongPress callback
     final hasCustomLongPress = callbacks.onLongPress != null;
     // Use built-in menu only if enabled AND no custom callback provided
-    final useBuiltInMenu = config.gestures.enableLongPress &&
+    final useBuiltInMenu =
+        config.gestures.enableLongPress &&
         config.contextMenu.enableBuiltInMenu &&
         !hasCustomLongPress;
     Widget child = GestureDetector(
@@ -597,7 +657,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
       // Use custom onLongPress if provided
       onLongPressStart: hasCustomLongPress && config.gestures.enableLongPress
           ? (details) =>
-              callbacks.onLongPress!(messageId, details.globalPosition)
+                callbacks.onLongPress!(messageId, details.globalPosition)
           : null,
       child: bubbleContent,
     );
@@ -611,15 +671,55 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
         child: child,
       );
     }
-    return child;
+
+    ValueChanged<Offset>? onShowContextMenu;
+    if (hasCustomLongPress) {
+      onShowContextMenu = (position) =>
+          callbacks.onLongPress!(messageId, position);
+    } else if (config.contextMenu.enableBuiltInMenu) {
+      onShowContextMenu = (_) => BubbleContextMenuSheet.show(
+        context: context,
+        messageId: messageId,
+        messageType: messageType,
+        isMeSender: isMeSender,
+        currentReactions: reactions,
+      );
+    }
+
+    return VAdaptiveBubbleInteraction(
+      messageId: messageId,
+      isMeSender: isMeSender,
+      enableHoverActions: config.gestures.enableHoverActions,
+      enableSecondaryTap: config.gestures.enableSecondaryTap,
+      enableKeyboardShortcuts: config.gestures.enableKeyboardShortcuts,
+      minTapTargetSize: config.accessibility.minTapTargetSize,
+      fadeInDuration: config.animation.fadeIn,
+      fadeOutDuration: config.animation.fadeOut,
+      replyLabel: config.translations.actionReply,
+      retryLabel: config.translations.viewerRetry,
+      onActivate: () => _handleTap(context),
+      onReply: callbacks.onSwipeReply == null
+          ? null
+          : () => callbacks.onSwipeReply!(messageId),
+      onReact: callbacks.onReaction == null || !config.contextMenu.showReactions
+          ? null
+          : () => _toggleDefaultReaction(context),
+      onRetry: lifecycle?.canRetry == true && callbacks.onRetryMessage != null
+          ? () => callbacks.onRetryMessage!(messageId)
+          : null,
+      onShowContextMenu: onShowContextMenu,
+      child: child,
+    );
   }
 
   void _handleTap(BuildContext context) {
     final scope = context.bubbleScope;
     if (scope.isSelectionMode) {
       final isCurrentlySelected = scope.isSelected(messageId);
-      context.bubbleCallbacks.onSelectionChanged
-          ?.call(messageId, !isCurrentlySelected);
+      context.bubbleCallbacks.onSelectionChanged?.call(
+        messageId,
+        !isCurrentlySelected,
+      );
     } else {
       context.bubbleCallbacks.onTap?.call(messageId);
     }
@@ -628,6 +728,11 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   void _handleDoubleTap(BuildContext context) {
     final config = context.bubbleConfig;
     if (!config.gestures.enableDoubleTapToReact) return;
+    _toggleDefaultReaction(context);
+  }
+
+  void _toggleDefaultReaction(BuildContext context) {
+    final config = context.bubbleConfig;
     if (config.gestures.enableHapticFeedback) {
       HapticFeedback.lightImpact();
     }
@@ -635,7 +740,11 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     const defaultReaction = '❤️';
     // Update internal state
     final reactionStateManager = context.reactionStateManager;
-    final action = reactionStateManager.setReaction(messageId, defaultReaction);
+    final action = reactionStateManager.setReaction(
+      messageId,
+      defaultReaction,
+      allowMultiple: config.contextMenu.allowMultipleReactions,
+    );
     // Notify parent via callback
     context.bubbleCallbacks.onReaction?.call(
       messageId,
