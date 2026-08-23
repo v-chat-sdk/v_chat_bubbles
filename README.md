@@ -73,7 +73,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  v_chat_bubbles: ^2.1.0
+  v_chat_bubbles: ^2.1.1
 ```
 
 Version 2 requires Flutter 3.44.0 or newer and Dart 3.12.0 or newer.

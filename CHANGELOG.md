@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.1 - 2026-08-23
+
+### Dependency Updates
+
+- Updated `v_chat_voice_player` to `^4.0.1`.
+
 ## 2.1.0 - 2026-08-17
 
 ### New Features
