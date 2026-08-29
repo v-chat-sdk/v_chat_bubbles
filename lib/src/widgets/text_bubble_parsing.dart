@@ -22,8 +22,12 @@ extension _TextBubbleParsing on _ExpandableTextWithPreviewState {
     VBubbleConfig config,
     void Function(VPatternMatch match)? onPatternTap,
   ) {
-    final patterns =
-        _getCachedPatterns(baseStyle, linkStyle, mentionStyle, config);
+    final patterns = _getCachedPatterns(
+      baseStyle,
+      linkStyle,
+      mentionStyle,
+      config,
+    );
     return VTextParser.parseWithPatterns(
       text,
       baseStyle: baseStyle,
@@ -58,8 +62,12 @@ extension _TextBubbleParsing on _ExpandableTextWithPreviewState {
       style: blockStyle,
       maxWidth: config.sizing.maxWidth ?? double.infinity,
     );
-    final patterns =
-        _getCachedPatterns(baseStyle, linkStyle, mentionStyle, config);
+    final patterns = _getCachedPatterns(
+      baseStyle,
+      linkStyle,
+      mentionStyle,
+      config,
+    );
     return VTextParser.parseWithBlocks(
       text,
       baseStyle: baseStyle,
@@ -67,6 +75,8 @@ extension _TextBubbleParsing on _ExpandableTextWithPreviewState {
       blockConfig: blockConfig,
       onPatternTap: onPatternTap,
       messageId: widget.messageId,
+      searchQuery: widget.searchQuery,
+      searchHighlightStyle: widget.searchHighlightStyle,
     );
   }
 }

@@ -184,6 +184,8 @@ class VProductBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -197,7 +199,7 @@ class VProductBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return buildBubbleContainer(
       context: context,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

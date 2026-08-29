@@ -122,6 +122,8 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -133,7 +135,7 @@ class VCustomBubble<T extends VCustomBubbleData> extends BaseBubble {
     final header = showHeader ? buildBubbleHeader(context) : null;
     return buildBubbleContainer(
       context: context,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

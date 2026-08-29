@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/enums.dart';
+import '../../utils/text_parser.dart';
 import 'message_status_icon.dart';
 
 /// Overlay for media bubbles showing time, status, and optional caption.
@@ -12,6 +13,8 @@ class VMediaOverlayInfo extends StatelessWidget {
     this.isMeSender = true,
     this.maxCaptionLines = 2,
     this.readIconColor,
+    this.searchQuery,
+    this.searchHighlightStyle,
   });
 
   final String time;
@@ -20,6 +23,8 @@ class VMediaOverlayInfo extends StatelessWidget {
   final bool isMeSender;
   final int maxCaptionLines;
   final Color? readIconColor;
+  final String? searchQuery;
+  final TextStyle? searchHighlightStyle;
 
   static const _overlayGradient = LinearGradient(
     begin: Alignment.topCenter,
@@ -29,6 +34,12 @@ class VMediaOverlayInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle highlight =
+        searchHighlightStyle ??
+        const TextStyle(
+          backgroundColor: Color(0xFFFF3B82),
+          color: Color(0xFFFFFFFF),
+        );
     return Positioned(
       left: 0,
       right: 0,
@@ -43,12 +54,7 @@ class VMediaOverlayInfo extends StatelessWidget {
             if (caption != null && caption!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  caption!,
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
-                  maxLines: maxCaptionLines,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: _buildCaption(caption!, highlight),
               ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -71,6 +77,29 @@ class VMediaOverlayInfo extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCaption(String text, TextStyle highlight) {
+    const base = TextStyle(color: Colors.white, fontSize: 14);
+    if (searchQuery == null || searchQuery!.isEmpty) {
+      return Text(
+        text,
+        style: base,
+        maxLines: maxCaptionLines,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+    final spans = VTextParser.buildHighlightedSpans(
+      text,
+      base,
+      searchQuery,
+      highlight,
+    );
+    return RichText(
+      text: TextSpan(children: spans),
+      maxLines: maxCaptionLines,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

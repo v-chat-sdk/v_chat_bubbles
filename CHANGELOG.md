@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.2.0 - 2026-08-29
+
+### New Features
+
+- **Global tail toggle:** Added `VBubbleConfig(showTails: true)` to hide all bubble tails at once. When `false`, every bubble renders as a rounded rectangle regardless of `VMessageGroupPosition`/`isSameSender` (uniform for Telegram/WhatsApp/iMessage/Messenger). `VBubbleConfig.minimal()` now defaults to `showTails: false`.
+- **Inline search highlight:** Added per-bubble `searchQuery` + `searchHighlightStyle` (via `BaseBubble`/`CommonBubbleProps`) for case-insensitive substring highlighting. Matched characters are merged with `VBubbleTheme.searchHighlightStyle` (`backgroundColor: #FF3B82`, white text) preserving link/mention recognizers. Implemented via `VTextParser.applySearchHighlight`/`buildHighlightedSpans` and `parseWithBlocks` propagation (covers inline text, blockquotes, lists). Extended to `VFileBubble` filename, `VImageBubble`/`VVideoBubble`/`VGalleryBubble`/`VGifBubble` captions via `VMediaOverlayInfo` and `VLinkPreview`.
+- **Example search demo:** `example` `ChatAppBar` now has a search action; `ChatDemoPage` shows a search bar (`🔍  [query]  X  1 of N  ↑ ↓  Done`) that drives `searchQuery` through `MessageBuilder` to all bubbles, with match counting and scroll-to-match for manual web testing.
+
+### Compatibility
+
+- All new properties are optional with safe defaults (`showTails: true`, `searchQuery: null`). Existing code renders identically.
+
 ## 2.1.1 - 2026-08-23
 
 ### Dependency Updates

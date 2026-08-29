@@ -1531,6 +1531,13 @@ class VBubbleConfig {
 
   /// Time threshold for grouping consecutive messages from same sender
   final Duration groupingTimeThreshold;
+
+  /// Whether bubble tails (Telegram/WhatsApp/iMessage hooks) are rendered.
+  ///
+  /// When `false`, every bubble is rendered without a tail regardless of
+  /// [VMessageGroupPosition] / `isSameSender`. Defaults to `true` to keep the
+  /// existing grouped-tail behavior.
+  final bool showTails;
   const VBubbleConfig({
     this.patterns = const VPatternConfig(),
     this.gestures = const VGestureConfig(),
@@ -1544,6 +1551,7 @@ class VBubbleConfig {
     this.contextMenu = const VContextMenuConfig(),
     this.translations = const VTranslationConfig(),
     this.groupingTimeThreshold = const Duration(minutes: 1),
+    this.showTails = true,
   });
 
   /// Calculate effective max width based on screen width
@@ -1581,6 +1589,7 @@ class VBubbleConfig {
     spacing: VSpacingConfig.minimal,
     avatar: VAvatarConfig.hidden,
     textExpansion: VTextExpansionConfig.disabled,
+    showTails: false,
   );
 
   /// Preset for group chat (always show avatars and names)
@@ -1615,6 +1624,7 @@ class VBubbleConfig {
     VContextMenuConfig? contextMenu,
     VTranslationConfig? translations,
     Duration? groupingTimeThreshold,
+    bool? showTails,
   }) => VBubbleConfig(
     patterns: patterns ?? this.patterns,
     gestures: gestures ?? this.gestures,
@@ -1628,6 +1638,7 @@ class VBubbleConfig {
     contextMenu: contextMenu ?? this.contextMenu,
     translations: translations ?? this.translations,
     groupingTimeThreshold: groupingTimeThreshold ?? this.groupingTimeThreshold,
+    showTails: showTails ?? this.showTails,
   );
 
   /// Overrides this config with values from another config.
@@ -1647,6 +1658,7 @@ class VBubbleConfig {
       contextMenu: other.contextMenu,
       translations: other.translations,
       groupingTimeThreshold: other.groupingTimeThreshold,
+      showTails: other.showTails,
     );
   }
 
@@ -1666,7 +1678,8 @@ class VBubbleConfig {
         accessibility == other.accessibility &&
         contextMenu == other.contextMenu &&
         translations == other.translations &&
-        groupingTimeThreshold == other.groupingTimeThreshold;
+        groupingTimeThreshold == other.groupingTimeThreshold &&
+        showTails == other.showTails;
   }
 
   @override
@@ -1683,5 +1696,6 @@ class VBubbleConfig {
     contextMenu,
     translations,
     groupingTimeThreshold,
+    showTails,
   );
 }

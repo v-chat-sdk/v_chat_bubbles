@@ -15,6 +15,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final String? subtitle;
   final bool isGroupChat;
+  final VoidCallback? onSearchTap;
   const ChatAppBar({
     super.key,
     required this.style,
@@ -30,6 +31,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.subtitle,
     this.isGroupChat = true,
+    this.onSearchTap,
   });
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -137,6 +139,12 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
+        if (onSearchTap != null)
+          IconButton(
+            icon: const Icon(Icons.search),
+            tooltip: 'Search',
+            onPressed: onSearchTap,
+          ),
         // Style selector
         PopupMenuButton<VBubbleStyle>(
           icon: const Icon(Icons.palette_outlined),

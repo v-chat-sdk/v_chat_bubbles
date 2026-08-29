@@ -59,13 +59,15 @@ class VQuotedContentBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
   Widget buildContent(BuildContext context) {
     final config = context.bubbleConfig;
     final header = buildBubbleHeader(context);
-    final showTail = showsGroupEnd;
+    final showTail = effectiveShowTail(context);
     return VBubbleWrapper(
       isMeSender: isMeSender,
       showTail: showTail,

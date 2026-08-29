@@ -48,6 +48,8 @@ class VVoiceBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
   @override
   Widget buildContent(BuildContext context) {
@@ -57,7 +59,7 @@ class VVoiceBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       child: SizedBox(
         width: config.media.voiceMessageWidth,
         child: Column(

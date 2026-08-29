@@ -27,8 +27,9 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
     final enableTextSelection = config.textExpansion.enableTextSelection;
     final linkPreviewWidget = _buildLinkPreviewWidget(linkColor);
     final textDirection = _getTextDirection();
-    final effectiveOnPatternTap =
-        isSelectionMode ? null : callbacks.onPatternTap;
+    final effectiveOnPatternTap = isSelectionMode
+        ? null
+        : callbacks.onPatternTap;
 
     if (config.patterns.hasBlockPatterns && !shouldTruncate) {
       return _buildBlockLayout(
@@ -43,7 +44,7 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
       );
     }
 
-    final spans = _getInlineSpans(
+    List<InlineSpan> spans = _getInlineSpans(
       shouldTruncate: shouldTruncate,
       isExpanded: isExpanded,
       displayText: displayText,
@@ -53,6 +54,7 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
       config: config,
       onPatternTap: effectiveOnPatternTap,
     );
+    spans = _applySearchHighlightIfNeeded(spans);
 
     if (!shouldTruncate) {
       return _buildFullTextLayout(
@@ -93,7 +95,7 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
 
   void _resetParseCacheIfNeeded(VBubbleConfig config, bool isSelectionMode) {
     final newCacheKey =
-        '${widget.text}_${widget.textColor.hashCode}_${widget.isMeSender}_${config.patterns.hashCode}_$isSelectionMode';
+        '${widget.text}_${widget.textColor.hashCode}_${widget.isMeSender}_${config.patterns.hashCode}_${isSelectionMode}_${widget.searchQuery}_${widget.searchHighlightStyle.hashCode}';
     if (_cacheKey != newCacheKey) {
       _cacheKey = newCacheKey;
       _cachedSpans = null;
@@ -157,6 +159,17 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
     return _cachedSpans!;
   }
 
+  List<InlineSpan> _applySearchHighlightIfNeeded(List<InlineSpan> spans) {
+    final q = widget.searchQuery;
+    if (q == null || q.isEmpty) return spans;
+    return VTextParser.applySearchHighlight(
+      spans,
+      q,
+      widget.searchHighlightStyle,
+      caseSensitive: false,
+    );
+  }
+
   Widget _buildFullTextLayout({
     required TextDirection textDirection,
     required bool enableTextSelection,
@@ -195,8 +208,9 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
     required Widget? linkPreviewWidget,
     required Color linkColor,
   }) {
-    final animDuration =
-        isExpanded ? config.animation.expand : config.animation.collapse;
+    final animDuration = isExpanded
+        ? config.animation.expand
+        : config.animation.collapse;
     final animCurve = config.animation.defaultCurve;
     return AnimatedSize(
       duration: animDuration,
@@ -333,7 +347,7 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
             BubbleSpacing.gapM,
             _buildMeta(),
           ],
-        )
+        ),
       ],
     );
   }
@@ -345,14 +359,8 @@ extension _TextBubbleBuild on _ExpandableTextWithPreviewState {
   }) {
     final textSpan = TextSpan(children: spans);
     if (enableSelection) {
-      return SelectableText.rich(
-        textSpan,
-        textDirection: textDirection,
-      );
+      return SelectableText.rich(textSpan, textDirection: textDirection);
     }
-    return RichText(
-      text: textSpan,
-      textDirection: textDirection,
-    );
+    return RichText(text: textSpan, textDirection: textDirection);
   }
 }

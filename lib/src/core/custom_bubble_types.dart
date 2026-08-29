@@ -82,6 +82,15 @@ class CommonBubbleProps {
   /// Whether to show search highlight
   final bool isHighlighted;
 
+  /// Inline search query for highlighting matched substrings.
+  ///
+  /// Mirrors [BaseBubble.searchQuery]. When non-null and non-empty the
+  /// custom bubble's textual content should highlight matches.
+  final String? searchQuery;
+
+  /// Override for the inline search highlight style.
+  final TextStyle? searchHighlightStyle;
+
   const CommonBubbleProps({
     this.status = VMessageStatus.sent,
     this.isSameSender = false,
@@ -97,6 +106,8 @@ class CommonBubbleProps {
     this.isPinned = false,
     this.isStarred = false,
     this.isHighlighted = false,
+    this.searchQuery,
+    this.searchHighlightStyle,
   });
 
   /// Creates a copy with updated values
@@ -115,6 +126,8 @@ class CommonBubbleProps {
     bool? isPinned,
     bool? isStarred,
     bool? isHighlighted,
+    String? searchQuery,
+    TextStyle? searchHighlightStyle,
   }) {
     return CommonBubbleProps(
       status: status ?? this.status,
@@ -133,6 +146,8 @@ class CommonBubbleProps {
       isPinned: isPinned ?? this.isPinned,
       isStarred: isStarred ?? this.isStarred,
       isHighlighted: isHighlighted ?? this.isHighlighted,
+      searchQuery: searchQuery ?? this.searchQuery,
+      searchHighlightStyle: searchHighlightStyle ?? this.searchHighlightStyle,
     );
   }
 
@@ -152,7 +167,9 @@ class CommonBubbleProps {
         lifecycle == other.lifecycle &&
         isPinned == other.isPinned &&
         isStarred == other.isStarred &&
-        isHighlighted == other.isHighlighted;
+        isHighlighted == other.isHighlighted &&
+        searchQuery == other.searchQuery &&
+        searchHighlightStyle == other.searchHighlightStyle;
   }
 
   @override
@@ -170,6 +187,8 @@ class CommonBubbleProps {
     isPinned,
     isStarred,
     isHighlighted,
+    searchQuery,
+    searchHighlightStyle,
   );
 }
 

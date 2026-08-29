@@ -80,6 +80,20 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
 
   /// Whether to show search highlight
   final bool isHighlighted;
+
+  /// Inline search query for highlighting matched substrings inside the bubble.
+  ///
+  /// When non-null and non-empty, every case-insensitive occurrence of
+  /// [searchQuery] inside textual content is rendered with
+  /// [searchHighlightStyle] (or the theme's `searchHighlightStyle` when null),
+  /// similar to the screenshot's red "h" highlights. This is separate from
+  /// [isHighlighted] which highlights the whole bubble.
+  final String? searchQuery;
+
+  /// Override for the inline search highlight style.
+  ///
+  /// If null, the theme's `VBubbleTheme.searchHighlightStyle` is used.
+  final TextStyle? searchHighlightStyle;
   const BaseBubble({
     super.key,
     required this.messageId,
@@ -99,6 +113,8 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     this.isPinned = false,
     this.isStarred = false,
     this.isHighlighted = false,
+    this.searchQuery,
+    this.searchHighlightStyle,
   });
 
   /// Whether this bubble is visually joined to the preceding message.
@@ -107,6 +123,13 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
 
   /// Whether this bubble terminates its visual group.
   bool get showsGroupEnd => groupPosition?.showsGroupEnd ?? !isSameSender;
+
+  /// Resolves the tail visibility for this bubble using the global
+  /// [VBubbleConfig.showTails] flag. When `showTails` is false, no tails
+  /// are rendered regardless of grouping. This is used uniformly across all
+  /// bubble styles including Messenger (per plan: uniform forced-false).
+  bool effectiveShowTail(BuildContext context) =>
+      context.bubbleConfig.showTails ? showsGroupEnd : false;
 
   /// Build the main content of the bubble
   Widget buildContent(BuildContext context);
@@ -155,7 +178,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     // RTL Layout Support - Flutter's Row automatically mirrors in RTL
     // MainAxisAlignment.end becomes LEFT in RTL, which is correct for sender
     // No need to flip isMeSender - let Flutter handle it naturally
-    final showTail = showsGroupEnd;
+    final showTail = effectiveShowTail(context);
     final showAvatar = showsGroupEnd;
     // Build bubble content
     final bubbleContent = Row(
@@ -617,7 +640,7 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   }) {
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showTail ?? showsGroupEnd,
+      showTail: showTail ?? effectiveShowTail(context),
       maxWidth: maxWidth,
       backgroundColor: backgroundColor,
       padding: padding,

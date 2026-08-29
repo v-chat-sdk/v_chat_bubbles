@@ -99,10 +99,12 @@ class VTextParser {
       buffer.write(_nbsp * leadingSpaces);
       // Process rest of line - replace sequences of 2+ spaces with nbsp
       final rest = line.substring(leadingSpaces);
-      buffer.write(rest.replaceAllMapped(
-        RegExp(r'  +'),
-        (m) => _nbsp * m.group(0)!.length,
-      ));
+      buffer.write(
+        rest.replaceAllMapped(
+          RegExp(r'  +'),
+          (m) => _nbsp * m.group(0)!.length,
+        ),
+      );
     }
     return buffer.toString();
   }
@@ -136,12 +138,14 @@ class VTextParser {
       for (final match in pattern.pattern.allMatches(text)) {
         // Skip if overlaps with existing match (first match wins)
         if (!_overlapsPattern(matches, match.start, match.end)) {
-          matches.add(_PatternedMatch(
-            start: match.start,
-            end: match.end,
-            rawText: match.group(0)!,
-            pattern: pattern,
-          ));
+          matches.add(
+            _PatternedMatch(
+              start: match.start,
+              end: match.end,
+              rawText: match.group(0)!,
+              pattern: pattern,
+            ),
+          );
         }
       }
     }
@@ -157,10 +161,12 @@ class VTextParser {
     for (final match in matches) {
       // Add text before match
       if (match.start > currentIndex) {
-        spans.add(TextSpan(
-          text: preserveWhitespace(text.substring(currentIndex, match.start)),
-          style: safeBaseStyle,
-        ));
+        spans.add(
+          TextSpan(
+            text: preserveWhitespace(text.substring(currentIndex, match.start)),
+            style: safeBaseStyle,
+          ),
+        );
       }
       // Determine display text (with or without markers)
       String displayText = match.rawText;
@@ -182,37 +188,46 @@ class VTextParser {
       if (match.pattern.isTappable && onPatternTap != null) {
         final value = displayText;
         recognizer = TapGestureRecognizer()
-          ..onTap = () => onPatternTap(VPatternMatch(
-                patternId: match.pattern.id,
-                matchedText: value,
-                rawText: match.rawText,
-                messageId: messageId,
-              ));
+          ..onTap = () => onPatternTap(
+            VPatternMatch(
+              patternId: match.pattern.id,
+              matchedText: value,
+              rawText: match.rawText,
+              messageId: messageId,
+            ),
+          );
       }
       // Ensure pattern style has explicit decoration to prevent bleeding
       final patternStyle = match.pattern.style;
       final safePatternStyle = patternStyle.decoration == null
           ? patternStyle.copyWith(decoration: TextDecoration.none)
           : patternStyle;
-      spans.add(TextSpan(
-        text: displayText,
-        style: safePatternStyle,
-        recognizer: recognizer,
-      ));
+      spans.add(
+        TextSpan(
+          text: displayText,
+          style: safePatternStyle,
+          recognizer: recognizer,
+        ),
+      );
       currentIndex = match.end;
     }
     // Add remaining text
     if (currentIndex < text.length) {
-      spans.add(TextSpan(
-        text: preserveWhitespace(text.substring(currentIndex)),
-        style: safeBaseStyle,
-      ));
+      spans.add(
+        TextSpan(
+          text: preserveWhitespace(text.substring(currentIndex)),
+          style: safeBaseStyle,
+        ),
+      );
     }
     return spans;
   }
 
   static bool _overlapsPattern(
-      List<_PatternedMatch> matches, int start, int end) {
+    List<_PatternedMatch> matches,
+    int start,
+    int end,
+  ) {
     for (final match in matches) {
       if (start < match.end && end > match.start) return true;
     }
@@ -239,18 +254,31 @@ class VTextParser {
     required VBlockParseConfig blockConfig,
     void Function(VPatternMatch match)? onPatternTap,
     String? messageId,
+    String? searchQuery,
+    TextStyle? searchHighlightStyle,
+    bool caseSensitiveSearch = false,
   }) {
     if (text.isEmpty) return [];
     // Fast path: check if text contains any block markers
     if (!blockConfig.hasAnyEnabled || !_hasBlockMarkers(text, blockConfig)) {
       // No block elements, use standard inline parsing
-      final spans = parseWithPatterns(
+      List<InlineSpan> spans = parseWithPatterns(
         text,
         baseStyle: baseStyle,
         patterns: inlinePatterns,
         onPatternTap: onPatternTap,
         messageId: messageId,
       );
+      if (searchQuery != null &&
+          searchQuery.isNotEmpty &&
+          searchHighlightStyle != null) {
+        spans = applySearchHighlight(
+          spans,
+          searchQuery,
+          searchHighlightStyle,
+          caseSensitive: caseSensitiveSearch,
+        );
+      }
       if (spans.isEmpty) return [];
       return [
         RichText(
@@ -260,7 +288,8 @@ class VTextParser {
       ];
     }
     // Get or create block style
-    final blockStyle = blockConfig.style ??
+    final blockStyle =
+        blockConfig.style ??
         VBlockFormatStyle.fromColors(
           textColor: baseStyle.color ?? Colors.black,
           accentColor: Colors.blue,
@@ -270,13 +299,23 @@ class VTextParser {
     final blockMatches = _extractBlockMatches(text, blockConfig);
     if (blockMatches.isEmpty) {
       // No actual block matches found, use inline parsing
-      final spans = parseWithPatterns(
+      List<InlineSpan> spans = parseWithPatterns(
         text,
         baseStyle: baseStyle,
         patterns: inlinePatterns,
         onPatternTap: onPatternTap,
         messageId: messageId,
       );
+      if (searchQuery != null &&
+          searchQuery.isNotEmpty &&
+          searchHighlightStyle != null) {
+        spans = applySearchHighlight(
+          spans,
+          searchQuery,
+          searchHighlightStyle,
+          caseSensitive: caseSensitiveSearch,
+        );
+      }
       return [
         RichText(
           text: TextSpan(children: spans),
@@ -294,13 +333,23 @@ class VTextParser {
       if (block.start > currentIndex) {
         final beforeText = text.substring(currentIndex, block.start).trim();
         if (beforeText.isNotEmpty) {
-          final spans = parseWithPatterns(
+          List<InlineSpan> spans = parseWithPatterns(
             beforeText,
             baseStyle: baseStyle,
             patterns: inlinePatterns,
             onPatternTap: onPatternTap,
             messageId: messageId,
           );
+          if (searchQuery != null &&
+              searchQuery.isNotEmpty &&
+              searchHighlightStyle != null) {
+            spans = applySearchHighlight(
+              spans,
+              searchQuery,
+              searchHighlightStyle,
+              caseSensitive: caseSensitiveSearch,
+            );
+          }
           widgets.add(
             RichText(
               text: TextSpan(children: spans),
@@ -310,28 +359,43 @@ class VTextParser {
         }
       }
       // Add the block widget
-      widgets.add(_buildBlockWidget(
-        block,
-        blockStyle,
-        blockConfig.maxWidth,
-        baseStyle,
-        inlinePatterns,
-        onPatternTap,
-        messageId,
-      ));
+      widgets.add(
+        _buildBlockWidget(
+          block,
+          blockStyle,
+          blockConfig.maxWidth,
+          baseStyle,
+          inlinePatterns,
+          onPatternTap,
+          messageId,
+          searchQuery: searchQuery,
+          searchHighlightStyle: searchHighlightStyle,
+          caseSensitiveSearch: caseSensitiveSearch,
+        ),
+      );
       currentIndex = block.end;
     }
     // Add remaining text after last block
     if (currentIndex < text.length) {
       final afterText = text.substring(currentIndex).trim();
       if (afterText.isNotEmpty) {
-        final spans = parseWithPatterns(
+        List<InlineSpan> spans = parseWithPatterns(
           afterText,
           baseStyle: baseStyle,
           patterns: inlinePatterns,
           onPatternTap: onPatternTap,
           messageId: messageId,
         );
+        if (searchQuery != null &&
+            searchQuery.isNotEmpty &&
+            searchHighlightStyle != null) {
+          spans = applySearchHighlight(
+            spans,
+            searchQuery,
+            searchHighlightStyle,
+            caseSensitive: caseSensitiveSearch,
+          );
+        }
         widgets.add(
           RichText(
             text: TextSpan(children: spans),
@@ -361,18 +425,22 @@ class VTextParser {
 
   /// Extract all block-level matches from text
   static List<_BlockMatch> _extractBlockMatches(
-      String text, VBlockParseConfig config) {
+    String text,
+    VBlockParseConfig config,
+  ) {
     final matches = <_BlockMatch>[];
     // Code blocks first (highest priority, can contain other markers)
     if (config.enableCodeBlocks) {
       for (final match in VPatternPresets.codeBlockRegex.allMatches(text)) {
-        matches.add(_BlockMatch(
-          type: _BlockType.codeBlock,
-          start: match.start,
-          end: match.end,
-          content: match.group(2) ?? '',
-          language: match.group(1),
-        ));
+        matches.add(
+          _BlockMatch(
+            type: _BlockType.codeBlock,
+            start: match.start,
+            end: match.end,
+            content: match.group(2) ?? '',
+            language: match.group(1),
+          ),
+        );
       }
     }
     // Blockquotes
@@ -386,12 +454,14 @@ class VTextParser {
               .map((line) => line.replaceFirst(RegExp(r'^>\s?'), ''))
               .join('\n')
               .trim();
-          matches.add(_BlockMatch(
-            type: _BlockType.blockquote,
-            start: match.start,
-            end: match.end,
-            content: content,
-          ));
+          matches.add(
+            _BlockMatch(
+              type: _BlockType.blockquote,
+              start: match.start,
+              end: match.end,
+              content: content,
+            ),
+          );
         }
       }
     }
@@ -405,13 +475,15 @@ class VTextParser {
               .where((line) => line.trim().isNotEmpty)
               .map((line) => line.replaceFirst(RegExp(r'^[-*]\s+'), ''))
               .toList();
-          matches.add(_BlockMatch(
-            type: _BlockType.bulletList,
-            start: match.start,
-            end: match.end,
-            content: rawContent,
-            listItems: items,
-          ));
+          matches.add(
+            _BlockMatch(
+              type: _BlockType.bulletList,
+              start: match.start,
+              end: match.end,
+              content: rawContent,
+              listItems: items,
+            ),
+          );
         }
       }
     }
@@ -425,13 +497,15 @@ class VTextParser {
               .where((line) => line.trim().isNotEmpty)
               .map((line) => line.replaceFirst(RegExp(r'^\d+\.\s+'), ''))
               .toList();
-          matches.add(_BlockMatch(
-            type: _BlockType.numberedList,
-            start: match.start,
-            end: match.end,
-            content: rawContent,
-            listItems: items,
-          ));
+          matches.add(
+            _BlockMatch(
+              type: _BlockType.numberedList,
+              start: match.start,
+              end: match.end,
+              content: rawContent,
+              listItems: items,
+            ),
+          );
         }
       }
     }
@@ -454,10 +528,17 @@ class VTextParser {
     TextStyle baseStyle,
     List<VCustomPattern> inlinePatterns,
     void Function(VPatternMatch match)? onPatternTap,
-    String? messageId,
-  ) {
+    String? messageId, {
+    String? searchQuery,
+    TextStyle? searchHighlightStyle,
+    bool caseSensitiveSearch = false,
+  }) {
     switch (block.type) {
       case _BlockType.codeBlock:
+        // For code blocks, highlight inside code if requested.
+        // VCodeBlockWidget renders plain code; we could pass highlighted spans,
+        // but for v1 we render code as-is and highlight is applied via
+        // container background if needed. Keep simple: return as-is.
         return VCodeBlockWidget(
           code: block.content,
           language: block.language,
@@ -466,7 +547,7 @@ class VTextParser {
         );
       case _BlockType.blockquote:
         // Apply inline formatting to blockquote content
-        final spans = parseWithPatterns(
+        List<InlineSpan> spans = parseWithPatterns(
           block.content,
           baseStyle: baseStyle.copyWith(
             color: style.blockquoteTextColor,
@@ -476,6 +557,16 @@ class VTextParser {
           onPatternTap: onPatternTap,
           messageId: messageId,
         );
+        if (searchQuery != null &&
+            searchQuery.isNotEmpty &&
+            searchHighlightStyle != null) {
+          spans = applySearchHighlight(
+            spans,
+            searchQuery,
+            searchHighlightStyle,
+            caseSensitive: caseSensitiveSearch,
+          );
+        }
         return VBlockquoteWidget(
           text: block.content,
           style: style,
@@ -485,13 +576,24 @@ class VTextParser {
       case _BlockType.bulletList:
         // Apply inline formatting to each list item
         final itemSpans = block.listItems?.map((item) {
-          return parseWithPatterns(
+          List<InlineSpan> s = parseWithPatterns(
             item,
             baseStyle: baseStyle.copyWith(color: style.listTextColor),
             patterns: inlinePatterns,
             onPatternTap: onPatternTap,
             messageId: messageId,
           );
+          if (searchQuery != null &&
+              searchQuery.isNotEmpty &&
+              searchHighlightStyle != null) {
+            s = applySearchHighlight(
+              s,
+              searchQuery,
+              searchHighlightStyle,
+              caseSensitive: caseSensitiveSearch,
+            );
+          }
+          return s;
         }).toList();
         return VBulletListWidget(
           items: block.listItems ?? [],
@@ -502,13 +604,24 @@ class VTextParser {
       case _BlockType.numberedList:
         // Apply inline formatting to each list item
         final itemSpans = block.listItems?.map((item) {
-          return parseWithPatterns(
+          List<InlineSpan> s = parseWithPatterns(
             item,
             baseStyle: baseStyle.copyWith(color: style.listTextColor),
             patterns: inlinePatterns,
             onPatternTap: onPatternTap,
             messageId: messageId,
           );
+          if (searchQuery != null &&
+              searchQuery.isNotEmpty &&
+              searchHighlightStyle != null) {
+            s = applySearchHighlight(
+              s,
+              searchQuery,
+              searchHighlightStyle,
+              caseSensitive: caseSensitiveSearch,
+            );
+          }
+          return s;
         }).toList();
         return VNumberedListWidget(
           items: block.listItems ?? [],
@@ -554,6 +667,170 @@ class VTextParser {
         ? TextDirection.rtl
         : TextDirection.ltr;
   }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // SEARCH HIGHLIGHT - Inline substring highlighting
+  // ════════════════════════════════════════════════════════════════════════════
+
+  /// Apply case-insensitive search highlighting to an already-parsed span list.
+  ///
+  /// Each occurrence of [query] inside a `TextSpan.text` is wrapped with
+  /// [highlightStyle] merged over the original span style, preserving any
+  /// existing `GestureRecognizer`. Empty or null query is a no-op.
+  ///
+  /// Handles both flat spans and spans with `children` recursively.
+  static List<InlineSpan> applySearchHighlight(
+    List<InlineSpan> spans,
+    String? query,
+    TextStyle highlightStyle, {
+    bool caseSensitive = false,
+  }) {
+    if (query == null || query.isEmpty) return spans;
+    final String normalizedQuery = caseSensitive ? query : query.toLowerCase();
+    if (normalizedQuery.isEmpty) return spans;
+    final List<InlineSpan> result = [];
+    for (final span in spans) {
+      result.addAll(
+        _highlightSpan(
+          span,
+          normalizedQuery,
+          highlightStyle,
+          caseSensitive: caseSensitive,
+          originalQueryLength: query.length,
+        ),
+      );
+    }
+    return result;
+  }
+
+  static List<InlineSpan> _highlightSpan(
+    InlineSpan span,
+    String normalizedQuery,
+    TextStyle highlightStyle, {
+    required bool caseSensitive,
+    required int originalQueryLength,
+  }) {
+    if (span is TextSpan) {
+      final String? text = span.text;
+      final List<InlineSpan>? children = span.children;
+      if (text != null && text.isNotEmpty) {
+        // Preserve whitespace: match against normalized text but slice original.
+        // We treat \u00A0 (preserveWhitespace) as regular space for searching.
+        final String haystack = caseSensitive
+            ? text.replaceAll(_nbsp, ' ')
+            : text.replaceAll(_nbsp, ' ').toLowerCase();
+        final String queryForSlice = normalizedQuery;
+        int start = 0;
+        int index = haystack.indexOf(queryForSlice, start);
+        if (index == -1) {
+          return [span];
+        }
+        final List<InlineSpan> parts = [];
+        while (index != -1) {
+          if (index > start) {
+            parts.add(
+              TextSpan(
+                text: text.substring(start, index),
+                style: span.style,
+                recognizer: span.recognizer,
+                mouseCursor: span.mouseCursor,
+                onEnter: span.onEnter,
+                onExit: span.onExit,
+                semanticsLabel: span.semanticsLabel,
+                locale: span.locale,
+                spellOut: span.spellOut,
+              ),
+            );
+          }
+          final String matchedText = text.substring(
+            index,
+            index + originalQueryLength,
+          );
+          // Merge highlight over base style; keep original color if highlight doesn't specify.
+          final TextStyle base = span.style ?? const TextStyle();
+          final TextStyle merged = base.merge(highlightStyle);
+          parts.add(
+            TextSpan(
+              text: matchedText,
+              style: merged,
+              recognizer: span.recognizer,
+              mouseCursor: span.mouseCursor,
+              onEnter: span.onEnter,
+              onExit: span.onExit,
+              semanticsLabel: span.semanticsLabel,
+              locale: span.locale,
+              spellOut: span.spellOut,
+            ),
+          );
+          start = index + originalQueryLength;
+          if (start >= text.length) break;
+          index = haystack.indexOf(queryForSlice, start);
+        }
+        if (start < text.length) {
+          parts.add(
+            TextSpan(
+              text: text.substring(start),
+              style: span.style,
+              recognizer: span.recognizer,
+              mouseCursor: span.mouseCursor,
+              onEnter: span.onEnter,
+              onExit: span.onExit,
+              semanticsLabel: span.semanticsLabel,
+              locale: span.locale,
+              spellOut: span.spellOut,
+            ),
+          );
+        }
+        return parts;
+      } else if (children != null && children.isNotEmpty) {
+        final List<InlineSpan> newChildren = [];
+        for (final child in children) {
+          newChildren.addAll(
+            _highlightSpan(
+              child,
+              normalizedQuery,
+              highlightStyle,
+              caseSensitive: caseSensitive,
+              originalQueryLength: originalQueryLength,
+            ),
+          );
+        }
+        return [
+          TextSpan(
+            style: span.style,
+            recognizer: span.recognizer,
+            mouseCursor: span.mouseCursor,
+            onEnter: span.onEnter,
+            onExit: span.onExit,
+            semanticsLabel: span.semanticsLabel,
+            locale: span.locale,
+            spellOut: span.spellOut,
+            children: newChildren,
+          ),
+        ];
+      }
+    }
+    return [span];
+  }
+
+  /// Convenience helper to build highlighted spans for simple text without patterns.
+  ///
+  /// Creates a single base span and applies search highlighting.
+  static List<InlineSpan> buildHighlightedSpans(
+    String text,
+    TextStyle baseStyle,
+    String? query,
+    TextStyle highlightStyle, {
+    bool caseSensitive = false,
+  }) {
+    final List<InlineSpan> base = [TextSpan(text: text, style: baseStyle)];
+    return applySearchHighlight(
+      base,
+      query,
+      highlightStyle,
+      caseSensitive: caseSensitive,
+    );
+  }
 }
 
 /// Internal match class with pattern reference
@@ -571,12 +848,7 @@ class _PatternedMatch {
 }
 
 /// Block element types
-enum _BlockType {
-  codeBlock,
-  blockquote,
-  bulletList,
-  numberedList,
-}
+enum _BlockType { codeBlock, blockquote, bulletList, numberedList }
 
 /// Internal class for block-level matches
 class _BlockMatch {

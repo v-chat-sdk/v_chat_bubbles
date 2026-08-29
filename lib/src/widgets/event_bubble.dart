@@ -33,6 +33,8 @@ class VEventBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override

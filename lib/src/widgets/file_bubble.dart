@@ -50,6 +50,8 @@ class VFileBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
   @override
   Widget buildContent(BuildContext context) {
@@ -58,10 +60,13 @@ class VFileBubble extends BaseBubble {
     final textColor = selectTextColor(theme);
     final secondaryColor = selectSecondaryTextColor(theme);
     final header = buildBubbleHeader(context);
-    final showTail = showsGroupEnd;
+    final showTail = effectiveShowTail(context);
     final fileName = file.name;
     final extension = _getExtensionFromName(fileName);
     final fileSize = file.fileSize;
+    final String? query = searchQuery;
+    final TextStyle highlightStyle =
+        searchHighlightStyle ?? context.bubbleTheme.searchHighlightStyle;
     return VBubbleWrapper(
       isMeSender: isMeSender,
       showTail: showTail,
@@ -81,15 +86,14 @@ class VFileBubble extends BaseBubble {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      _buildHighlightedFileName(
                         fileName,
-                        style: theme.messageTextStyle.copyWith(
+                        theme.messageTextStyle.copyWith(
                           color: textColor,
                           fontWeight: FontWeight.w500,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textDirection: VTextParser.getTextDirection(fileName),
+                        query,
+                        highlightStyle,
                       ),
                       BubbleSpacing.vGapXS,
                       Row(
@@ -270,5 +274,34 @@ class VFileBubble extends BaseBubble {
       default:
         return Icons.insert_drive_file;
     }
+  }
+
+  Widget _buildHighlightedFileName(
+    String text,
+    TextStyle baseStyle,
+    String? query,
+    TextStyle highlightStyle,
+  ) {
+    if (query == null || query.isEmpty) {
+      return Text(
+        text,
+        style: baseStyle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textDirection: VTextParser.getTextDirection(text),
+      );
+    }
+    final spans = VTextParser.buildHighlightedSpans(
+      text,
+      baseStyle,
+      query,
+      highlightStyle,
+    );
+    return RichText(
+      text: TextSpan(children: spans),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      textDirection: VTextParser.getTextDirection(text),
+    );
   }
 }

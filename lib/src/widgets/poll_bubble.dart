@@ -32,6 +32,8 @@ class VPollBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
   @override
   Widget buildContent(BuildContext context) {
@@ -41,7 +43,7 @@ class VPollBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       maxWidth: MediaQuery.sizeOf(context).width * 0.8,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

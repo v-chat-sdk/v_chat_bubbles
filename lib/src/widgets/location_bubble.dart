@@ -36,6 +36,8 @@ class VLocationBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -65,7 +67,7 @@ class VLocationBubble extends BaseBubble {
     if (header == null) return mediaContent;
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       padding: EdgeInsets.zero,
       child: Column(
         mainAxisSize: MainAxisSize.min,

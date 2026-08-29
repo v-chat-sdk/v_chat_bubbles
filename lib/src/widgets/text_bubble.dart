@@ -49,6 +49,8 @@ class VTextBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -56,7 +58,10 @@ class VTextBubble extends BaseBubble {
     final theme = context.bubbleTheme;
     final textColor = selectTextColor(theme);
     final header = buildBubbleHeader(context);
-    final showTail = showsGroupEnd;
+    final showTail = effectiveShowTail(context);
+    final String? query = searchQuery;
+    final TextStyle highlightStyle =
+        searchHighlightStyle ?? theme.searchHighlightStyle;
     final textContent = _ExpandableTextWithPreview(
       messageId: messageId,
       text: text,
@@ -71,6 +76,8 @@ class VTextBubble extends BaseBubble {
       lifecycle: lifecycle,
       isPinned: isPinned,
       isStarred: isStarred,
+      searchQuery: query,
+      searchHighlightStyle: highlightStyle,
     );
     return VBubbleWrapper(
       isMeSender: isMeSender,

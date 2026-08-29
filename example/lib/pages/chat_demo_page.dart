@@ -39,6 +39,14 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
   final ScrollController _scrollController = ScrollController();
   int _messageIdCounter = 1000;
 
+  // Search state
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+  bool _isSearching = false;
+  String _searchQuery = '';
+  int _currentMatchIndex = 0;
+  List<int> _matchingIndices = [];
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +65,8 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
   @override
   void dispose() {
     _textController.dispose();
+    _searchController.dispose();
+    _searchFocusNode.dispose();
     _scrollController.dispose();
     MessageBuilder.disposeAll();
     super.dispose();
@@ -146,6 +156,127 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
         _isSelectionMode = false;
       }
     });
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearching = !_isSearching;
+      if (_isSearching) {
+        _searchQuery = '';
+        _searchController.clear();
+        _matchingIndices = [];
+        _currentMatchIndex = 0;
+        Future.delayed(const Duration(milliseconds: 100), () {
+          _searchFocusNode.requestFocus();
+        });
+      } else {
+        _searchQuery = '';
+        _searchController.clear();
+        _matchingIndices.clear();
+      }
+    });
+  }
+
+  void _closeSearch() {
+    setState(() {
+      _isSearching = false;
+      _searchQuery = '';
+      _searchController.clear();
+      _matchingIndices.clear();
+      _currentMatchIndex = 0;
+    });
+  }
+
+  void _onSearchChanged(String value) {
+    setState(() {
+      _searchQuery = value;
+      _updateSearchMatches();
+    });
+  }
+
+  void _updateSearchMatches() {
+    if (_searchQuery.isEmpty) {
+      _matchingIndices = [];
+      _currentMatchIndex = 0;
+      return;
+    }
+    final q = _searchQuery.toLowerCase();
+    final List<int> matches = [];
+    for (int i = 0; i < _messages.length; i++) {
+      final m = _messages[i];
+      bool isMatch = false;
+      // Check text, caption, file name, etc.
+      if (m.text != null && m.text!.toLowerCase().contains(q)) {
+        isMatch = true;
+      }
+      if (m.caption != null && m.caption!.toLowerCase().contains(q)) {
+        isMatch = true;
+      }
+      if (m.imageUrl != null && m.imageUrl!.toLowerCase().contains(q)) {
+        isMatch = false; // ignore url
+      }
+      // For file name
+      if (m.file != null && m.file!.name.toLowerCase().contains(q)) {
+        isMatch = true;
+      }
+      // Poll question
+      if (m.pollData != null && m.pollData!.question.toLowerCase().contains(q)) {
+        isMatch = true;
+      }
+      // Contact name
+      if (m.contactData != null &&
+          m.contactData!.name.toLowerCase().contains(q)) {
+        isMatch = true;
+      }
+      // Also check gallery? Skip
+      if (isMatch) {
+        matches.add(i);
+      }
+    }
+    _matchingIndices = matches;
+    if (_matchingIndices.isEmpty) {
+      _currentMatchIndex = 0;
+    } else if (_currentMatchIndex >= _matchingIndices.length) {
+      _currentMatchIndex = 0;
+    }
+  }
+
+  void _goToNextMatch() {
+    if (_matchingIndices.isEmpty) return;
+    setState(() {
+      _currentMatchIndex = (_currentMatchIndex + 1) % _matchingIndices.length;
+    });
+    _scrollToCurrentMatch();
+  }
+
+  void _goToPrevMatch() {
+    if (_matchingIndices.isEmpty) return;
+    setState(() {
+      _currentMatchIndex =
+          (_currentMatchIndex - 1 + _matchingIndices.length) %
+          _matchingIndices.length;
+    });
+    _scrollToCurrentMatch();
+  }
+
+  void _scrollToCurrentMatch() {
+    if (_matchingIndices.isEmpty) return;
+    final targetIndex = _matchingIndices[_currentMatchIndex];
+    // Estimate scroll offset for reverse ListView. Each item ~80-120px, use 100 average.
+    // In reverse ListView, index 0 is at bottom. Scroll offset 0 is bottom.
+    // To bring target into view, animate to its offset.
+    // Use a simple approach: jump to show target near middle.
+    if (_scrollController.hasClients) {
+      // Approximate
+      final estimatedOffset = targetIndex * 90.0;
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final targetOffset = (maxScroll - estimatedOffset).clamp(0.0, maxScroll);
+      _scrollController.animateTo(
+        targetOffset,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+      );
+    }
   }
 
   VBubbleCallbacks _buildCallbacks() {
@@ -330,6 +461,7 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
           title: chatTitle,
           subtitle: chatSubtitle,
           isGroupChat: widget.isGroupChat,
+          onSearchTap: _toggleSearch,
         ),
         body: VBubbleScope(
           style: _style,
@@ -343,6 +475,7 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
           },
           child: Column(
             children: [
+              if (_isSearching) _buildSearchBar(),
               Expanded(
                 child: ListView.builder(
                   controller: _scrollController,
@@ -359,6 +492,7 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
                       context,
                       message,
                       previousMessage: previousMessage,
+                      searchQuery: _searchQuery,
                     );
                   },
                 ),
@@ -367,6 +501,70 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    final isDark = _brightness == Brightness.dark;
+    final count = _matchingIndices.length;
+    final current = count == 0 ? 0 : _currentMatchIndex + 1;
+    return Container(
+      color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      child: Row(
+        children: [
+          const Icon(Icons.search, size: 22, color: Colors.grey),
+          const SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              focusNode: _searchFocusNode,
+              decoration: const InputDecoration(
+                hintText: 'Search',
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding: EdgeInsets.symmetric(vertical: 8),
+              ),
+              onChanged: _onSearchChanged,
+            ),
+          ),
+          if (_searchQuery.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.close, size: 20),
+              tooltip: 'Clear',
+              onPressed: () {
+                _searchController.clear();
+                _onSearchChanged('');
+              },
+            ),
+          if (_searchQuery.isNotEmpty) ...[
+            Text(
+              '$current of $count',
+              style: TextStyle(
+                fontSize: 13,
+                color: isDark ? Colors.white70 : Colors.black54,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.arrow_upward, size: 20),
+              tooltip: 'Previous',
+              onPressed: count == 0 ? null : _goToPrevMatch,
+            ),
+            IconButton(
+              icon: const Icon(Icons.arrow_downward, size: 20),
+              tooltip: 'Next',
+              onPressed: count == 0 ? null : _goToNextMatch,
+            ),
+          ],
+          TextButton(
+            onPressed: _closeSearch,
+            child: const Text(
+              'Done',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
       ),
     );
   }

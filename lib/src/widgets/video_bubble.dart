@@ -81,6 +81,8 @@ class VVideoBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -106,7 +108,7 @@ class VVideoBubble extends BaseBubble {
     if (!hasHeader) return mediaContent;
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       padding: EdgeInsets.zero,
       clipContent: true, // Clip content to bubble shape
       child: Column(
@@ -279,6 +281,7 @@ class VVideoBubble extends BaseBubble {
 
   Widget _buildOverlayInfo(BuildContext context) {
     final theme = context.bubbleTheme;
+    final highlight = searchHighlightStyle ?? theme.searchHighlightStyle;
     return VMediaOverlayInfo(
       time: time,
       status: isMeSender ? status : null,
@@ -286,6 +289,8 @@ class VVideoBubble extends BaseBubble {
       isMeSender: isMeSender,
       maxCaptionLines: 2,
       readIconColor: theme.readIconColor,
+      searchQuery: searchQuery,
+      searchHighlightStyle: highlight,
     );
   }
 }

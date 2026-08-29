@@ -55,6 +55,8 @@ class VGalleryBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -85,7 +87,7 @@ class VGalleryBubble extends BaseBubble {
     if (!hasHeader) return mediaContent;
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       padding: EdgeInsets.zero,
       clipContent: true, // Clip content to bubble shape
       child: Column(

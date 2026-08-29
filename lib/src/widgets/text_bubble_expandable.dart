@@ -15,6 +15,8 @@ class _ExpandableTextWithPreview extends StatefulWidget {
   final VMessageLifecycleData? lifecycle;
   final bool isPinned;
   final bool isStarred;
+  final String? searchQuery;
+  final TextStyle searchHighlightStyle;
 
   const _ExpandableTextWithPreview({
     required this.messageId,
@@ -29,6 +31,8 @@ class _ExpandableTextWithPreview extends StatefulWidget {
     this.lifecycle,
     required this.isPinned,
     required this.isStarred,
+    this.searchQuery,
+    required this.searchHighlightStyle,
   });
 
   @override
@@ -52,7 +56,9 @@ class _ExpandableTextWithPreviewState
     // Only invalidate for properties that affect text parsing.
     if (oldWidget.text != widget.text ||
         oldWidget.textColor != widget.textColor ||
-        oldWidget.isMeSender != widget.isMeSender) {
+        oldWidget.isMeSender != widget.isMeSender ||
+        oldWidget.searchQuery != widget.searchQuery ||
+        oldWidget.searchHighlightStyle != widget.searchHighlightStyle) {
       _clearParseCache();
     }
   }

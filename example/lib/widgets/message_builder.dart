@@ -49,6 +49,7 @@ class MessageBuilder {
     BuildContext context,
     DemoMessage message, {
     DemoMessage? previousMessage,
+    String? searchQuery,
   }) {
     final isSameSender = computeIsSameSender(message, previousMessage);
     switch (message.type) {
@@ -69,6 +70,7 @@ class MessageBuilder {
           isEdited: message.isEdited,
           isPinned: message.isPinned,
           isStarred: message.isStarred,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.image:
         return VImageBubble(
@@ -83,6 +85,7 @@ class MessageBuilder {
           senderName: message.senderName,
           senderColor: message.senderColor,
           reactions: message.reactions,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.gallery:
         final urls = message.galleryUrls ?? [];
@@ -103,6 +106,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.video:
         return VVideoBubble(
@@ -123,6 +127,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.voice:
         return VVoiceBubble(
@@ -135,6 +140,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.file:
         return VFileBubble(
@@ -149,6 +155,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.poll:
         return VPollBubble(
@@ -162,6 +169,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.location:
         return VLocationBubble(
@@ -176,6 +184,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.contact:
         return VContactBubble(
@@ -189,6 +198,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.call:
         return VCallBubble(
@@ -206,6 +216,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.linkPreview:
         return VTextBubble(
@@ -219,6 +230,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.quotedContent:
         return VQuotedContentBubble(
@@ -234,6 +246,7 @@ class MessageBuilder {
           avatar: message.avatar,
           senderName: message.senderName,
           senderColor: message.senderColor,
+          searchQuery: searchQuery,
         );
       case DemoMessageType.system:
         return VSystemBubble(text: message.text ?? '');
@@ -272,6 +285,7 @@ class MessageBuilder {
             // But since we registered 'product' in VBubbleScope, this won't be used
             return const SizedBox();
           },
+          searchQuery: searchQuery,
         );
     }
   }

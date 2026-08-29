@@ -70,6 +70,14 @@ class VBubbleTheme {
 
   /// Date chip styling
   final VBubbleDateChipTheme dateChip;
+
+  /// Inline search highlight style for matched substrings
+  ///
+  /// Used when a bubble has a non-empty `searchQuery`. The matched
+  /// substring is merged with this style (typically a pink/red
+  /// `backgroundColor` with white text). The highlight is drawn inline
+  /// behind each matching character, like the screenshot's red "h".
+  final TextStyle searchHighlightStyle;
   const VBubbleTheme({
     required this.core,
     required this.text,
@@ -83,6 +91,10 @@ class VBubbleTheme {
     required this.selection,
     required this.systemMessages,
     required this.dateChip,
+    this.searchHighlightStyle = const TextStyle(
+      backgroundColor: Color(0xFFFF3B82),
+      color: Color(0xFFFFFFFF),
+    ),
   });
   // ═══════════════════════════════════════════════════════════════════════════
   // CONVENIENCE HELPER METHODS
@@ -290,8 +302,10 @@ class VBubbleTheme {
   // STYLE FACTORY CONSTRUCTORS
   // ═══════════════════════════════════════════════════════════════════════════
   /// Get theme for specific style and brightness
-  factory VBubbleTheme.fromStyle(VBubbleStyle style,
-      {Brightness brightness = Brightness.light}) {
+  factory VBubbleTheme.fromStyle(
+    VBubbleStyle style, {
+    Brightness brightness = Brightness.light,
+  }) {
     switch (style) {
       case VBubbleStyle.telegram:
         return brightness == Brightness.light
@@ -316,131 +330,131 @@ class VBubbleTheme {
 
   /// Telegram light theme
   factory VBubbleTheme.telegramLight() => VBubbleTheme(
-        core: VBubbleCoreTheme.telegramLight(),
-        text: VBubbleTextTheme.telegramLight(),
-        status: VBubbleStatusTheme.telegramLight(),
-        reply: VBubbleReplyTheme.telegramLight(),
-        forward: VBubbleForwardTheme.telegramLight(),
-        voice: VBubbleVoiceTheme.telegramLight(),
-        media: VBubbleMediaTheme.telegramLight(),
-        reactions: VBubbleReactionTheme.telegramLight(),
-        menu: VBubbleMenuTheme.telegramLight(),
-        selection: VBubbleSelectionTheme.telegramLight(),
-        systemMessages: VBubbleSystemTheme.telegramLight(),
-        dateChip: VBubbleDateChipTheme.telegramLight(),
-      );
+    core: VBubbleCoreTheme.telegramLight(),
+    text: VBubbleTextTheme.telegramLight(),
+    status: VBubbleStatusTheme.telegramLight(),
+    reply: VBubbleReplyTheme.telegramLight(),
+    forward: VBubbleForwardTheme.telegramLight(),
+    voice: VBubbleVoiceTheme.telegramLight(),
+    media: VBubbleMediaTheme.telegramLight(),
+    reactions: VBubbleReactionTheme.telegramLight(),
+    menu: VBubbleMenuTheme.telegramLight(),
+    selection: VBubbleSelectionTheme.telegramLight(),
+    systemMessages: VBubbleSystemTheme.telegramLight(),
+    dateChip: VBubbleDateChipTheme.telegramLight(),
+  );
 
   /// Telegram dark theme
   factory VBubbleTheme.telegramDark() => VBubbleTheme(
-        core: VBubbleCoreTheme.telegramDark(),
-        text: VBubbleTextTheme.telegramDark(),
-        status: VBubbleStatusTheme.telegramDark(),
-        reply: VBubbleReplyTheme.telegramDark(),
-        forward: VBubbleForwardTheme.telegramDark(),
-        voice: VBubbleVoiceTheme.telegramDark(),
-        media: VBubbleMediaTheme.telegramDark(),
-        reactions: VBubbleReactionTheme.telegramDark(),
-        menu: VBubbleMenuTheme.telegramDark(),
-        selection: VBubbleSelectionTheme.telegramDark(),
-        systemMessages: VBubbleSystemTheme.telegramDark(),
-        dateChip: VBubbleDateChipTheme.telegramDark(),
-      );
+    core: VBubbleCoreTheme.telegramDark(),
+    text: VBubbleTextTheme.telegramDark(),
+    status: VBubbleStatusTheme.telegramDark(),
+    reply: VBubbleReplyTheme.telegramDark(),
+    forward: VBubbleForwardTheme.telegramDark(),
+    voice: VBubbleVoiceTheme.telegramDark(),
+    media: VBubbleMediaTheme.telegramDark(),
+    reactions: VBubbleReactionTheme.telegramDark(),
+    menu: VBubbleMenuTheme.telegramDark(),
+    selection: VBubbleSelectionTheme.telegramDark(),
+    systemMessages: VBubbleSystemTheme.telegramDark(),
+    dateChip: VBubbleDateChipTheme.telegramDark(),
+  );
 
   /// WhatsApp light theme
   factory VBubbleTheme.whatsappLight() => VBubbleTheme(
-        core: VBubbleCoreTheme.whatsappLight(),
-        text: VBubbleTextTheme.whatsappLight(),
-        status: VBubbleStatusTheme.whatsappLight(),
-        reply: VBubbleReplyTheme.whatsappLight(),
-        forward: VBubbleForwardTheme.whatsappLight(),
-        voice: VBubbleVoiceTheme.whatsappLight(),
-        media: VBubbleMediaTheme.whatsappLight(),
-        reactions: VBubbleReactionTheme.whatsappLight(),
-        menu: VBubbleMenuTheme.whatsappLight(),
-        selection: VBubbleSelectionTheme.whatsappLight(),
-        systemMessages: VBubbleSystemTheme.whatsappLight(),
-        dateChip: VBubbleDateChipTheme.whatsappLight(),
-      );
+    core: VBubbleCoreTheme.whatsappLight(),
+    text: VBubbleTextTheme.whatsappLight(),
+    status: VBubbleStatusTheme.whatsappLight(),
+    reply: VBubbleReplyTheme.whatsappLight(),
+    forward: VBubbleForwardTheme.whatsappLight(),
+    voice: VBubbleVoiceTheme.whatsappLight(),
+    media: VBubbleMediaTheme.whatsappLight(),
+    reactions: VBubbleReactionTheme.whatsappLight(),
+    menu: VBubbleMenuTheme.whatsappLight(),
+    selection: VBubbleSelectionTheme.whatsappLight(),
+    systemMessages: VBubbleSystemTheme.whatsappLight(),
+    dateChip: VBubbleDateChipTheme.whatsappLight(),
+  );
 
   /// WhatsApp dark theme
   factory VBubbleTheme.whatsappDark() => VBubbleTheme(
-        core: VBubbleCoreTheme.whatsappDark(),
-        text: VBubbleTextTheme.whatsappDark(),
-        status: VBubbleStatusTheme.whatsappDark(),
-        reply: VBubbleReplyTheme.whatsappDark(),
-        forward: VBubbleForwardTheme.whatsappDark(),
-        voice: VBubbleVoiceTheme.whatsappDark(),
-        media: VBubbleMediaTheme.whatsappDark(),
-        reactions: VBubbleReactionTheme.whatsappDark(),
-        menu: VBubbleMenuTheme.whatsappDark(),
-        selection: VBubbleSelectionTheme.whatsappDark(),
-        systemMessages: VBubbleSystemTheme.whatsappDark(),
-        dateChip: VBubbleDateChipTheme.whatsappDark(),
-      );
+    core: VBubbleCoreTheme.whatsappDark(),
+    text: VBubbleTextTheme.whatsappDark(),
+    status: VBubbleStatusTheme.whatsappDark(),
+    reply: VBubbleReplyTheme.whatsappDark(),
+    forward: VBubbleForwardTheme.whatsappDark(),
+    voice: VBubbleVoiceTheme.whatsappDark(),
+    media: VBubbleMediaTheme.whatsappDark(),
+    reactions: VBubbleReactionTheme.whatsappDark(),
+    menu: VBubbleMenuTheme.whatsappDark(),
+    selection: VBubbleSelectionTheme.whatsappDark(),
+    systemMessages: VBubbleSystemTheme.whatsappDark(),
+    dateChip: VBubbleDateChipTheme.whatsappDark(),
+  );
 
   /// Messenger light theme
   factory VBubbleTheme.messengerLight() => VBubbleTheme(
-        core: VBubbleCoreTheme.messengerLight(),
-        text: VBubbleTextTheme.messengerLight(),
-        status: VBubbleStatusTheme.messengerLight(),
-        reply: VBubbleReplyTheme.messengerLight(),
-        forward: VBubbleForwardTheme.messengerLight(),
-        voice: VBubbleVoiceTheme.messengerLight(),
-        media: VBubbleMediaTheme.messengerLight(),
-        reactions: VBubbleReactionTheme.messengerLight(),
-        menu: VBubbleMenuTheme.messengerLight(),
-        selection: VBubbleSelectionTheme.messengerLight(),
-        systemMessages: VBubbleSystemTheme.messengerLight(),
-        dateChip: VBubbleDateChipTheme.messengerLight(),
-      );
+    core: VBubbleCoreTheme.messengerLight(),
+    text: VBubbleTextTheme.messengerLight(),
+    status: VBubbleStatusTheme.messengerLight(),
+    reply: VBubbleReplyTheme.messengerLight(),
+    forward: VBubbleForwardTheme.messengerLight(),
+    voice: VBubbleVoiceTheme.messengerLight(),
+    media: VBubbleMediaTheme.messengerLight(),
+    reactions: VBubbleReactionTheme.messengerLight(),
+    menu: VBubbleMenuTheme.messengerLight(),
+    selection: VBubbleSelectionTheme.messengerLight(),
+    systemMessages: VBubbleSystemTheme.messengerLight(),
+    dateChip: VBubbleDateChipTheme.messengerLight(),
+  );
 
   /// Messenger dark theme
   factory VBubbleTheme.messengerDark() => VBubbleTheme(
-        core: VBubbleCoreTheme.messengerDark(),
-        text: VBubbleTextTheme.messengerDark(),
-        status: VBubbleStatusTheme.messengerDark(),
-        reply: VBubbleReplyTheme.messengerDark(),
-        forward: VBubbleForwardTheme.messengerDark(),
-        voice: VBubbleVoiceTheme.messengerDark(),
-        media: VBubbleMediaTheme.messengerDark(),
-        reactions: VBubbleReactionTheme.messengerDark(),
-        menu: VBubbleMenuTheme.messengerDark(),
-        selection: VBubbleSelectionTheme.messengerDark(),
-        systemMessages: VBubbleSystemTheme.messengerDark(),
-        dateChip: VBubbleDateChipTheme.messengerDark(),
-      );
+    core: VBubbleCoreTheme.messengerDark(),
+    text: VBubbleTextTheme.messengerDark(),
+    status: VBubbleStatusTheme.messengerDark(),
+    reply: VBubbleReplyTheme.messengerDark(),
+    forward: VBubbleForwardTheme.messengerDark(),
+    voice: VBubbleVoiceTheme.messengerDark(),
+    media: VBubbleMediaTheme.messengerDark(),
+    reactions: VBubbleReactionTheme.messengerDark(),
+    menu: VBubbleMenuTheme.messengerDark(),
+    selection: VBubbleSelectionTheme.messengerDark(),
+    systemMessages: VBubbleSystemTheme.messengerDark(),
+    dateChip: VBubbleDateChipTheme.messengerDark(),
+  );
 
   /// iMessage light theme
   factory VBubbleTheme.imessageLight() => VBubbleTheme(
-        core: VBubbleCoreTheme.imessageLight(),
-        text: VBubbleTextTheme.imessageLight(),
-        status: VBubbleStatusTheme.imessageLight(),
-        reply: VBubbleReplyTheme.imessageLight(),
-        forward: VBubbleForwardTheme.imessageLight(),
-        voice: VBubbleVoiceTheme.imessageLight(),
-        media: VBubbleMediaTheme.imessageLight(),
-        reactions: VBubbleReactionTheme.imessageLight(),
-        menu: VBubbleMenuTheme.imessageLight(),
-        selection: VBubbleSelectionTheme.imessageLight(),
-        systemMessages: VBubbleSystemTheme.imessageLight(),
-        dateChip: VBubbleDateChipTheme.imessageLight(),
-      );
+    core: VBubbleCoreTheme.imessageLight(),
+    text: VBubbleTextTheme.imessageLight(),
+    status: VBubbleStatusTheme.imessageLight(),
+    reply: VBubbleReplyTheme.imessageLight(),
+    forward: VBubbleForwardTheme.imessageLight(),
+    voice: VBubbleVoiceTheme.imessageLight(),
+    media: VBubbleMediaTheme.imessageLight(),
+    reactions: VBubbleReactionTheme.imessageLight(),
+    menu: VBubbleMenuTheme.imessageLight(),
+    selection: VBubbleSelectionTheme.imessageLight(),
+    systemMessages: VBubbleSystemTheme.imessageLight(),
+    dateChip: VBubbleDateChipTheme.imessageLight(),
+  );
 
   /// iMessage dark theme
   factory VBubbleTheme.imessageDark() => VBubbleTheme(
-        core: VBubbleCoreTheme.imessageDark(),
-        text: VBubbleTextTheme.imessageDark(),
-        status: VBubbleStatusTheme.imessageDark(),
-        reply: VBubbleReplyTheme.imessageDark(),
-        forward: VBubbleForwardTheme.imessageDark(),
-        voice: VBubbleVoiceTheme.imessageDark(),
-        media: VBubbleMediaTheme.imessageDark(),
-        reactions: VBubbleReactionTheme.imessageDark(),
-        menu: VBubbleMenuTheme.imessageDark(),
-        selection: VBubbleSelectionTheme.imessageDark(),
-        systemMessages: VBubbleSystemTheme.imessageDark(),
-        dateChip: VBubbleDateChipTheme.imessageDark(),
-      );
+    core: VBubbleCoreTheme.imessageDark(),
+    text: VBubbleTextTheme.imessageDark(),
+    status: VBubbleStatusTheme.imessageDark(),
+    reply: VBubbleReplyTheme.imessageDark(),
+    forward: VBubbleForwardTheme.imessageDark(),
+    voice: VBubbleVoiceTheme.imessageDark(),
+    media: VBubbleMediaTheme.imessageDark(),
+    reactions: VBubbleReactionTheme.imessageDark(),
+    menu: VBubbleMenuTheme.imessageDark(),
+    selection: VBubbleSelectionTheme.imessageDark(),
+    systemMessages: VBubbleSystemTheme.imessageDark(),
+    dateChip: VBubbleDateChipTheme.imessageDark(),
+  );
 
   /// Create a custom theme with essential colors, deriving other values
   factory VBubbleTheme.custom({
@@ -478,9 +492,15 @@ class VBubbleTheme {
         messageTextStyle: TextStyle(fontSize: 16, color: defaultTextColor),
         captionTextStyle: TextStyle(fontSize: 14, color: defaultTextColor),
         linkTextStyle: TextStyle(
-            fontSize: 16, color: accent, decoration: TextDecoration.underline),
-        senderNameStyle:
-            TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: accent),
+          fontSize: 16,
+          color: accent,
+          decoration: TextDecoration.underline,
+        ),
+        senderNameStyle: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          color: accent,
+        ),
         timeTextStyle: TextStyle(fontSize: 11, color: defaultSecondaryColor),
         replyTextStyle: TextStyle(fontSize: 14, color: defaultSecondaryColor),
       ),
@@ -543,8 +563,9 @@ class VBubbleTheme {
         progressColor: accent,
       ),
       reactions: VBubbleReactionTheme(
-        backgroundColor:
-            isDark ? const Color(0xFF3A3A3A) : const Color(0xFFE8E8E8),
+        backgroundColor: isDark
+            ? const Color(0xFF3A3A3A)
+            : const Color(0xFFE8E8E8),
         selectedBackgroundColor: accent.withValues(alpha: 0.2),
         textColor: defaultTextColor,
       ),
@@ -559,14 +580,16 @@ class VBubbleTheme {
         checkmarkColor: accent,
       ),
       systemMessages: VBubbleSystemTheme(
-        backgroundColor:
-            isDark ? const Color(0xFF2A2A2A) : const Color(0xFFF0F0F0),
+        backgroundColor: isDark
+            ? const Color(0xFF2A2A2A)
+            : const Color(0xFFF0F0F0),
         textColor: defaultSecondaryColor,
         textStyle: TextStyle(fontSize: 13, color: defaultSecondaryColor),
       ),
       dateChip: VBubbleDateChipTheme(
-        backgroundColor:
-            isDark ? const Color(0xFF2A2A2A) : const Color(0xFFF0F0F0),
+        backgroundColor: isDark
+            ? const Color(0xFF2A2A2A)
+            : const Color(0xFFF0F0F0),
         textColor: defaultSecondaryColor,
         textStyle: TextStyle(fontSize: 13, color: defaultSecondaryColor),
       ),
@@ -593,6 +616,7 @@ class VBubbleTheme {
     VBubbleSelectionTheme? selection,
     VBubbleSystemTheme? systemMessages,
     VBubbleDateChipTheme? dateChip,
+    TextStyle? searchHighlightStyle,
   }) {
     return VBubbleTheme(
       core: core ?? this.core,
@@ -607,6 +631,7 @@ class VBubbleTheme {
       selection: selection ?? this.selection,
       systemMessages: systemMessages ?? this.systemMessages,
       dateChip: dateChip ?? this.dateChip,
+      searchHighlightStyle: searchHighlightStyle ?? this.searchHighlightStyle,
     );
   }
 
@@ -626,7 +651,8 @@ class VBubbleTheme {
           menu == other.menu &&
           selection == other.selection &&
           systemMessages == other.systemMessages &&
-          dateChip == other.dateChip;
+          dateChip == other.dateChip &&
+          searchHighlightStyle == other.searchHighlightStyle;
   @override
   int get hashCode =>
       core.hashCode ^
@@ -640,7 +666,8 @@ class VBubbleTheme {
       menu.hashCode ^
       selection.hashCode ^
       systemMessages.hashCode ^
-      dateChip.hashCode;
+      dateChip.hashCode ^
+      searchHighlightStyle.hashCode;
 }
 
 /// Extension for shimmer loading colors (backward compatibility)

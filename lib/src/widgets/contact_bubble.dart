@@ -33,6 +33,8 @@ class VContactBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
   @override
   Widget buildContent(BuildContext context) {
@@ -46,7 +48,7 @@ class VContactBubble extends BaseBubble {
       onTap: isSelectionMode ? null : () => callbacks.onTap?.call(messageId),
       child: VBubbleWrapper(
         isMeSender: isMeSender,
-        showTail: showsGroupEnd,
+        showTail: effectiveShowTail(context),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

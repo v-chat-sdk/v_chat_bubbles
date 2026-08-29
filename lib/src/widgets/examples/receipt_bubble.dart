@@ -191,6 +191,8 @@ class VReceiptBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -204,7 +206,7 @@ class VReceiptBubble extends BaseBubble {
     final header = buildBubbleHeader(context);
     return buildBubbleContainer(
       context: context,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       child: GestureDetector(
         onTap: onReceiptTap,
         child: Column(

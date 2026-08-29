@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:v_platform/v_platform.dart';
 
 import '../core/constants.dart';
+import '../utils/text_parser.dart';
 import 'base_bubble.dart';
 import 'bubble_scope.dart';
 import 'bubble_wrapper.dart';
@@ -44,6 +45,8 @@ class VGifBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -53,7 +56,7 @@ class VGifBubble extends BaseBubble {
     final textColor = selectTextColor(theme);
     return VBubbleWrapper(
       isMeSender: isMeSender,
-      showTail: showsGroupEnd,
+      showTail: effectiveShowTail(context),
       padding: EdgeInsets.zero,
       clipContent: true,
       child: Column(
@@ -107,12 +110,7 @@ class VGifBubble extends BaseBubble {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 if (caption != null) ...[
-                  Flexible(
-                    child: Text(
-                      caption!,
-                      style: theme.captionTextStyle.copyWith(color: textColor),
-                    ),
-                  ),
+                  Flexible(child: _buildCaption(context, caption!, textColor)),
                   BubbleSpacing.gapM,
                 ],
                 buildMeta(context),
@@ -122,5 +120,21 @@ class VGifBubble extends BaseBubble {
         ],
       ),
     );
+  }
+
+  Widget _buildCaption(BuildContext context, String text, Color color) {
+    final theme = context.bubbleTheme;
+    final base = theme.captionTextStyle.copyWith(color: color);
+    final highlight = searchHighlightStyle ?? theme.searchHighlightStyle;
+    if (searchQuery == null || searchQuery!.isEmpty) {
+      return Text(text, style: base);
+    }
+    final spans = VTextParser.buildHighlightedSpans(
+      text,
+      base,
+      searchQuery,
+      highlight,
+    );
+    return RichText(text: TextSpan(children: spans));
   }
 }

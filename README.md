@@ -281,9 +281,50 @@ VBubbleConfig.desktop()      // Wider bubbles, more spacing
 VBubbleConfig.readOnly()     // No gestures (view-only mode)
 VBubbleConfig.directChat()   // Hidden avatars (1:1 chat)
 VBubbleConfig.groupChat()    // Always show avatars
-VBubbleConfig.minimal()      // No tails, clean look
+VBubbleConfig.minimal()      // No tails, clean look (showTails: false)
 VBubbleConfig.accessible()   // Enhanced accessibility
 VBubbleConfig.performance()  // No animations, minimal processing
+```
+
+### Global Tail Toggle
+
+Hide all bubble tails at once while keeping grouped layout:
+
+```dart
+VBubbleScope(
+  style: VBubbleStyle.telegram,
+  config: const VBubbleConfig(showTails: false), // no tails
+  child: ListView(...),
+)
+
+// Per-bubble tails are derived from VMessageGroupPosition/isSameSender
+// when showTails is true (default). When false, every bubble renders
+// as a rounded rectangle (uniform for Telegram/WhatsApp/iMessage/Messenger).
+```
+
+### Inline Search Highlight
+
+Case-insensitive substring highlight inside text bubbles (and captions/file names) — like the pink `h` in `hey`/`huh`:
+
+```dart
+// Theme default (pink #FF3B82 background, white text)
+// VBubbleTheme(searchHighlightStyle: TextStyle(backgroundColor: Color(0xFFFF3B82), color: Colors.white))
+
+VTextBubble(
+  messageId: '1',
+  isMeSender: true,
+  time: '12:00',
+  text: 'hey huh why',
+  searchQuery: searchQuery, // ""→none, "h"→highlights h/H
+  // searchHighlightStyle: TextStyle(backgroundColor: Colors.orange), // optional override
+)
+
+// Example search bar wiring (as in example/lib/pages/chat_demo_page.dart):
+// - TextField onChanged → setState(() { searchQuery = value; })
+// - Pass same searchQuery to every bubble via MessageBuilder
+// - VTextParser.applySearchHighlight preserves link/mention recognizers
+// - File/media captions via VMediaOverlayInfo also highlight
+```
 ```
 
 ---

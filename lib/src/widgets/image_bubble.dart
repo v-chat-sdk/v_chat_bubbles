@@ -80,6 +80,8 @@ class VImageBubble extends BaseBubble {
     super.isPinned,
     super.isStarred,
     super.isHighlighted,
+    super.searchQuery,
+    super.searchHighlightStyle,
   });
 
   @override
@@ -113,7 +115,7 @@ class VImageBubble extends BaseBubble {
       ),
     );
     if (!hasHeader) return mediaContent;
-    final showTail = showsGroupEnd;
+    final showTail = effectiveShowTail(context);
     return VBubbleWrapper(
       isMeSender: isMeSender,
       showTail: showTail,
@@ -240,6 +242,7 @@ class VImageBubble extends BaseBubble {
 
   Widget _buildOverlayInfo(BuildContext context) {
     final theme = context.bubbleTheme;
+    final highlight = searchHighlightStyle ?? theme.searchHighlightStyle;
     return VMediaOverlayInfo(
       time: time,
       status: isMeSender ? status : null,
@@ -247,6 +250,8 @@ class VImageBubble extends BaseBubble {
       isMeSender: isMeSender,
       maxCaptionLines: 2,
       readIconColor: theme.readIconColor,
+      searchQuery: searchQuery,
+      searchHighlightStyle: highlight,
     );
   }
 }
