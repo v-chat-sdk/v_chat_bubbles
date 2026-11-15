@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/enums.dart';
 import '../../theme/bubble_theme.dart';
 
@@ -41,10 +42,6 @@ class VMessageStatusIcon extends StatelessWidget {
       case VMessageStatus.error:
         iconColor = errorColor ?? Colors.red;
     }
-    return Icon(
-      config.iconFor(status),
-      size: iconSize,
-      color: iconColor,
-    );
+    return Icon(config.iconFor(status), size: iconSize, color: iconColor);
   }
 }

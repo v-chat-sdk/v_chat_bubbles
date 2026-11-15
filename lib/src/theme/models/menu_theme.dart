@@ -74,62 +74,62 @@ class VBubbleMenuTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMenuTheme telegramLight() => const VBubbleMenuTheme(
-        backgroundColor: Colors.white,
-        textColor: Colors.black,
-        iconColor: Colors.black,
-        destructiveColor: Color(0xFFFF3B30),
-      );
+    backgroundColor: Colors.white,
+    textColor: Colors.black,
+    iconColor: Colors.black,
+    destructiveColor: Color(0xFFFF3B30),
+  );
   static VBubbleMenuTheme telegramDark() => const VBubbleMenuTheme(
-        backgroundColor: Color(0xFF17212B),
-        textColor: Colors.white,
-        iconColor: Colors.white,
-        destructiveColor: Color(0xFFFF6B6B),
-      );
+    backgroundColor: Color(0xFF17212B),
+    textColor: Colors.white,
+    iconColor: Colors.white,
+    destructiveColor: Color(0xFFFF6B6B),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMenuTheme whatsappLight() => const VBubbleMenuTheme(
-        backgroundColor: Colors.white,
-        textColor: Color(0xFF111B21),
-        iconColor: Color(0xFF111B21),
-        destructiveColor: Color(0xFFEA0038),
-      );
+    backgroundColor: Colors.white,
+    textColor: Color(0xFF111B21),
+    iconColor: Color(0xFF111B21),
+    destructiveColor: Color(0xFFEA0038),
+  );
   static VBubbleMenuTheme whatsappDark() => const VBubbleMenuTheme(
-        backgroundColor: Color(0xFF233138),
-        textColor: Color(0xFFE9EDEF),
-        iconColor: Color(0xFFE9EDEF),
-        destructiveColor: Color(0xFFFF4C4C),
-      );
+    backgroundColor: Color(0xFF233138),
+    textColor: Color(0xFFE9EDEF),
+    iconColor: Color(0xFFE9EDEF),
+    destructiveColor: Color(0xFFFF4C4C),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMenuTheme messengerLight() => const VBubbleMenuTheme(
-        backgroundColor: Colors.white,
-        textColor: Color(0xFF050505),
-        iconColor: Color(0xFF050505),
-        destructiveColor: Color(0xFFFA383E),
-      );
+    backgroundColor: Colors.white,
+    textColor: Color(0xFF050505),
+    iconColor: Color(0xFF050505),
+    destructiveColor: Color(0xFFFA383E),
+  );
   static VBubbleMenuTheme messengerDark() => const VBubbleMenuTheme(
-        backgroundColor: Color(0xFF242526),
-        textColor: Color(0xFFE4E6EB),
-        iconColor: Color(0xFFE4E6EB),
-        destructiveColor: Color(0xFFFA383E),
-      );
+    backgroundColor: Color(0xFF242526),
+    textColor: Color(0xFFE4E6EB),
+    iconColor: Color(0xFFE4E6EB),
+    destructiveColor: Color(0xFFFA383E),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMenuTheme imessageLight() => const VBubbleMenuTheme(
-        backgroundColor: Color(0xFFF2F2F7),
-        textColor: Colors.black,
-        iconColor: Colors.black,
-        destructiveColor: Color(0xFFFF3B30),
-      );
+    backgroundColor: Color(0xFFF2F2F7),
+    textColor: Colors.black,
+    iconColor: Colors.black,
+    destructiveColor: Color(0xFFFF3B30),
+  );
   static VBubbleMenuTheme imessageDark() => const VBubbleMenuTheme(
-        backgroundColor: Color(0xFF2C2C2E),
-        textColor: Colors.white,
-        iconColor: Colors.white,
-        destructiveColor: Color(0xFFFF453A),
-      );
+    backgroundColor: Color(0xFF2C2C2E),
+    textColor: Colors.white,
+    iconColor: Colors.white,
+    destructiveColor: Color(0xFFFF453A),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

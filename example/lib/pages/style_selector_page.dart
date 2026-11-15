@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:v_chat_bubbles/v_chat_bubbles.dart';
+
 import 'chat_type_selector_page.dart';
 
 class StyleSelectorPage extends StatelessWidget {
@@ -54,9 +55,8 @@ class StyleSelectorPage extends StatelessWidget {
             children: [
               Text(
                 'Select a Style',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
@@ -173,9 +173,8 @@ class _StyleCard extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 name,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
               Flexible(

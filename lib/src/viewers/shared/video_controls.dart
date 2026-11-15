@@ -19,9 +19,7 @@ class VVideoControls extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             // Center play/pause button
-            Center(
-              child: _buildPlayPauseButton(value),
-            ),
+            Center(child: _buildPlayPauseButton(value)),
             // Bottom controls
             Positioned(
               left: 0,
@@ -46,10 +44,7 @@ class VVideoControls extends StatelessWidget {
         child: const SizedBox(
           width: 40,
           height: 40,
-          child: CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 3,
-          ),
+          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
         ),
       );
     }
@@ -93,10 +88,7 @@ class VVideoControls extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [
-            Colors.black.withValues(alpha: 0.6),
-            Colors.transparent,
-          ],
+          colors: [Colors.black.withValues(alpha: 0.6), Colors.transparent],
         ),
       ),
       child: Column(
@@ -129,10 +121,7 @@ class VVideoControls extends StatelessWidget {
             children: [
               Text(
                 '${_formatDuration(position)} / ${_formatDuration(duration)}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
+                style: const TextStyle(color: Colors.white, fontSize: 12),
               ),
               if (onFullscreen != null)
                 IconButton(

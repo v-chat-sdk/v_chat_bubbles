@@ -115,230 +115,238 @@ class VBubbleTextTheme {
   // TELEGRAM PRESETS (iOS Telegram typography)
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleTextTheme telegramLight() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Color(0xFF000000),
-          secondaryColor: Color(0xCC008C09),
-          linkColor: Color(0xFF004BAD),
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Color(0xFF000000),
-          secondaryColor: Color(0x99525252),
-          linkColor: Color(0xFF007EE5),
-        ),
-        // Message text - 17pt on iOS
-        messageTextStyle: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w400,
-          height: 1.35,
-          letterSpacing: -0.4,
-        ),
-        // Time stamp - 11pt
-        timeTextStyle: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.1,
-        ),
-        // Sender name - 13pt semibold
-        senderNameStyle: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.1,
-        ),
-        // Reply text preview - 14pt
-        replyTextStyle: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.2,
-        ),
-        // Caption - 15pt
-        captionTextStyle: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w400,
-          height: 1.3,
-          letterSpacing: -0.3,
-        ),
-        // Link text - 17pt (matches message text)
-        linkTextStyle: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.4,
-          decoration: TextDecoration.none,
-        ),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Color(0xFF000000),
+      secondaryColor: Color(0xCC008C09),
+      linkColor: Color(0xFF004BAD),
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Color(0xFF000000),
+      secondaryColor: Color(0x99525252),
+      linkColor: Color(0xFF007EE5),
+    ),
+    // Message text - 17pt on iOS
+    messageTextStyle: TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w400,
+      height: 1.35,
+      letterSpacing: -0.4,
+    ),
+    // Time stamp - 11pt
+    timeTextStyle: TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.1,
+    ),
+    // Sender name - 13pt semibold
+    senderNameStyle: TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.1,
+    ),
+    // Reply text preview - 14pt
+    replyTextStyle: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.2,
+    ),
+    // Caption - 15pt
+    captionTextStyle: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w400,
+      height: 1.3,
+      letterSpacing: -0.3,
+    ),
+    // Link text - 17pt (matches message text)
+    linkTextStyle: TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.4,
+      decoration: TextDecoration.none,
+    ),
+  );
   static VBubbleTextTheme telegramDark() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Colors.white,
-          secondaryColor: Color(0x99FFFFFF),
-          linkColor: Color(0xFF5EADEA),
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Colors.white,
-          secondaryColor: Color(0x99FFFFFF),
-          linkColor: Color(0xFF5EADEA),
-        ),
-        // Message text - 17pt on iOS
-        messageTextStyle: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w400,
-          height: 1.35,
-          letterSpacing: -0.4,
-        ),
-        // Time stamp - 11pt
-        timeTextStyle: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.1,
-        ),
-        // Sender name - 13pt semibold
-        senderNameStyle: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.1,
-        ),
-        // Reply text preview - 14pt
-        replyTextStyle: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.2,
-        ),
-        // Caption - 15pt
-        captionTextStyle: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w400,
-          height: 1.3,
-          letterSpacing: -0.3,
-        ),
-        // Link text - 17pt (matches message text)
-        linkTextStyle: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.4,
-          decoration: TextDecoration.none,
-        ),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Colors.white,
+      secondaryColor: Color(0x99FFFFFF),
+      linkColor: Color(0xFF5EADEA),
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Colors.white,
+      secondaryColor: Color(0x99FFFFFF),
+      linkColor: Color(0xFF5EADEA),
+    ),
+    // Message text - 17pt on iOS
+    messageTextStyle: TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w400,
+      height: 1.35,
+      letterSpacing: -0.4,
+    ),
+    // Time stamp - 11pt
+    timeTextStyle: TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.1,
+    ),
+    // Sender name - 13pt semibold
+    senderNameStyle: TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.1,
+    ),
+    // Reply text preview - 14pt
+    replyTextStyle: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.2,
+    ),
+    // Caption - 15pt
+    captionTextStyle: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w400,
+      height: 1.3,
+      letterSpacing: -0.3,
+    ),
+    // Link text - 17pt (matches message text)
+    linkTextStyle: TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.4,
+      decoration: TextDecoration.none,
+    ),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleTextTheme whatsappLight() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Color(0xFF111B21),
-          secondaryColor: Color(0xFF667781),
-          linkColor: Color(0xFF027EB5),
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Color(0xFF111B21),
-          secondaryColor: Color(0xFF667781),
-          linkColor: Color(0xFF027EB5),
-        ),
-        messageTextStyle: TextStyle(fontSize: 16, height: 1.35),
-        timeTextStyle: TextStyle(fontSize: 12),
-        senderNameStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle:
-            TextStyle(fontSize: 15.5, decoration: TextDecoration.none),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Color(0xFF111B21),
+      secondaryColor: Color(0xFF667781),
+      linkColor: Color(0xFF027EB5),
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Color(0xFF111B21),
+      secondaryColor: Color(0xFF667781),
+      linkColor: Color(0xFF027EB5),
+    ),
+    messageTextStyle: TextStyle(fontSize: 16, height: 1.35),
+    timeTextStyle: TextStyle(fontSize: 12),
+    senderNameStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+    replyTextStyle: TextStyle(fontSize: 14),
+    captionTextStyle: TextStyle(fontSize: 14),
+    linkTextStyle: TextStyle(fontSize: 15.5, decoration: TextDecoration.none),
+  );
   static VBubbleTextTheme whatsappDark() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Color(0xFFE9EDEF),
-          secondaryColor: Color(0xFF8696A0),
-          linkColor: Color(0xFF53BDEB),
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Color(0xFFE9EDEF),
-          secondaryColor: Color(0xFF8696A0),
-          linkColor: Color(0xFF53BDEB),
-        ),
-        messageTextStyle: TextStyle(fontSize: 16, height: 1.35),
-        timeTextStyle: TextStyle(fontSize: 12),
-        senderNameStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle:
-            TextStyle(fontSize: 15.5, decoration: TextDecoration.none),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Color(0xFFE9EDEF),
+      secondaryColor: Color(0xFF8696A0),
+      linkColor: Color(0xFF53BDEB),
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Color(0xFFE9EDEF),
+      secondaryColor: Color(0xFF8696A0),
+      linkColor: Color(0xFF53BDEB),
+    ),
+    messageTextStyle: TextStyle(fontSize: 16, height: 1.35),
+    timeTextStyle: TextStyle(fontSize: 12),
+    senderNameStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+    replyTextStyle: TextStyle(fontSize: 14),
+    captionTextStyle: TextStyle(fontSize: 14),
+    linkTextStyle: TextStyle(fontSize: 15.5, decoration: TextDecoration.none),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleTextTheme messengerLight() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Colors.white,
-          secondaryColor: Color(0xFFB8D4FF),
-          linkColor: Colors.white,
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Color(0xFF050505),
-          secondaryColor: Color(0xFF65676B),
-          linkColor: Color(0xFF0084FF),
-        ),
-        messageTextStyle: TextStyle(fontSize: 16, height: 1.33),
-        timeTextStyle: TextStyle(fontSize: 12),
-        senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle: TextStyle(fontSize: 15, decoration: TextDecoration.none),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Colors.white,
+      secondaryColor: Color(0xFFB8D4FF),
+      linkColor: Colors.white,
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Color(0xFF050505),
+      secondaryColor: Color(0xFF65676B),
+      linkColor: Color(0xFF0084FF),
+    ),
+    messageTextStyle: TextStyle(fontSize: 16, height: 1.33),
+    timeTextStyle: TextStyle(fontSize: 12),
+    senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    replyTextStyle: TextStyle(fontSize: 14),
+    captionTextStyle: TextStyle(fontSize: 14),
+    linkTextStyle: TextStyle(fontSize: 15, decoration: TextDecoration.none),
+  );
   static VBubbleTextTheme messengerDark() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Colors.white,
-          secondaryColor: Color(0xFFB8D4FF),
-          linkColor: Colors.white,
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Color(0xFFE4E6EB),
-          secondaryColor: Color(0xFFB0B3B8),
-          linkColor: Color(0xFF4599FF),
-        ),
-        messageTextStyle: TextStyle(fontSize: 16, height: 1.33),
-        timeTextStyle: TextStyle(fontSize: 12),
-        senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 14),
-        linkTextStyle: TextStyle(fontSize: 15, decoration: TextDecoration.none),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Colors.white,
+      secondaryColor: Color(0xFFB8D4FF),
+      linkColor: Colors.white,
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Color(0xFFE4E6EB),
+      secondaryColor: Color(0xFFB0B3B8),
+      linkColor: Color(0xFF4599FF),
+    ),
+    messageTextStyle: TextStyle(fontSize: 16, height: 1.33),
+    timeTextStyle: TextStyle(fontSize: 12),
+    senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    replyTextStyle: TextStyle(fontSize: 14),
+    captionTextStyle: TextStyle(fontSize: 14),
+    linkTextStyle: TextStyle(fontSize: 15, decoration: TextDecoration.none),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleTextTheme imessageLight() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Colors.white,
-          secondaryColor: Color(0xCCFFFFFF),
-          linkColor: Colors.white,
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Colors.black,
-          secondaryColor: Color(0xFF8E8E93),
-          linkColor: Color(0xFF007AFF),
-        ),
-        messageTextStyle:
-            TextStyle(fontSize: 17, height: 1.29, letterSpacing: -0.43),
-        timeTextStyle: TextStyle(fontSize: 12, letterSpacing: 0.07),
-        senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 15),
-        linkTextStyle:
-            TextStyle(fontSize: 17, decoration: TextDecoration.underline),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Colors.white,
+      secondaryColor: Color(0xCCFFFFFF),
+      linkColor: Colors.white,
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Colors.black,
+      secondaryColor: Color(0xFF8E8E93),
+      linkColor: Color(0xFF007AFF),
+    ),
+    messageTextStyle: TextStyle(
+      fontSize: 17,
+      height: 1.29,
+      letterSpacing: -0.43,
+    ),
+    timeTextStyle: TextStyle(fontSize: 12, letterSpacing: 0.07),
+    senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    replyTextStyle: TextStyle(fontSize: 14),
+    captionTextStyle: TextStyle(fontSize: 15),
+    linkTextStyle: TextStyle(
+      fontSize: 17,
+      decoration: TextDecoration.underline,
+    ),
+  );
   static VBubbleTextTheme imessageDark() => const VBubbleTextTheme(
-        outgoing: VDirectionalTextTheme(
-          primaryColor: Colors.white,
-          secondaryColor: Color(0xB3FFFFFF),
-          linkColor: Colors.white,
-        ),
-        incoming: VDirectionalTextTheme(
-          primaryColor: Colors.white,
-          secondaryColor: Color(0xFF8E8E93),
-          linkColor: Color(0xFF0A84FF),
-        ),
-        messageTextStyle:
-            TextStyle(fontSize: 17, height: 1.29, letterSpacing: -0.43),
-        timeTextStyle: TextStyle(fontSize: 12, letterSpacing: 0.07),
-        senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        replyTextStyle: TextStyle(fontSize: 14),
-        captionTextStyle: TextStyle(fontSize: 15),
-        linkTextStyle:
-            TextStyle(fontSize: 17, decoration: TextDecoration.underline),
-      );
+    outgoing: VDirectionalTextTheme(
+      primaryColor: Colors.white,
+      secondaryColor: Color(0xB3FFFFFF),
+      linkColor: Colors.white,
+    ),
+    incoming: VDirectionalTextTheme(
+      primaryColor: Colors.white,
+      secondaryColor: Color(0xFF8E8E93),
+      linkColor: Color(0xFF0A84FF),
+    ),
+    messageTextStyle: TextStyle(
+      fontSize: 17,
+      height: 1.29,
+      letterSpacing: -0.43,
+    ),
+    timeTextStyle: TextStyle(fontSize: 12, letterSpacing: 0.07),
+    senderNameStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    replyTextStyle: TextStyle(fontSize: 14),
+    captionTextStyle: TextStyle(fontSize: 15),
+    linkTextStyle: TextStyle(
+      fontSize: 17,
+      decoration: TextDecoration.underline,
+    ),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

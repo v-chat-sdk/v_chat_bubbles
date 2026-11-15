@@ -11,6 +11,7 @@ import '../theme/bubble_theme.dart';
 
 import 'bubble_scope.dart';
 import 'bubble_wrapper.dart';
+
 import 'package:v_platform/v_platform.dart';
 
 import 'context_menu/bubble_context_menu.dart';
@@ -137,6 +138,24 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
   /// Get the message type name for accessibility (override in subclasses)
   String get messageType => 'message';
 
+  /// The message content announced by screen readers and supplied to
+  /// [VAccessibilityConfig.semanticLabelBuilder].
+  ///
+  /// Override this in content-specific bubbles. Metadata such as sender, time,
+  /// and status is added separately to the default label. A null value preserves
+  /// the legacy metadata argument for custom label builders.
+  String? get semanticContent => null;
+
+  /// The primary accessible action outside selection mode.
+  ///
+  /// Content-specific bubbles can override this to activate their own primary
+  /// action. Selection always takes precedence in the shared semantics wrapper.
+  @protected
+  VoidCallback? semanticActivation(BuildContext context) {
+    final onTap = context.bubbleCallbacks.onTap;
+    return onTap == null ? null : () => onTap(messageId);
+  }
+
   /// Get the semantic label for this message
   String _getSemanticLabel(BuildContext context) {
     final config = context.bubbleConfig;
@@ -148,14 +167,17 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
     final editedText = isEdited ? ', ${translations.statusEdited}' : '';
     final pinnedText = isPinned ? ', ${translations.statusPinned}' : '';
     final starredText = isStarred ? ', ${translations.statusStarred}' : '';
+    final content = semanticContent;
     if (config.accessibility.semanticLabelBuilder != null) {
       return config.accessibility.semanticLabelBuilder!(
         messageType,
-        '$direction $messageType at $time$statusText$editedText$pinnedText$starredText',
+        content ??
+            '$direction $messageType at $time$statusText$editedText$pinnedText$starredText',
       );
     }
     final senderInfo = senderName != null ? 'from $senderName, ' : '';
-    return '$direction $messageType, $senderInfo$time$statusText$editedText$pinnedText$starredText';
+    final contentInfo = content == null || content.isEmpty ? '' : '$content, ';
+    return '$direction $messageType, $contentInfo$senderInfo$time$statusText$editedText$pinnedText$starredText';
   }
 
   @override
@@ -319,9 +341,16 @@ abstract class BaseBubble extends StatelessWidget with ColorSelectorMixin {
           : rowContent,
     );
     if (config.accessibility.enableSemanticLabels) {
+      final onActivate = isSelectionMode
+          ? callbacks.onSelectionChanged == null
+                ? null
+                : () => _handleTap(context)
+          : semanticActivation(context);
       bubble = Semantics(
         label: _getSemanticLabel(context),
-        button: true,
+        button: onActivate != null,
+        selected: isSelectionMode ? isSelected : null,
+        onTap: onActivate,
         child: ExcludeSemantics(child: bubble),
       );
     }

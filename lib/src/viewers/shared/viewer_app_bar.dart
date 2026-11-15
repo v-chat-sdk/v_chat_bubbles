@@ -38,10 +38,7 @@ class VViewerAppBar extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.black.withValues(alpha: 0.6),
-            Colors.transparent,
-          ],
+          colors: [Colors.black.withValues(alpha: 0.6), Colors.transparent],
         ),
       ),
       child: Row(

@@ -141,9 +141,8 @@ class VQuotedContentBubble extends BaseBubble {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: selectSecondaryTextColor(
-          theme,
-        ).withValues(alpha: BubbleOpacity.light),
+        color: selectSecondaryTextColor(theme)
+            .withValues(alpha: BubbleOpacity.light),
         borderRadius: BubbleRadius.small,
       ),
       child: Icon(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../bubble_scope.dart';
 
 class VMediaContainer extends StatelessWidget {
@@ -41,7 +42,8 @@ class VMediaContainer extends StatelessWidget {
         child: fillBubble
             ? heroChild
             : ClipRRect(
-                borderRadius: borderRadius ??
+                borderRadius:
+                    borderRadius ??
                     BorderRadius.circular(config.media.cornerRadius),
                 child: heroChild,
               ),

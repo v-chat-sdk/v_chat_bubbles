@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../core/callbacks.dart';
 import '../core/models.dart';
 import '../utils/platform_image_builder.dart';
@@ -12,11 +13,7 @@ import 'shared/viewer_overlay.dart';
 class VImageViewerPage extends StatelessWidget {
   final VMediaViewerData data;
   final VBubbleCallbacks? callbacks;
-  const VImageViewerPage({
-    super.key,
-    required this.data,
-    this.callbacks,
-  });
+  const VImageViewerPage({super.key, required this.data, this.callbacks});
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -31,9 +28,7 @@ class VImageViewerPage extends StatelessWidget {
               tag:
                   'media_${data.messageId}${data.index != null ? '_${data.index}' : ''}',
               child: Center(
-                child: VDoubleTapZoomViewer(
-                  child: _buildImage(context),
-                ),
+                child: VDoubleTapZoomViewer(child: _buildImage(context)),
               ),
             ),
           ),
@@ -75,18 +70,12 @@ class VImageViewerPage extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [
-            Colors.black.withValues(alpha: 0.6),
-            Colors.transparent,
-          ],
+          colors: [Colors.black.withValues(alpha: 0.6), Colors.transparent],
         ),
       ),
       child: Text(
         data.caption!,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-        ),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
         textAlign: TextAlign.center,
       ),
     );
@@ -103,7 +92,7 @@ class VImageViewerPage extends StatelessWidget {
           child: CircularProgressIndicator(
             value: loadingProgress.expectedTotalBytes != null
                 ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
+                      loadingProgress.expectedTotalBytes!
                 : null,
             color: Colors.white,
           ),

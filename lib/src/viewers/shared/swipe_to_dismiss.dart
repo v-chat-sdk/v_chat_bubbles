@@ -30,9 +30,10 @@ class _SwipeToDismissState extends State<VSwipeToDismiss>
       vsync: this,
       duration: const Duration(milliseconds: 200),
     );
-    _animation = Tween<double>(begin: 0, end: 0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _animation = Tween<double>(
+      begin: 0,
+      end: 0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
   }
 
   @override
@@ -64,9 +65,10 @@ class _SwipeToDismissState extends State<VSwipeToDismiss>
       widget.onDismiss();
     } else {
       // Animate back to original position
-      _animation = Tween<double>(begin: _dragOffset, end: 0).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-      );
+      _animation = Tween<double>(
+        begin: _dragOffset,
+        end: 0,
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
       _controller.forward(from: 0).then((_) {
         if (mounted) {
           setState(() => _dragOffset = 0);
@@ -85,8 +87,8 @@ class _SwipeToDismissState extends State<VSwipeToDismiss>
         animation: _controller,
         builder: (context, child) {
           final currentOffset = _isDragging ? _dragOffset : _animation.value;
-          final currentProgress =
-              (currentOffset / widget.dismissThreshold).clamp(0.0, 1.0);
+          final currentProgress = (currentOffset / widget.dismissThreshold)
+              .clamp(0.0, 1.0);
           final currentScale = 1.0 - (currentProgress * 0.1);
           final currentOpacity = 1.0 - (currentProgress * 0.3);
           return Transform.translate(

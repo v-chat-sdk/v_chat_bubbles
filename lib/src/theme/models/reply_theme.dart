@@ -73,8 +73,10 @@ class VBubbleReplyTheme {
     this.barWidth = 3.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
     this.borderRadius = 4.0,
-    this.senderNameStyle =
-        const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+    this.senderNameStyle = const TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+    ),
     this.messageStyle = const TextStyle(fontSize: 14),
     this.maxLines = 2,
   });
@@ -116,110 +118,110 @@ class VBubbleReplyTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReplyTheme telegramLight() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xFF3FC33B),
-          backgroundColor: Color(0x0F000000),
-          textColor: Color(0xFF3FC33B),
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF007EE5),
-          backgroundColor: Color(0x0F000000),
-          textColor: Color(0xFF007EE5),
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xFF3FC33B),
+      backgroundColor: Color(0x0F000000),
+      textColor: Color(0xFF3FC33B),
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF007EE5),
+      backgroundColor: Color(0x0F000000),
+      textColor: Color(0xFF007EE5),
+    ),
+  );
   static VBubbleReplyTheme telegramDark() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xFF5EADEA),
-          backgroundColor: Color(0x26FFFFFF),
-          textColor: Colors.white,
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF5EADEA),
-          backgroundColor: Color(0x26FFFFFF),
-          textColor: Colors.white,
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xFF5EADEA),
+      backgroundColor: Color(0x26FFFFFF),
+      textColor: Colors.white,
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF5EADEA),
+      backgroundColor: Color(0x26FFFFFF),
+      textColor: Colors.white,
+    ),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReplyTheme whatsappLight() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xFF25D366),
-          backgroundColor: Color(0x1A25D366),
-          textColor: Color(0xFF06CF9C),
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF25D366),
-          backgroundColor: Color(0x0D000000),
-          textColor: Color(0xFF06CF9C),
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xFF25D366),
+      backgroundColor: Color(0x1A25D366),
+      textColor: Color(0xFF06CF9C),
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF25D366),
+      backgroundColor: Color(0x0D000000),
+      textColor: Color(0xFF06CF9C),
+    ),
+  );
   static VBubbleReplyTheme whatsappDark() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xFF06CF9C),
-          backgroundColor: Color(0x2606CF9C),
-          textColor: Color(0xFF06CF9C),
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF06CF9C),
-          backgroundColor: Color(0x1AFFFFFF),
-          textColor: Color(0xFF06CF9C),
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xFF06CF9C),
+      backgroundColor: Color(0x2606CF9C),
+      textColor: Color(0xFF06CF9C),
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF06CF9C),
+      backgroundColor: Color(0x1AFFFFFF),
+      textColor: Color(0xFF06CF9C),
+    ),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReplyTheme messengerLight() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xFFB8D4FF),
-          backgroundColor: Color(0x33FFFFFF),
-          textColor: Color(0xFFB8D4FF),
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF0084FF),
-          backgroundColor: Color(0x0D000000),
-          textColor: Color(0xFF0084FF),
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xFFB8D4FF),
+      backgroundColor: Color(0x33FFFFFF),
+      textColor: Color(0xFFB8D4FF),
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF0084FF),
+      backgroundColor: Color(0x0D000000),
+      textColor: Color(0xFF0084FF),
+    ),
+  );
   static VBubbleReplyTheme messengerDark() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xFFB8D4FF),
-          backgroundColor: Color(0x33FFFFFF),
-          textColor: Color(0xFFB8D4FF),
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF4599FF),
-          backgroundColor: Color(0x1AFFFFFF),
-          textColor: Color(0xFF4599FF),
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xFFB8D4FF),
+      backgroundColor: Color(0x33FFFFFF),
+      textColor: Color(0xFFB8D4FF),
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF4599FF),
+      backgroundColor: Color(0x1AFFFFFF),
+      textColor: Color(0xFF4599FF),
+    ),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReplyTheme imessageLight() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xCCFFFFFF),
-          backgroundColor: Color(0x33FFFFFF),
-          textColor: Color(0xCCFFFFFF),
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF007AFF),
-          backgroundColor: Color(0x0D000000),
-          textColor: Color(0xFF007AFF),
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xCCFFFFFF),
+      backgroundColor: Color(0x33FFFFFF),
+      textColor: Color(0xCCFFFFFF),
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF007AFF),
+      backgroundColor: Color(0x0D000000),
+      textColor: Color(0xFF007AFF),
+    ),
+  );
   static VBubbleReplyTheme imessageDark() => const VBubbleReplyTheme(
-        outgoing: VDirectionalReplyTheme(
-          barColor: Color(0xB3FFFFFF),
-          backgroundColor: Color(0x33FFFFFF),
-          textColor: Color(0xB3FFFFFF),
-        ),
-        incoming: VDirectionalReplyTheme(
-          barColor: Color(0xFF0A84FF),
-          backgroundColor: Color(0x26FFFFFF),
-          textColor: Color(0xFF0A84FF),
-        ),
-      );
+    outgoing: VDirectionalReplyTheme(
+      barColor: Color(0xB3FFFFFF),
+      backgroundColor: Color(0x33FFFFFF),
+      textColor: Color(0xB3FFFFFF),
+    ),
+    incoming: VDirectionalReplyTheme(
+      barColor: Color(0xFF0A84FF),
+      backgroundColor: Color(0x26FFFFFF),
+      textColor: Color(0xFF0A84FF),
+    ),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

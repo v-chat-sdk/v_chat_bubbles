@@ -5,18 +5,24 @@ abstract final class BubbleSpacing {
   // EdgeInsets
   static const chipPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 6);
   static const chipMargin = EdgeInsets.symmetric(vertical: 8);
-  static const overlayInfoPadding =
-      EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+  static const overlayInfoPadding = EdgeInsets.symmetric(
+    horizontal: 8,
+    vertical: 4,
+  );
   static const iconButtonPadding = EdgeInsets.all(8);
   static const mediaOverlayPadding = EdgeInsets.all(16);
   static const smallPadding = EdgeInsets.all(4);
   static const standardPadding = EdgeInsets.all(8);
   static const largePadding = EdgeInsets.all(16);
-  static const listItemPadding =
-      EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+  static const listItemPadding = EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 8,
+  );
   static const captionPadding = EdgeInsets.only(bottom: 4);
-  static const reactionPillPadding =
-      EdgeInsets.symmetric(horizontal: 6, vertical: 2);
+  static const reactionPillPadding = EdgeInsets.symmetric(
+    horizontal: 6,
+    vertical: 2,
+  );
   // Raw spacing values
   static const double inlineXS = 2;
   static const double inlineS = 4;

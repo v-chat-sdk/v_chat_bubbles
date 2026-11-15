@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:v_chat_bubbles/v_chat_bubbles.dart';
+
 import 'chat_demo_page.dart';
 import 'modern_features_page.dart';
 
@@ -54,9 +55,8 @@ class ChatTypeSelectorPage extends StatelessWidget {
             children: [
               Text(
                 'Select Chat Type',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
@@ -252,9 +252,9 @@ class _ChatTypeCard extends StatelessWidget {
                           subtitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                               ),
                         ),
                       ],
@@ -290,9 +290,8 @@ class _ChatTypeCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           feature,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall?.copyWith(color: color),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(color: color),
                         ),
                       ],
                     ),

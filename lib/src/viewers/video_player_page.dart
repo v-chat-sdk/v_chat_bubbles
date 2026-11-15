@@ -1,8 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:v_platform/v_platform.dart';
 import 'package:video_player/video_player.dart';
+
 import '../core/callbacks.dart';
 import '../core/config.dart';
 import '../core/models.dart';
@@ -15,11 +17,7 @@ import 'shared/video_controls.dart';
 class VVideoPlayerPage extends StatefulWidget {
   final VMediaViewerData data;
   final VBubbleCallbacks? callbacks;
-  const VVideoPlayerPage({
-    super.key,
-    required this.data,
-    this.callbacks,
-  });
+  const VVideoPlayerPage({super.key, required this.data, this.callbacks});
   @override
   State<VVideoPlayerPage> createState() => _VideoPlayerPageState();
 }
@@ -110,10 +108,7 @@ class _VideoPlayerPageState extends State<VVideoPlayerPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: _buildBody(context),
-      ),
+      child: Scaffold(backgroundColor: Colors.black, body: _buildBody(context)),
     );
   }
 
@@ -145,10 +140,7 @@ class _VideoPlayerPageState extends State<VVideoPlayerPage> {
         children: [
           CircularProgressIndicator(color: Colors.white),
           SizedBox(height: 16),
-          Text(
-            'Loading video...',
-            style: TextStyle(color: Colors.white54),
-          ),
+          Text('Loading video...', style: TextStyle(color: Colors.white54)),
         ],
       ),
     );

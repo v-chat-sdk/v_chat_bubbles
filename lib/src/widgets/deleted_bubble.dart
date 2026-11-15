@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/constants.dart';
 import 'bubble_scope.dart';
 
@@ -26,8 +27,9 @@ class VDeletedBubble extends StatelessWidget {
     final textColor = isMeSender
         ? theme.outgoingSecondaryTextColor
         : theme.incomingSecondaryTextColor;
-    final bubbleColor =
-        isMeSender ? theme.outgoingBubbleColor : theme.incomingBubbleColor;
+    final bubbleColor = isMeSender
+        ? theme.outgoingBubbleColor
+        : theme.incomingBubbleColor;
     return Padding(
       padding: EdgeInsets.only(
         left: isMeSender ? 50 : config.spacing.horizontalMargin,
@@ -42,9 +44,7 @@ class VDeletedBubble extends StatelessWidget {
           decoration: BoxDecoration(
             color: bubbleColor.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(config.spacing.bubbleRadius),
-            border: Border.all(
-              color: textColor.withValues(alpha: 0.3),
-            ),
+            border: Border.all(color: textColor.withValues(alpha: 0.3)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -59,10 +59,7 @@ class VDeletedBubble extends StatelessWidget {
                 ),
               ),
               BubbleSpacing.gapL,
-              Text(
-                time,
-                style: theme.timeTextStyle.copyWith(color: textColor),
-              ),
+              Text(time, style: theme.timeTextStyle.copyWith(color: textColor)),
             ],
           ),
         ),

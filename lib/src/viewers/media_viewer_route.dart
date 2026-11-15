@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/callbacks.dart';
 import '../core/models.dart';
 import 'image_viewer_page.dart';
@@ -23,16 +24,10 @@ class VMediaViewerRoute {
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 250),
         pageBuilder: (context, animation, secondaryAnimation) {
-          return VImageViewerPage(
-            data: data,
-            callbacks: callbacks,
-          );
+          return VImageViewerPage(data: data, callbacks: callbacks);
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
+          return FadeTransition(opacity: animation, child: child);
         },
       ),
     );
@@ -52,16 +47,10 @@ class VMediaViewerRoute {
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 250),
         pageBuilder: (context, animation, secondaryAnimation) {
-          return VVideoPlayerPage(
-            data: data,
-            callbacks: callbacks,
-          );
+          return VVideoPlayerPage(data: data, callbacks: callbacks);
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
+          return FadeTransition(opacity: animation, child: child);
         },
       ),
     );
@@ -81,16 +70,10 @@ class VMediaViewerRoute {
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 250),
         pageBuilder: (context, animation, secondaryAnimation) {
-          return VGalleryViewerPage(
-            data: data,
-            callbacks: callbacks,
-          );
+          return VGalleryViewerPage(data: data, callbacks: callbacks);
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
+          return FadeTransition(opacity: animation, child: child);
         },
       ),
     );

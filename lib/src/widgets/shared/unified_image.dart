@@ -71,10 +71,12 @@ class VUnifiedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    final cacheWidth =
-        width != null ? (width! * devicePixelRatio).toInt() : null;
-    final cacheHeight =
-        height != null ? (height! * devicePixelRatio).toInt() : null;
+    final cacheWidth = width != null
+        ? (width! * devicePixelRatio).toInt()
+        : null;
+    final cacheHeight = height != null
+        ? (height! * devicePixelRatio).toInt()
+        : null;
 
     Widget image = _buildImage(context, cacheWidth, cacheHeight);
 
@@ -198,10 +200,6 @@ class VUnifiedImage extends StatelessWidget {
   }
 
   Widget _buildErrorWidget() {
-    return errorWidget ??
-        VMediaErrorPlaceholder(
-          width: width,
-          height: height,
-        );
+    return errorWidget ?? VMediaErrorPlaceholder(width: width, height: height);
   }
 }

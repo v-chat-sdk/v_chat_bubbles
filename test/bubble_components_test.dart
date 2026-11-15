@@ -22,70 +22,82 @@ void main() {
       );
     }
 
-    testWidgets('VBubbleAvatar renders initials when no image provided',
-        (tester) async {
-      await tester.pumpWidget(createScope(
-        child: const VBubbleAvatar(
-          isMeSender: false,
-          senderName: 'Alice',
-          avatar: null,
+    testWidgets('VBubbleAvatar renders initials when no image provided', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createScope(
+          child: const VBubbleAvatar(
+            isMeSender: false,
+            senderName: 'Alice',
+            avatar: null,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('A'), findsOneWidget);
     });
 
-    testWidgets('VBubbleAvatar renders placeholder when no name/image',
-        (tester) async {
-      await tester.pumpWidget(createScope(
-        child: const VBubbleAvatar(
-          isMeSender: false,
-          senderName: null,
-          avatar: null,
+    testWidgets('VBubbleAvatar renders placeholder when no name/image', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createScope(
+          child: const VBubbleAvatar(
+            isMeSender: false,
+            senderName: null,
+            avatar: null,
+          ),
         ),
-      ));
+      );
 
       expect(find.byIcon(Icons.person), findsOneWidget);
     });
 
     testWidgets('VBubbleHeader renders sender name', (tester) async {
-      await tester.pumpWidget(createScope(
-        child: const VBubbleHeader(
-          isMeSender: false,
-          senderName: 'Bob',
-          forwardedFrom: null,
-          replyTo: null,
+      await tester.pumpWidget(
+        createScope(
+          child: const VBubbleHeader(
+            isMeSender: false,
+            senderName: 'Bob',
+            forwardedFrom: null,
+            replyTo: null,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Bob'), findsOneWidget);
     });
 
     testWidgets('VBubbleHeader renders forwarded info', (tester) async {
-      await tester.pumpWidget(createScope(
-        child: const VBubbleHeader(
-          isMeSender: true,
-          forwardedFrom: VForwardData(
-            originalSenderName: 'Charlie',
-            originalMessageId: '1',
+      await tester.pumpWidget(
+        createScope(
+          child: const VBubbleHeader(
+            isMeSender: true,
+            forwardedFrom: VForwardData(
+              originalSenderName: 'Charlie',
+              originalMessageId: '1',
+            ),
+            senderName: null,
+            replyTo: null,
           ),
-          senderName: null,
-          replyTo: null,
         ),
-      ));
+      );
 
       expect(find.text('Forwarded from Charlie'), findsOneWidget);
       expect(find.byIcon(Icons.forward), findsOneWidget);
     });
 
     testWidgets('VBubbleFooter renders time and status', (tester) async {
-      await tester.pumpWidget(createScope(
-        child: const VBubbleFooter(
-          isMeSender: true,
-          time: '12:00 PM',
-          status: VMessageStatus.read,
+      await tester.pumpWidget(
+        createScope(
+          child: const VBubbleFooter(
+            isMeSender: true,
+            time: '12:00 PM',
+            status: VMessageStatus.read,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('12:00 PM'), findsOneWidget);
       // Default theme read icon
@@ -93,31 +105,36 @@ void main() {
     });
 
     testWidgets('VBubbleFooter renders edited label', (tester) async {
-      await tester.pumpWidget(createScope(
-        child: const VBubbleFooter(
-          isMeSender: true,
-          time: '12:00 PM',
-          status: VMessageStatus.sent,
-          isEdited: true,
+      await tester.pumpWidget(
+        createScope(
+          child: const VBubbleFooter(
+            isMeSender: true,
+            time: '12:00 PM',
+            status: VMessageStatus.sent,
+            isEdited: true,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('edited'), findsOneWidget);
     });
 
-    testWidgets('VMediaContainer renders child with constraints',
-        (tester) async {
-      await tester.pumpWidget(createScope(
-        child: VMediaContainer(
-          messageId: 'media1',
-          child: Container(
-            key: const Key('child'),
-            color: Colors.red,
-            width: 500,
-            height: 500,
+    testWidgets('VMediaContainer renders child with constraints', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createScope(
+          child: VMediaContainer(
+            messageId: 'media1',
+            child: Container(
+              key: const Key('child'),
+              color: Colors.red,
+              width: 500,
+              height: 500,
+            ),
           ),
         ),
-      ));
+      );
 
       expect(find.byKey(const Key('child')), findsOneWidget);
       // Verify Hero tag

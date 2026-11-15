@@ -28,6 +28,35 @@ class VFileBubble extends BaseBubble {
   final double? progress;
   @override
   String get messageType => 'file';
+
+  @override
+  String get semanticContent => file.name;
+
+  @override
+  VoidCallback? semanticActivation(BuildContext context) {
+    final callbacks = context.bubbleCallbacks;
+    if (transferState == VTransferState.cancelled) {
+      return super.semanticActivation(context);
+    }
+    final transferAction = switch (transferState) {
+      VTransferState.idle => VMediaTransferAction.download,
+      VTransferState.error => VMediaTransferAction.retry,
+      VTransferState.uploading ||
+      VTransferState.downloading => VMediaTransferAction.cancel,
+      VTransferState.completed || VTransferState.cancelled => null,
+    };
+    if (transferAction != null) {
+      final onTransfer = callbacks.onTransferStateChanged;
+      return onTransfer == null
+          ? super.semanticActivation(context)
+          : () => onTransfer(messageId, transferAction);
+    }
+    final onMediaTap = callbacks.onMediaTap;
+    return onMediaTap == null
+        ? super.semanticActivation(context)
+        : () => onMediaTap(VMediaTapData(messageId: messageId));
+  }
+
   const VFileBubble({
     super.key,
     required super.messageId,
@@ -98,35 +127,35 @@ class VFileBubble extends BaseBubble {
                       BubbleSpacing.vGapXS,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Flexible(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
+                            // Keep metadata inside its assigned width when
+                            // accessibility text or an extension needs more room.
+                            // The filename above retains the complete extension.
+                            child: Wrap(
+                              spacing: 6,
+                              runSpacing: 2,
+                              crossAxisAlignment: WrapCrossAlignment.end,
                               children: [
                                 if (fileSize > 0)
-                                  Flexible(
-                                    child: Text(
-                                      formatFileSize(fileSize),
-                                      style: theme.timeTextStyle.copyWith(
-                                        color: secondaryColor,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                if (extension.isNotEmpty) ...[
                                   Text(
-                                    ' • ',
+                                    formatFileSize(fileSize),
                                     style: theme.timeTextStyle.copyWith(
                                       color: secondaryColor,
                                     ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
+                                if (extension.isNotEmpty)
                                   Text(
                                     extension.toUpperCase(),
                                     style: theme.timeTextStyle.copyWith(
                                       color: secondaryColor,
                                     ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ],
                               ],
                             ),
                           ),

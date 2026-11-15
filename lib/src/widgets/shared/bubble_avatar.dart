@@ -32,8 +32,9 @@ class VBubbleAvatar extends StatelessWidget {
     Widget avatarWidget;
 
     if (avatar != null) {
-      final bubbleColor =
-          isMeSender ? theme.outgoingBubbleColor : theme.incomingBubbleColor;
+      final bubbleColor = isMeSender
+          ? theme.outgoingBubbleColor
+          : theme.incomingBubbleColor;
       avatarWidget = VUnifiedImage(
         imageSource: avatar!,
         width: size,

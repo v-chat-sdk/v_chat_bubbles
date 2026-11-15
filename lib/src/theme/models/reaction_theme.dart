@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/enums.dart';
 
 /// Reaction theme for emoji reactions on messages
@@ -95,54 +96,54 @@ class VBubbleReactionTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReactionTheme telegramLight() => const VBubbleReactionTheme(
-        backgroundColor: Colors.white,
-        selectedBackgroundColor: Color(0xFFE1FFC7),
-        textColor: Colors.black,
-      );
+    backgroundColor: Colors.white,
+    selectedBackgroundColor: Color(0xFFE1FFC7),
+    textColor: Colors.black,
+  );
   static VBubbleReactionTheme telegramDark() => const VBubbleReactionTheme(
-        backgroundColor: Color(0xFF1D2733),
-        selectedBackgroundColor: Color(0xFF2B5278),
-        textColor: Colors.white,
-      );
+    backgroundColor: Color(0xFF1D2733),
+    selectedBackgroundColor: Color(0xFF2B5278),
+    textColor: Colors.white,
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReactionTheme whatsappLight() => const VBubbleReactionTheme(
-        backgroundColor: Colors.white,
-        selectedBackgroundColor: Color(0xFFD9FDD3),
-        textColor: Color(0xFF111B21),
-      );
+    backgroundColor: Colors.white,
+    selectedBackgroundColor: Color(0xFFD9FDD3),
+    textColor: Color(0xFF111B21),
+  );
   static VBubbleReactionTheme whatsappDark() => const VBubbleReactionTheme(
-        backgroundColor: Color(0xFF202C33),
-        selectedBackgroundColor: Color(0xFF005C4B),
-        textColor: Color(0xFFE9EDEF),
-      );
+    backgroundColor: Color(0xFF202C33),
+    selectedBackgroundColor: Color(0xFF005C4B),
+    textColor: Color(0xFFE9EDEF),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReactionTheme messengerLight() => const VBubbleReactionTheme(
-        backgroundColor: Colors.white,
-        selectedBackgroundColor: Color(0xFFE4E6EB),
-        textColor: Color(0xFF050505),
-      );
+    backgroundColor: Colors.white,
+    selectedBackgroundColor: Color(0xFFE4E6EB),
+    textColor: Color(0xFF050505),
+  );
   static VBubbleReactionTheme messengerDark() => const VBubbleReactionTheme(
-        backgroundColor: Color(0xFF3A3B3C),
-        selectedBackgroundColor: Color(0xFF4E4F50),
-        textColor: Color(0xFFE4E6EB),
-      );
+    backgroundColor: Color(0xFF3A3B3C),
+    selectedBackgroundColor: Color(0xFF4E4F50),
+    textColor: Color(0xFFE4E6EB),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleReactionTheme imessageLight() => const VBubbleReactionTheme(
-        backgroundColor: Color(0xFFF2F2F7),
-        selectedBackgroundColor: Color(0xFFE5E5EA),
-        textColor: Colors.black,
-      );
+    backgroundColor: Color(0xFFF2F2F7),
+    selectedBackgroundColor: Color(0xFFE5E5EA),
+    textColor: Colors.black,
+  );
   static VBubbleReactionTheme imessageDark() => const VBubbleReactionTheme(
-        backgroundColor: Color(0xFF2C2C2E),
-        selectedBackgroundColor: Color(0xFF3A3A3C),
-        textColor: Colors.white,
-      );
+    backgroundColor: Color(0xFF2C2C2E),
+    selectedBackgroundColor: Color(0xFF3A3A3C),
+    textColor: Colors.white,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

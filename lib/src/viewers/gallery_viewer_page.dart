@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../core/callbacks.dart';
 import '../core/models.dart';
 import '../utils/platform_image_builder.dart';
@@ -12,11 +13,7 @@ import 'shared/viewer_overlay.dart';
 class VGalleryViewerPage extends StatefulWidget {
   final VMediaViewerData data;
   final VBubbleCallbacks? callbacks;
-  const VGalleryViewerPage({
-    super.key,
-    required this.data,
-    this.callbacks,
-  });
+  const VGalleryViewerPage({super.key, required this.data, this.callbacks});
   @override
   State<VGalleryViewerPage> createState() => _GalleryViewerPageState();
 }
@@ -120,9 +117,7 @@ class _GalleryViewerPageState extends State<VGalleryViewerPage> {
                   return Hero(
                     tag: 'media_${widget.data.messageId}_$index',
                     child: Center(
-                      child: VDoubleTapZoomViewer(
-                        child: _buildImage(item),
-                      ),
+                      child: VDoubleTapZoomViewer(child: _buildImage(item)),
                     ),
                   );
                 },
@@ -220,18 +215,12 @@ class _GalleryViewerPageState extends State<VGalleryViewerPage> {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [
-            Colors.black.withValues(alpha: 0.6),
-            Colors.transparent,
-          ],
+          colors: [Colors.black.withValues(alpha: 0.6), Colors.transparent],
         ),
       ),
       child: Text(
         caption,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-        ),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
         textAlign: TextAlign.center,
       ),
     );
@@ -255,8 +244,9 @@ class _GalleryViewerPageState extends State<VGalleryViewerPage> {
             height: isActive ? 8 : 6,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color:
-                  isActive ? Colors.white : Colors.white.withValues(alpha: 0.4),
+              color: isActive
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.4),
             ),
           );
         }),
@@ -275,7 +265,7 @@ class _GalleryViewerPageState extends State<VGalleryViewerPage> {
           child: CircularProgressIndicator(
             value: loadingProgress.expectedTotalBytes != null
                 ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
+                      loadingProgress.expectedTotalBytes!
                 : null,
             color: Colors.white,
           ),

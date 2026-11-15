@@ -51,46 +51,46 @@ class VBubbleSelectionTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSelectionTheme telegramLight() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x33007EE5),
-        checkmarkColor: Color(0xFF007EE5),
-      );
+    overlayColor: Color(0x33007EE5),
+    checkmarkColor: Color(0xFF007EE5),
+  );
   static VBubbleSelectionTheme telegramDark() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x33FFFFFF),
-        checkmarkColor: Color(0xFF5EADEA),
-      );
+    overlayColor: Color(0x33FFFFFF),
+    checkmarkColor: Color(0xFF5EADEA),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSelectionTheme whatsappLight() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x3325D366),
-        checkmarkColor: Color(0xFF25D366),
-      );
+    overlayColor: Color(0x3325D366),
+    checkmarkColor: Color(0xFF25D366),
+  );
   static VBubbleSelectionTheme whatsappDark() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x3325D366),
-        checkmarkColor: Color(0xFF25D366),
-      );
+    overlayColor: Color(0x3325D366),
+    checkmarkColor: Color(0xFF25D366),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSelectionTheme messengerLight() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x220084FF),
-        checkmarkColor: Color(0xFF0084FF),
-      );
+    overlayColor: Color(0x220084FF),
+    checkmarkColor: Color(0xFF0084FF),
+  );
   static VBubbleSelectionTheme messengerDark() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x220084FF),
-        checkmarkColor: Color(0xFF0084FF),
-      );
+    overlayColor: Color(0x220084FF),
+    checkmarkColor: Color(0xFF0084FF),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSelectionTheme imessageLight() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x22007AFF),
-        checkmarkColor: Color(0xFF007AFF),
-      );
+    overlayColor: Color(0x22007AFF),
+    checkmarkColor: Color(0xFF007AFF),
+  );
   static VBubbleSelectionTheme imessageDark() => const VBubbleSelectionTheme(
-        overlayColor: Color(0x220A84FF),
-        checkmarkColor: Color(0xFF0A84FF),
-      );
+    overlayColor: Color(0x220A84FF),
+    checkmarkColor: Color(0xFF0A84FF),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

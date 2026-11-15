@@ -220,12 +220,11 @@ class CommonBubbleProps {
 ///   );
 /// };
 /// ```
-typedef CustomBubbleBuilder =
-    Widget Function(
-      BuildContext context,
-      String messageId,
-      bool isMeSender,
-      String time,
-      VCustomBubbleData data,
-      CommonBubbleProps props,
-    );
+typedef CustomBubbleBuilder = Widget Function(
+  BuildContext context,
+  String messageId,
+  bool isMeSender,
+  String time,
+  VCustomBubbleData data,
+  CommonBubbleProps props,
+);

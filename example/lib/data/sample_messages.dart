@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:v_chat_bubbles/v_chat_bubbles.dart';
+
 import '../models/demo_message.dart';
 
 class SampleMessages {
@@ -63,8 +64,7 @@ class SampleMessages {
       // Medium outgoing
       DemoMessage.text(
         id: 'd_msg_3',
-        text:
-            'That\'s awesome! I was wondering if you\'re free this weekend for a coffee?',
+        text: 'That\'s awesome! I was wondering if you\'re free this weekend for a coffee?',
         time: '09:02',
         isOutgoing: true,
         status: VMessageStatus.read,
@@ -72,8 +72,7 @@ class SampleMessages {
       // Long expandable text
       DemoMessage.text(
         id: 'd_msg_4',
-        text:
-            '''This is a really long message that demonstrates the "See more" expansion feature. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        text: '''This is a really long message that demonstrates the "See more" expansion feature. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 
@@ -85,8 +84,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       // Inline formatting: Bold, Italic, Strikethrough, Code
       DemoMessage.text(
         id: 'd_msg_format_1',
-        text:
-            'Testing *bold text*, _italic text_, ~strikethrough~, and `inline code`!',
+        text: 'Testing *bold text*, _italic text_, ~strikethrough~, and `inline code`!',
         time: '09:04',
         isOutgoing: true,
         status: VMessageStatus.read,
@@ -94,16 +92,14 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       // Combined inline formatting
       DemoMessage.text(
         id: 'd_msg_format_2',
-        text:
-            'You can combine *bold* with _italic_ and even `code` in the same message!',
+        text: 'You can combine *bold* with _italic_ and even `code` in the same message!',
         time: '09:04',
         isOutgoing: false,
       ),
       // Custom mention pattern test: [@username:userId] -> displays @username
       DemoMessage.text(
         id: 'd_msg_mention_1',
-        text:
-            'Hey [@John:user_123] and [@Sarah:user_456], can you check this out? Also cc [@Admin:user_001]',
+        text: 'Hey [@John:user_123] and [@Sarah:user_456], can you check this out? Also cc [@Admin:user_001]',
         time: '09:05',
         isOutgoing: true,
         status: VMessageStatus.read,
@@ -205,8 +201,7 @@ Check out https://flutter.dev for more info.''',
       // URL pattern
       DemoMessage.text(
         id: 'd_msg_5',
-        text:
-            'Check out this article: https://flutter.dev/docs/get-started and let me know what you think!',
+        text: 'Check out this article: https://flutter.dev/docs/get-started and let me know what you think!',
         time: '09:05',
         isOutgoing: true,
         status: VMessageStatus.read,
@@ -229,16 +224,14 @@ Check out https://flutter.dev for more info.''',
       // Multiple patterns in one message
       DemoMessage.text(
         id: 'd_msg_8',
-        text:
-            'Contact info:\nWebsite: https://example.com\nEmail: contact@example.com\nPhone: +1-800-555-0123',
+        text: 'Contact info:\nWebsite: https://example.com\nEmail: contact@example.com\nPhone: +1-800-555-0123',
         time: '09:08',
         isOutgoing: false,
       ),
       // Custom patterns (ticket, order, invoice)
       DemoMessage.text(
         id: 'd_msg_9',
-        text:
-            'Your support ticket TKT-12345 has been created. Reference number: ORD#98765',
+        text: 'Your support ticket TKT-12345 has been created. Reference number: ORD#98765',
         time: '09:10',
         isOutgoing: false,
       ),
@@ -267,8 +260,7 @@ Check out https://flutter.dev for more info.''',
       // Long Arabic text
       DemoMessage.text(
         id: 'd_msg_13',
-        text:
-            '''هذا نص طويل باللغة العربية لاختبار دعم اللغات من اليمين إلى اليسار. يجب أن يظهر النص بشكل صحيح ومنسق. الكتابة العربية جميلة ولها تاريخ عريق في الخط والتصميم. نأمل أن يعمل كل شيء بشكل جيد.''',
+        text: '''هذا نص طويل باللغة العربية لاختبار دعم اللغات من اليمين إلى اليسار. يجب أن يظهر النص بشكل صحيح ومنسق. الكتابة العربية جميلة ولها تاريخ عريق في الخط والتصميم. نأمل أن يعمل كل شيء بشكل جيد.''',
         time: '09:14',
         isOutgoing: false,
       ),
@@ -290,8 +282,7 @@ Check out https://flutter.dev for more info.''',
           originalMessageId: 'd_msg_14',
           senderId: 'me',
           senderName: 'You',
-          previewText:
-              'That\'s awesome! I was wondering if you\'re free this weekend for a coffee?',
+          previewText: 'That\'s awesome! I was wondering if you\'re free this weekend for a coffee?',
         ),
       ),
       // === EDITED MESSAGE ===
@@ -458,8 +449,7 @@ Check out https://flutter.dev for more info.''',
           title: 'Flutter Documentation',
           description: 'Build beautiful native apps in record time.',
           image: VPlatformFile.fromUrl(
-            networkUrl:
-                'https://storage.googleapis.com/cms-storage-bucket/70760bf1e88b184bb1bc.png',
+            networkUrl: 'https://storage.googleapis.com/cms-storage-bucket/70760bf1e88b184bb1bc.png',
           ),
         ),
         time: '10:25',
@@ -618,8 +608,7 @@ Check out https://flutter.dev for more info.''',
       // Long text from group member
       DemoMessage.text(
         id: 'g_msg_5',
-        text:
-            '''I've been working on a new Flutter package for chat bubbles. It supports multiple styles like Telegram, WhatsApp, Messenger, and iMessage.
+        text: '''I've been working on a new Flutter package for chat bubbles. It supports multiple styles like Telegram, WhatsApp, Messenger, and iMessage.
 
 The package includes features like:
 - Custom bubble shapes and colors
@@ -665,8 +654,7 @@ Let me know if you want to test it out!''',
       ),
       DemoMessage.text(
         id: 'g_msg_8',
-        text:
-            'For any issues, email us at support@flutterdevs.com or call +1-800-FLUTTER',
+        text: 'For any issues, email us at support@flutterdevs.com or call +1-800-FLUTTER',
         time: '09:12',
         isOutgoing: true,
         status: VMessageStatus.read,
@@ -703,8 +691,7 @@ Let me know if you want to test it out!''',
       ),
       DemoMessage.text(
         id: 'g_msg_12',
-        text:
-            '''هذه رسالة طويلة باللغة العربية لاختبار كيفية عرض النصوص الطويلة من اليمين إلى اليسار في المحادثات الجماعية. يجب أن يظهر اسم المرسل والصورة الرمزية بشكل صحيح بجانب الفقاعة.
+        text: '''هذه رسالة طويلة باللغة العربية لاختبار كيفية عرض النصوص الطويلة من اليمين إلى اليسار في المحادثات الجماعية. يجب أن يظهر اسم المرسل والصورة الرمزية بشكل صحيح بجانب الفقاعة.
 
 الكتابة العربية من أقدم أنظمة الكتابة في العالم، وتستخدم في العديد من اللغات بما في ذلك العربية والفارسية والأردية.''',
         time: '09:22',
@@ -716,8 +703,7 @@ Let me know if you want to test it out!''',
       // Mixed language
       DemoMessage.text(
         id: 'g_msg_13',
-        text:
-            'أنا أعمل على Flutter project جديد - إنه رائع! Check it out: https://github.com/example',
+        text: 'أنا أعمل على Flutter project جديد - إنه رائع! Check it out: https://github.com/example',
         time: '09:25',
         isOutgoing: true,
         status: VMessageStatus.read,
@@ -758,8 +744,7 @@ Let me know if you want to test it out!''',
       // === FORWARDED MESSAGE ===
       DemoMessage.text(
         id: 'g_msg_16',
-        text:
-            'IMPORTANT: Flutter 3.19 is now released with major performance improvements!',
+        text: 'IMPORTANT: Flutter 3.19 is now released with major performance improvements!',
         time: '09:35',
         isOutgoing: false,
         senderName: 'Eve',
@@ -1067,8 +1052,7 @@ Let me know if you want to test it out!''',
       // === FINAL MESSAGES ===
       DemoMessage.text(
         id: 'g_msg_34',
-        text:
-            'That\'s all the message types! Try switching styles and themes to see how they look.',
+        text: 'That\'s all the message types! Try switching styles and themes to see how they look.',
         time: '11:05',
         isOutgoing: true,
         status: VMessageStatus.read,

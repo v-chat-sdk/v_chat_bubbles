@@ -234,11 +234,14 @@ class _ContextMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDestructive = item.isDestructive;
-    final textColor =
-        isDestructive ? theme.menuDestructiveColor : theme.menuTextColor;
+    final textColor = isDestructive
+        ? theme.menuDestructiveColor
+        : theme.menuTextColor;
     // Use translated label, falling back to item.label for custom items
-    final label =
-        translations.labelForMenuItemId(item.id, fallback: item.label);
+    final label = translations.labelForMenuItemId(
+      item.id,
+      fallback: item.label,
+    );
     return CupertinoContextMenuAction(
       onPressed: () {
         if (enableHapticFeedback) {
@@ -254,10 +257,7 @@ class _ContextMenuItem extends StatelessWidget {
       },
       isDestructiveAction: isDestructive,
       trailingIcon: item.icon,
-      child: Text(
-        label,
-        style: TextStyle(color: textColor),
-      ),
+      child: Text(label, style: TextStyle(color: textColor)),
     );
   }
 }
@@ -326,7 +326,8 @@ class BubbleContextMenuSheet extends StatelessWidget {
           ? ReactionsRow(
               messageId: messageId,
               currentReactions: currentReactions,
-              availableReactions: menuConfig.customReactions ??
+              availableReactions:
+                  menuConfig.customReactions ??
                   VBubbleTheme.reactionsForStyle(scope.style),
               theme: theme,
               enableHapticFeedback: config.gestures.enableHapticFeedback,
@@ -335,37 +336,43 @@ class BubbleContextMenuSheet extends StatelessWidget {
               reactionStateManager: reactionStateManager,
             )
           : null,
-      actions: menuItems.where((item) {
-        final action = _actionForItem(item);
-        return action == null || menuConfig.availableActions.contains(action);
-      }).map((item) {
-        final label =
-            translations.labelForMenuItemId(item.id, fallback: item.label);
-        return CupertinoActionSheetAction(
-          onPressed: () {
-            if (config.gestures.enableHapticFeedback) {
-              HapticFeedback.selectionClick();
-            }
-            Navigator.of(context).pop();
-            callbacks.onMenuItemSelected?.call(messageId, item);
-          },
-          isDestructiveAction: item.isDestructive,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                item.icon,
-                color: item.isDestructive
-                    ? theme.menuDestructiveColor
-                    : theme.menuTextColor,
-                size: 20,
+      actions: menuItems
+          .where((item) {
+            final action = _actionForItem(item);
+            return action == null ||
+                menuConfig.availableActions.contains(action);
+          })
+          .map((item) {
+            final label = translations.labelForMenuItemId(
+              item.id,
+              fallback: item.label,
+            );
+            return CupertinoActionSheetAction(
+              onPressed: () {
+                if (config.gestures.enableHapticFeedback) {
+                  HapticFeedback.selectionClick();
+                }
+                Navigator.of(context).pop();
+                callbacks.onMenuItemSelected?.call(messageId, item);
+              },
+              isDestructiveAction: item.isDestructive,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    item.icon,
+                    color: item.isDestructive
+                        ? theme.menuDestructiveColor
+                        : theme.menuTextColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(label),
+                ],
               ),
-              const SizedBox(width: 8),
-              Text(label),
-            ],
-          ),
-        );
-      }).toList(),
+            );
+          })
+          .toList(),
       cancelButton: CupertinoActionSheetAction(
         onPressed: () => Navigator.of(context).pop(),
         child: Text(translations.contextMenuCancel),

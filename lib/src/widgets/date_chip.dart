@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/constants.dart';
 import 'bubble_scope.dart';
 

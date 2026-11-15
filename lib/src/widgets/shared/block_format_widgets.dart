@@ -187,10 +187,7 @@ class VBlockquoteWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: style.blockquoteBackground,
         border: Border(
-          left: BorderSide(
-            color: style.blockquoteBorderColor,
-            width: 3,
-          ),
+          left: BorderSide(color: style.blockquoteBorderColor, width: 3),
         ),
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(4),
@@ -242,7 +239,8 @@ class VBulletListWidget extends StatelessWidget {
   }
 
   Widget _buildItem(String item, int index) {
-    final hasSpans = itemSpans != null &&
+    final hasSpans =
+        itemSpans != null &&
         index < itemSpans!.length &&
         itemSpans![index] != null;
     return Padding(
@@ -266,10 +264,7 @@ class VBulletListWidget extends StatelessWidget {
                 ? RichText(text: TextSpan(children: itemSpans![index]))
                 : Text(
                     item,
-                    style: TextStyle(
-                      color: style.listTextColor,
-                      height: 1.4,
-                    ),
+                    style: TextStyle(color: style.listTextColor, height: 1.4),
                   ),
           ),
         ],
@@ -314,7 +309,8 @@ class VNumberedListWidget extends StatelessWidget {
 
   Widget _buildItem(String item, int index) {
     final number = startNumber + index;
-    final hasSpans = itemSpans != null &&
+    final hasSpans =
+        itemSpans != null &&
         index < itemSpans!.length &&
         itemSpans![index] != null;
     return Padding(
@@ -338,10 +334,7 @@ class VNumberedListWidget extends StatelessWidget {
                 ? RichText(text: TextSpan(children: itemSpans![index]))
                 : Text(
                     item,
-                    style: TextStyle(
-                      color: style.listTextColor,
-                      height: 1.4,
-                    ),
+                    style: TextStyle(color: style.listTextColor, height: 1.4),
                   ),
           ),
         ],

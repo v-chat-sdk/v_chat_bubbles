@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/constants.dart';
 import 'bubble_scope.dart';
 
@@ -13,11 +14,7 @@ class VTypingIndicator extends StatefulWidget {
   /// Optional avatar widget to show alongside the indicator
   final Widget? avatar;
 
-  const VTypingIndicator({
-    super.key,
-    this.isMeSender = false,
-    this.avatar,
-  });
+  const VTypingIndicator({super.key, this.isMeSender = false, this.avatar});
 
   @override
   State<VTypingIndicator> createState() => _VTypingIndicatorState();
@@ -60,8 +57,9 @@ class _VTypingIndicatorState extends State<VTypingIndicator>
         bottom: config.spacing.sameSenderSpacing,
       ),
       child: Row(
-        mainAxisAlignment:
-            widget.isMeSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: widget.isMeSender
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!widget.isMeSender && config.avatar.show) ...[
@@ -99,8 +97,9 @@ class _VTypingIndicatorState extends State<VTypingIndicator>
       children: List.generate(_dotCount, (index) {
         final delay = index * _animationDelay;
         final animationValue = (_controller.value - delay).clamp(0.0, 1.0);
-        final bounceValue =
-            animationValue < 0.5 ? animationValue * 2 : 2 - animationValue * 2;
+        final bounceValue = animationValue < 0.5
+            ? animationValue * 2
+            : 2 - animationValue * 2;
         return Container(
           margin: EdgeInsets.only(right: index < _dotCount - 1 ? 4 : 0),
           child: Transform.translate(

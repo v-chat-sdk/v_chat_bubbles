@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/enums.dart';
 
 /// Shared transfer overlay widget for media bubbles
@@ -73,15 +74,14 @@ class VTransferOverlay extends StatelessWidget {
     return Positioned.fill(
       child: Container(
         color: backgroundColor ?? Colors.black45,
-        child: Center(
-          child: _buildTransferButton(icon, onTap),
-        ),
+        child: Center(child: _buildTransferButton(icon, onTap)),
       ),
     );
   }
 
   Widget _buildTransferButton(IconData icon, VoidCallback? onTap) {
-    final hasProgress = (state == VTransferState.downloading ||
+    final hasProgress =
+        (state == VTransferState.downloading ||
             state == VTransferState.uploading) &&
         progress != null;
     if (hasProgress) {
@@ -95,8 +95,9 @@ class VTransferOverlay extends StatelessWidget {
               value: progress,
               strokeWidth: strokeWidth,
               color: progressColor ?? Colors.white,
-              backgroundColor:
-                  (progressColor ?? Colors.white).withValues(alpha: 0.24),
+              backgroundColor: (progressColor ?? Colors.white).withValues(
+                alpha: 0.24,
+              ),
             ),
             GestureDetector(
               onTap: onTap,

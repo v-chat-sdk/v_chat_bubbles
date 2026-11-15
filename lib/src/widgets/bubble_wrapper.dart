@@ -33,15 +33,17 @@ class VBubbleWrapper extends StatelessWidget {
     final style = scope.style;
     // Detect RTL layout direction
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final defaultColor =
-        isMeSender ? theme.outgoingBubbleColor : theme.incomingBubbleColor;
+    final defaultColor = isMeSender
+        ? theme.outgoingBubbleColor
+        : theme.incomingBubbleColor;
     final bubbleColor = backgroundColor ?? defaultColor;
     // Get gradient from theme (only used for Telegram style)
     final bubbleGradient = isMeSender
         ? theme.outgoingBubbleGradient
         : theme.incomingBubbleGradient;
     final gradient = style == VBubbleStyle.telegram ? bubbleGradient : null;
-    final effectiveMaxWidth = maxWidth ??
+    final effectiveMaxWidth =
+        maxWidth ??
         (MediaQuery.sizeOf(context).width * config.sizing.maxWidthFraction);
     final hPadding = config.spacing.contentPaddingHorizontal;
     final vPadding = config.spacing.contentPaddingVertical;

@@ -90,9 +90,8 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     Text(
                       title ?? _getStyleName(style),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 6),
                     Container(

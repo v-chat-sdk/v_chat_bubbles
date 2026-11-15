@@ -73,10 +73,10 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  v_chat_bubbles: ^2.1.1
+  v_chat_bubbles: ^3.0.2
 ```
 
-Version 2 requires Flutter 3.44.0 or newer and Dart 3.12.0 or newer.
+Version 3 requires Flutter 3.47.0 or newer and Dart 3.13.0 or newer.
 
 Then run:
 
@@ -523,6 +523,28 @@ Controls accessibility features.
 | `minTapTargetSize` | `double` | `48` | Minimum tap target (44+ recommended) |
 | `enableHighContrast` | `bool` | `false` | High contrast mode |
 | `semanticLabelBuilder` | `Function?` | `null` | Custom semantic label builder |
+
+Text-bubble labels include the complete message text, and file-bubble labels
+include the filename. Default labels also retain direction, sender (when
+provided), time, outgoing delivery status, and edited/pinned/starred metadata.
+`semanticLabelBuilder(messageType, content)` receives the actual text or
+filename and replaces the complete label with its return value. Include any
+additional metadata your custom label needs in that return value.
+Bubble types that do not provide `semanticContent` retain the legacy metadata
+description as the builder's second argument.
+
+Accessible activation invokes the configured general `onTap` callback. File
+bubbles prefer `onMediaTap` for completed files and `onTransferStateChanged`
+for download, retry, or cancellation; they fall back to `onTap` if the
+corresponding callback is absent. In selection mode, activation only calls
+`onSelectionChanged` and exposes the selected state. Each activation invokes
+one callback, and a bubble without an available action has no button role.
+
+Custom `BaseBubble` subclasses can override `semanticContent` and the protected
+`semanticActivation(BuildContext)` hook to provide their own content and primary
+accessible action. This patch covers text/file content and their primary
+activation; specialized controls inside other rich-media bubbles retain their
+existing accessibility behavior.
 
 ---
 

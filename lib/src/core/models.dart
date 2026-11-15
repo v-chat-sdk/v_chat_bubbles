@@ -119,12 +119,11 @@ class VBubbleMenuItem {
 /// - [isMeSender]: Whether the message was sent by the current user
 ///
 /// Return null to use default menu items, or return a list to override
-typedef VMenuItemsBuilder =
-    List<VBubbleMenuItem>? Function(
-      String messageId,
-      String messageType,
-      bool isMeSender,
-    );
+typedef VMenuItemsBuilder = List<VBubbleMenuItem>? Function(
+  String messageId,
+  String messageType,
+  bool isMeSender,
+);
 
 /// Default menu items for context menu
 class VDefaultMenuItems {

@@ -134,11 +134,12 @@ abstract class VBubblePainter extends CustomPainter {
 
   /// Creates a simple rounded rectangle path (no tail)
   Path createSimpleRoundedPath(Size size) {
-    return Path()
-      ..addRRect(RRect.fromRectAndRadius(
+    return Path()..addRRect(
+      RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, size.width, size.height),
         Radius.circular(radius),
-      ));
+      ),
+    );
   }
 
   /// Adds a quadratic bezier for top-left corner
@@ -156,7 +157,11 @@ abstract class VBubblePainter extends CustomPainter {
   /// Adds a quadratic bezier for bottom-right corner
   @protected
   void addBottomRightCorner(
-      Path path, double width, double height, double radius) {
+    Path path,
+    double width,
+    double height,
+    double radius,
+  ) {
     path.quadraticBezierTo(width, height, width - radius, height);
   }
 
@@ -250,11 +255,12 @@ class VTelegramBubblePainter extends VBubblePainter {
 
   /// Creates simple rounded bubble without tail
   Path _createSimpleBubblePath(Size size) {
-    return Path()
-      ..addRRect(RRect.fromRectAndRadius(
+    return Path()..addRRect(
+      RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, size.width, size.height),
         Radius.circular(radius),
-      ));
+      ),
+    );
   }
 
   /// Outgoing bubble - tail on bottom-right
@@ -416,8 +422,9 @@ class VWhatsAppBubblePainter extends VBubblePainter {
         _cachedTailOnRight != tailOnRight ||
         _cachedRadius != radius) {
       // Use tailOnRight to determine path (respects RTL)
-      final tailPath =
-          tailOnRight ? _createRightTailPath(size) : _createLeftTailPath(size);
+      final tailPath = tailOnRight
+          ? _createRightTailPath(size)
+          : _createLeftTailPath(size);
       _cachedPath = showTail ? tailPath : createSimpleRoundedPath(size);
       _cachedSize = size;
       _cachedShowTail = showTail;
@@ -610,8 +617,9 @@ class VIMessageBubblePainter extends VBubblePainter {
         _cachedTailOnRight != tailOnRight ||
         _cachedRadius != radius) {
       // Use tailOnRight to determine path (respects RTL)
-      final tailPath =
-          tailOnRight ? _createRightTailPath(size) : _createLeftTailPath(size);
+      final tailPath = tailOnRight
+          ? _createRightTailPath(size)
+          : _createLeftTailPath(size);
       _cachedPath = showTail ? tailPath : createSimpleRoundedPath(size);
       _cachedSize = size;
       _cachedShowTail = showTail;

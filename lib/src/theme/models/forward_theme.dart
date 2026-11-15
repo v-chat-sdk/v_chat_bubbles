@@ -50,46 +50,46 @@ class VBubbleForwardTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleForwardTheme telegramLight() => const VBubbleForwardTheme(
-        headerColor: Color(0xFF3FC33B),
-        backgroundColor: Color(0x0F000000),
-      );
+    headerColor: Color(0xFF3FC33B),
+    backgroundColor: Color(0x0F000000),
+  );
   static VBubbleForwardTheme telegramDark() => const VBubbleForwardTheme(
-        headerColor: Color(0xFF5EADEA),
-        backgroundColor: Color(0x26FFFFFF),
-      );
+    headerColor: Color(0xFF5EADEA),
+    backgroundColor: Color(0x26FFFFFF),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleForwardTheme whatsappLight() => const VBubbleForwardTheme(
-        headerColor: Color(0xFF667781),
-        backgroundColor: Color(0x0D000000),
-      );
+    headerColor: Color(0xFF667781),
+    backgroundColor: Color(0x0D000000),
+  );
   static VBubbleForwardTheme whatsappDark() => const VBubbleForwardTheme(
-        headerColor: Color(0xFF8696A0),
-        backgroundColor: Color(0x1AFFFFFF),
-      );
+    headerColor: Color(0xFF8696A0),
+    backgroundColor: Color(0x1AFFFFFF),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleForwardTheme messengerLight() => const VBubbleForwardTheme(
-        headerColor: Color(0xFF65676B),
-        backgroundColor: Color(0x0D000000),
-      );
+    headerColor: Color(0xFF65676B),
+    backgroundColor: Color(0x0D000000),
+  );
   static VBubbleForwardTheme messengerDark() => const VBubbleForwardTheme(
-        headerColor: Color(0xFFB0B3B8),
-        backgroundColor: Color(0x1AFFFFFF),
-      );
+    headerColor: Color(0xFFB0B3B8),
+    backgroundColor: Color(0x1AFFFFFF),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleForwardTheme imessageLight() => const VBubbleForwardTheme(
-        headerColor: Color(0xFF8E8E93),
-        backgroundColor: Color(0x0D000000),
-      );
+    headerColor: Color(0xFF8E8E93),
+    backgroundColor: Color(0x0D000000),
+  );
   static VBubbleForwardTheme imessageDark() => const VBubbleForwardTheme(
-        headerColor: Color(0xFF8E8E93),
-        backgroundColor: Color(0x26FFFFFF),
-      );
+    headerColor: Color(0xFF8E8E93),
+    backgroundColor: Color(0x26FFFFFF),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

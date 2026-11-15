@@ -158,7 +158,8 @@ class _SwipeToReplyWrapperState extends State<VSwipeToReplyWrapper>
       if (velocity > widget.velocityThreshold) velocityTriggered = true;
     }
     final reachedThreshold = _peakDragExtent >= widget.swipeThreshold;
-    final draggedBackToCancel = reachedThreshold &&
+    final draggedBackToCancel =
+        reachedThreshold &&
         _dragExtent.abs() < widget.swipeThreshold * widget.cancelThreshold;
     final shouldTrigger =
         (_triggered || velocityTriggered) && !draggedBackToCancel;
@@ -181,8 +182,10 @@ class _SwipeToReplyWrapperState extends State<VSwipeToReplyWrapper>
   @override
   Widget build(BuildContext context) {
     if (widget.onSwipe == null) return widget.child;
-    final progress =
-        (_dragExtent.abs() / widget.swipeThreshold).clamp(0.0, 1.0);
+    final progress = (_dragExtent.abs() / widget.swipeThreshold).clamp(
+      0.0,
+      1.0,
+    );
     final triggeredScale = 1.1;
     final progressScale = 0.5 + (progress * 0.5);
     final iconScale = _triggered ? triggeredScale : progressScale;
@@ -210,15 +213,16 @@ class _SwipeToReplyWrapperState extends State<VSwipeToReplyWrapper>
                   angle: iconRotation,
                   child: Transform.scale(
                     scale: iconScale,
-                    child: widget.icon ??
+                    child:
+                        widget.icon ??
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: _triggered
                                 ? Theme.of(context).colorScheme.primaryContainer
                                 : Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
+                                      .colorScheme
+                                      .surfaceContainerHighest,
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
@@ -226,11 +230,11 @@ class _SwipeToReplyWrapperState extends State<VSwipeToReplyWrapper>
                             size: 20,
                             color: _triggered
                                 ? Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer
+                                      .colorScheme
+                                      .onPrimaryContainer
                                 : Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant,
+                                      .colorScheme
+                                      .onSurfaceVariant,
                           ),
                         ),
                   ),

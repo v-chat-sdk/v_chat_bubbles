@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/enums.dart';
 
 /// Configuration for message status icons
@@ -174,72 +175,72 @@ class VBubbleStatusTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleStatusTheme telegramLight() => const VBubbleStatusTheme(
-        pendingColor: Color(0xFF999999),
-        sentColor: Color(0xFF19C700),
-        deliveredColor: Color(0xFF19C700),
-        readColor: Color(0xFF19C700),
-        errorColor: Color(0xFFFF3B30),
-      );
+    pendingColor: Color(0xFF999999),
+    sentColor: Color(0xFF19C700),
+    deliveredColor: Color(0xFF19C700),
+    readColor: Color(0xFF19C700),
+    errorColor: Color(0xFFFF3B30),
+  );
   static VBubbleStatusTheme telegramDark() => VBubbleStatusTheme(
-        pendingColor: const Color(0x80FFFFFF),
-        sentColor: const Color(0xFF8696A0),
-        deliveredColor: const Color(0xFF8696A0),
-        readColor: const Color(0xFF5EADEA),
-        errorColor: const Color(0xFFFF6B6B),
-      );
+    pendingColor: const Color(0x80FFFFFF),
+    sentColor: const Color(0xFF8696A0),
+    deliveredColor: const Color(0xFF8696A0),
+    readColor: const Color(0xFF5EADEA),
+    errorColor: const Color(0xFFFF6B6B),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleStatusTheme whatsappLight() => const VBubbleStatusTheme(
-        icons: VStatusIconsConfig.whatsapp,
-        pendingColor: Color(0xFF8696A0),
-        sentColor: Color(0xFF667781),
-        deliveredColor: Color(0xFF667781),
-        readColor: Color(0xFF53BDEB),
-        errorColor: Color(0xFFEA0038),
-      );
+    icons: VStatusIconsConfig.whatsapp,
+    pendingColor: Color(0xFF8696A0),
+    sentColor: Color(0xFF667781),
+    deliveredColor: Color(0xFF667781),
+    readColor: Color(0xFF53BDEB),
+    errorColor: Color(0xFFEA0038),
+  );
   static VBubbleStatusTheme whatsappDark() => const VBubbleStatusTheme(
-        icons: VStatusIconsConfig.whatsapp,
-        pendingColor: Color(0xFF8696A0),
-        sentColor: Color(0xFF8696A0),
-        deliveredColor: Color(0xFF8696A0),
-        readColor: Color(0xFF53BDEB),
-        errorColor: Color(0xFFFF4C4C),
-      );
+    icons: VStatusIconsConfig.whatsapp,
+    pendingColor: Color(0xFF8696A0),
+    sentColor: Color(0xFF8696A0),
+    deliveredColor: Color(0xFF8696A0),
+    readColor: Color(0xFF53BDEB),
+    errorColor: Color(0xFFFF4C4C),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleStatusTheme messengerLight() => const VBubbleStatusTheme(
-        pendingColor: Color(0xFFBCC0C4),
-        sentColor: Color(0xFFBCC0C4),
-        deliveredColor: Color(0xFFBCC0C4),
-        readColor: Color(0xFF0084FF),
-        errorColor: Color(0xFFFA383E),
-      );
+    pendingColor: Color(0xFFBCC0C4),
+    sentColor: Color(0xFFBCC0C4),
+    deliveredColor: Color(0xFFBCC0C4),
+    readColor: Color(0xFF0084FF),
+    errorColor: Color(0xFFFA383E),
+  );
   static VBubbleStatusTheme messengerDark() => const VBubbleStatusTheme(
-        pendingColor: Color(0xFF65676B),
-        sentColor: Color(0xFF65676B),
-        deliveredColor: Color(0xFF65676B),
-        readColor: Color(0xFF0084FF),
-        errorColor: Color(0xFFFA383E),
-      );
+    pendingColor: Color(0xFF65676B),
+    sentColor: Color(0xFF65676B),
+    deliveredColor: Color(0xFF65676B),
+    readColor: Color(0xFF0084FF),
+    errorColor: Color(0xFFFA383E),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleStatusTheme imessageLight() => const VBubbleStatusTheme(
-        pendingColor: Color(0xFF8E8E93),
-        sentColor: Color(0xFF8E8E93),
-        deliveredColor: Color(0xFF8E8E93),
-        readColor: Color(0xFF8E8E93),
-        errorColor: Color(0xFFFF3B30),
-      );
+    pendingColor: Color(0xFF8E8E93),
+    sentColor: Color(0xFF8E8E93),
+    deliveredColor: Color(0xFF8E8E93),
+    readColor: Color(0xFF8E8E93),
+    errorColor: Color(0xFFFF3B30),
+  );
   static VBubbleStatusTheme imessageDark() => const VBubbleStatusTheme(
-        pendingColor: Color(0xFF8E8E93),
-        sentColor: Color(0xFF8E8E93),
-        deliveredColor: Color(0xFF8E8E93),
-        readColor: Color(0xFF8E8E93),
-        errorColor: Color(0xFFFF453A),
-      );
+    pendingColor: Color(0xFF8E8E93),
+    sentColor: Color(0xFF8E8E93),
+    deliveredColor: Color(0xFF8E8E93),
+    readColor: Color(0xFF8E8E93),
+    errorColor: Color(0xFFFF453A),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

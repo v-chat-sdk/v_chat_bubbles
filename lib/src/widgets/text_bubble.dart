@@ -27,6 +27,9 @@ class VTextBubble extends BaseBubble {
   @override
   String get messageType => 'text message';
 
+  @override
+  String get semanticContent => text;
+
   const VTextBubble({
     super.key,
     required super.messageId,

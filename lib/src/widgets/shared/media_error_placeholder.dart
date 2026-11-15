@@ -39,9 +39,9 @@ class VMediaErrorPlaceholder extends StatelessWidget {
     this.height = 150,
     this.width,
     this.backgroundColor,
-  })  : icon = Icons.broken_image,
-        iconSize = 32,
-        iconColor = null;
+  }) : icon = Icons.broken_image,
+       iconSize = 32,
+       iconColor = null;
 
   /// Creates a placeholder for video thumbnail errors
   const VMediaErrorPlaceholder.video({
@@ -49,9 +49,9 @@ class VMediaErrorPlaceholder extends StatelessWidget {
     this.height = 200,
     this.width,
     this.backgroundColor,
-  })  : icon = Icons.broken_image,
-        iconSize = 48,
-        iconColor = Colors.white54;
+  }) : icon = Icons.broken_image,
+       iconSize = 48,
+       iconColor = Colors.white54;
 
   /// Creates a placeholder for sticker errors
   const VMediaErrorPlaceholder.sticker({
@@ -59,9 +59,9 @@ class VMediaErrorPlaceholder extends StatelessWidget {
     this.height,
     this.width,
     this.backgroundColor,
-  })  : icon = Icons.emoji_emotions,
-        iconSize = 64,
-        iconColor = Colors.grey;
+  }) : icon = Icons.emoji_emotions,
+       iconSize = 64,
+       iconColor = Colors.grey;
 
   /// Creates a placeholder for gallery image errors
   const VMediaErrorPlaceholder.gallery({
@@ -69,9 +69,9 @@ class VMediaErrorPlaceholder extends StatelessWidget {
     this.height,
     this.width,
     this.backgroundColor,
-  })  : icon = Icons.broken_image,
-        iconSize = 32,
-        iconColor = Colors.grey;
+  }) : icon = Icons.broken_image,
+       iconSize = 32,
+       iconColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +80,7 @@ class VMediaErrorPlaceholder extends StatelessWidget {
       width: width,
       color: backgroundColor ?? Colors.grey[300],
       child: Center(
-        child: Icon(
-          icon,
-          size: iconSize,
-          color: iconColor ?? Colors.grey,
-        ),
+        child: Icon(icon, size: iconSize, color: iconColor ?? Colors.grey),
       ),
     );
   }

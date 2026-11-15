@@ -4,16 +4,16 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.12.0
-  flutter: ">=3.44.0"
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: ">=3.47.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: ^0.20.2
-  cupertino_icons: ^1.0.8
+  intl: ^0.20.3
+  cupertino_icons: ^2.0.0
   v_chat_bubbles:
     path: ../
 

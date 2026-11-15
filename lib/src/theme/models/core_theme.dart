@@ -41,10 +41,7 @@ class VBubbleCoreTheme {
 
   /// Colors for incoming (received) messages
   final VDirectionalBubbleColors incoming;
-  const VBubbleCoreTheme({
-    required this.outgoing,
-    required this.incoming,
-  });
+  const VBubbleCoreTheme({required this.outgoing, required this.incoming});
 
   /// Get bubble color based on message direction
   Color bubbleColor(bool isMeSender) =>
@@ -67,46 +64,46 @@ class VBubbleCoreTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleCoreTheme telegramLight() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFFE1FFC7)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Colors.white),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFFE1FFC7)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Colors.white),
+  );
   static VBubbleCoreTheme telegramDark() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF2B5278)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF182533)),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF2B5278)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF182533)),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleCoreTheme whatsappLight() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFFD9FDD3)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Colors.white),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFFD9FDD3)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Colors.white),
+  );
   static VBubbleCoreTheme whatsappDark() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF005C4B)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF202C33)),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF005C4B)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF202C33)),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleCoreTheme messengerLight() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF0084FF)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFFE4E6EB)),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF0084FF)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFFE4E6EB)),
+  );
   static VBubbleCoreTheme messengerDark() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF0084FF)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF3A3B3C)),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF0084FF)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF3A3B3C)),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleCoreTheme imessageLight() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF007AFF)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFFE5E5EA)),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF007AFF)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFFE5E5EA)),
+  );
   static VBubbleCoreTheme imessageDark() => const VBubbleCoreTheme(
-        outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF0A84FF)),
-        incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF3A3A3C)),
-      );
+    outgoing: VDirectionalBubbleColors(bubbleColor: Color(0xFF0A84FF)),
+    incoming: VDirectionalBubbleColors(bubbleColor: Color(0xFF3A3A3C)),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

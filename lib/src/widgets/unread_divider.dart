@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'bubble_scope.dart';
 
 /// Unread messages divider
@@ -31,18 +32,18 @@ class VUnreadDivider extends StatelessWidget {
     final theme = context.bubbleTheme;
     final config = context.bubbleConfig;
     final translations = config.translations;
-    final messageLabel =
-        count > 1 ? translations.unreadPlural : translations.unreadSingular;
+    final messageLabel = count > 1
+        ? translations.unreadPlural
+        : translations.unreadSingular;
     final displayText = customText ?? '$count $messageLabel';
-    final lineColor =
-        (textColor ?? theme.incomingLinkColor).withValues(alpha: 0.3);
+    final lineColor = (textColor ?? theme.incomingLinkColor).withValues(
+      alpha: 0.3,
+    );
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Expanded(
-            child: Container(height: 1, color: lineColor),
-          ),
+          Expanded(child: Container(height: 1, color: lineColor)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
@@ -53,9 +54,7 @@ class VUnreadDivider extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Container(height: 1, color: lineColor),
-          ),
+          Expanded(child: Container(height: 1, color: lineColor)),
         ],
       ),
     );

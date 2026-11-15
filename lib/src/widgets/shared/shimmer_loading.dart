@@ -69,8 +69,11 @@ class VShimmerLoading extends StatefulWidget {
       baseColor: baseColor,
       highlightColor: highlightColor,
       borderRadius: borderRadius,
-      child: const Icon(Icons.play_circle_outline,
-          size: 48, color: Colors.white38),
+      child: const Icon(
+        Icons.play_circle_outline,
+        size: 48,
+        color: Colors.white38,
+      ),
     );
   }
 
@@ -134,11 +137,7 @@ class _ShimmerLoadingState extends State<VShimmerLoading>
             gradient: LinearGradient(
               begin: Alignment(_animation.value - 1, 0),
               end: Alignment(_animation.value + 1, 0),
-              colors: [
-                baseColor,
-                highlightColor,
-                baseColor,
-              ],
+              colors: [baseColor, highlightColor, baseColor],
               stops: const [0.0, 0.5, 1.0],
             ),
           ),

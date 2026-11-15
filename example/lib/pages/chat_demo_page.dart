@@ -220,7 +220,8 @@ class _ChatDemoPageState extends State<ChatDemoPage> {
         isMatch = true;
       }
       // Poll question
-      if (m.pollData != null && m.pollData!.question.toLowerCase().contains(q)) {
+      if (m.pollData != null &&
+          m.pollData!.question.toLowerCase().contains(q)) {
         isMatch = true;
       }
       // Contact name

@@ -72,13 +72,10 @@ class _DoubleTapZoomViewerState extends State<VDoubleTapZoomViewer>
       endMatrix.setEntry(1, 1, widget.doubleTapScale);
       endMatrix.setEntry(2, 2, 1.0);
     }
-    _animation = Matrix4Tween(
-      begin: _transformController.value,
-      end: endMatrix,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
+    _animation = Matrix4Tween(begin: _transformController.value, end: endMatrix)
+        .animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+        );
     _animationController.forward(from: 0);
   }
 

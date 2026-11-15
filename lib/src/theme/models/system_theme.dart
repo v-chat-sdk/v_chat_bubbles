@@ -32,54 +32,54 @@ class VBubbleSystemTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSystemTheme telegramLight() => const VBubbleSystemTheme(
-        backgroundColor: Color(0xCC3E3E3E),
-        textColor: Colors.white,
-        textStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-      );
+    backgroundColor: Color(0xCC3E3E3E),
+    textColor: Colors.white,
+    textStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+  );
   static VBubbleSystemTheme telegramDark() => const VBubbleSystemTheme(
-        backgroundColor: Color(0xFF1D2733),
-        textColor: Colors.white,
-        textStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-      );
+    backgroundColor: Color(0xFF1D2733),
+    textColor: Colors.white,
+    textStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSystemTheme whatsappLight() => const VBubbleSystemTheme(
-        backgroundColor: Color(0xFFFFE9A3),
-        textColor: Color(0xFF54656F),
-        textStyle: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w400),
-      );
+    backgroundColor: Color(0xFFFFE9A3),
+    textColor: Color(0xFF54656F),
+    textStyle: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w400),
+  );
   static VBubbleSystemTheme whatsappDark() => const VBubbleSystemTheme(
-        backgroundColor: Color(0xE6182229),
-        textColor: Color(0xFFD1D7DB),
-        textStyle: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w400),
-      );
+    backgroundColor: Color(0xE6182229),
+    textColor: Color(0xFFD1D7DB),
+    textStyle: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w400),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSystemTheme messengerLight() => const VBubbleSystemTheme(
-        backgroundColor: Colors.transparent,
-        textColor: Color(0xFF65676B),
-        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-      );
+    backgroundColor: Colors.transparent,
+    textColor: Color(0xFF65676B),
+    textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+  );
   static VBubbleSystemTheme messengerDark() => const VBubbleSystemTheme(
-        backgroundColor: Colors.transparent,
-        textColor: Color(0xFFB0B3B8),
-        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-      );
+    backgroundColor: Colors.transparent,
+    textColor: Color(0xFFB0B3B8),
+    textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleSystemTheme imessageLight() => const VBubbleSystemTheme(
-        backgroundColor: Colors.transparent,
-        textColor: Color(0xFF8E8E93),
-        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-      );
+    backgroundColor: Colors.transparent,
+    textColor: Color(0xFF8E8E93),
+    textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+  );
   static VBubbleSystemTheme imessageDark() => const VBubbleSystemTheme(
-        backgroundColor: Colors.transparent,
-        textColor: Color(0xFF8E8E93),
-        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-      );
+    backgroundColor: Colors.transparent,
+    textColor: Color(0xFF8E8E93),
+    textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

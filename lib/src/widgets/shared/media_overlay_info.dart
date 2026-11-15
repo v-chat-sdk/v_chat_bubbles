@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/enums.dart';
 import '../../utils/text_parser.dart';
 import 'message_status_icon.dart';

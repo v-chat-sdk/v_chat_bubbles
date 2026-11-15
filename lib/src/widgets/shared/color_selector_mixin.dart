@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../theme/bubble_theme.dart';
 
 /// Mixin for selecting colors based on sender direction (isMeSender)
@@ -27,8 +28,8 @@ mixin ColorSelectorMixin {
 
   static Color getSecondaryTextColor(VBubbleTheme theme, bool isMeSender) =>
       isMeSender
-          ? theme.outgoingSecondaryTextColor
-          : theme.incomingSecondaryTextColor;
+      ? theme.outgoingSecondaryTextColor
+      : theme.incomingSecondaryTextColor;
 
   static Color getLinkColor(VBubbleTheme theme, bool isMeSender) =>
       isMeSender ? theme.outgoingLinkColor : theme.incomingLinkColor;

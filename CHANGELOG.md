@@ -1,3 +1,23 @@
+## 3.0.2 - 2026-11-04
+
+- Expose a semantic tap action for configured bubble callbacks, with selection taking precedence and one callback per activation. Bubbles without a primary callback no longer advertise an inert button.
+- Make file accessibility activation open completed files or request download, retry, or transfer cancellation, falling back to the general tap callback when needed.
+- Include text-message content and filenames in default accessibility labels while retaining sender, time, delivery status, and edited/pinned/starred metadata.
+- Pass actual text or filename content to `semanticLabelBuilder`; custom bubbles can provide their content and primary accessible action through `BaseBubble` hooks.
+- Add the reported four-case reproduction and complementary regression coverage for activation, selection, content, and metadata on the Flutter runner and Chrome.
+
+## 3.0.1 - 2026-11-04
+
+- Keep file-size and extension metadata within narrow bubbles at larger text scales, preserving the filename and bottom-aligned status footer.
+- Cover 320px layouts at 1.3x/2x text scales in LTR/RTL and both sender directions.
+- Require voice player ^5.0.1 with the updated platform dependency documentation.
+
+## 3.0.0 - 2026-11-04
+
+- Require Flutter >=3.47.0 and Dart >=3.13.0 <4.0.0 for this SDK update.
+- Refresh package and example dependency constraints to current stable releases as of 2026-11-04, subject to documented upstream compatibility constraints.
+- Validate with Flutter 3.47.8 / Dart 3.13.7 using fix, format, static analysis, and package/example tests.
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

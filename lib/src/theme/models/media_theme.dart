@@ -90,110 +90,110 @@ class VBubbleMediaTheme {
   // TELEGRAM PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMediaTheme telegramLight() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFFE1FFC7).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFFE1FFC7).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: Colors.white.withValues(alpha: 0.3),
-          shimmerHighlightColor: Colors.white.withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFFE5E5E5),
-        progressColor: const Color(0xFF007EE5),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFFE1FFC7).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFFE1FFC7).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: Colors.white.withValues(alpha: 0.3),
+      shimmerHighlightColor: Colors.white.withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFFE5E5E5),
+    progressColor: const Color(0xFF007EE5),
+  );
   static VBubbleMediaTheme telegramDark() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF2B5278).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF2B5278).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF182533).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF182533).withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFF2A3A4A),
-        progressColor: const Color(0xFF5EADEA),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF2B5278).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF2B5278).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF182533).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF182533).withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFF2A3A4A),
+    progressColor: const Color(0xFF5EADEA),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // WHATSAPP PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMediaTheme whatsappLight() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFFD9FDD3).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFFD9FDD3).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: Colors.white.withValues(alpha: 0.3),
-          shimmerHighlightColor: Colors.white.withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFFD9DADB),
-        progressColor: const Color(0xFF25D366),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFFD9FDD3).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFFD9FDD3).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: Colors.white.withValues(alpha: 0.3),
+      shimmerHighlightColor: Colors.white.withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFFD9DADB),
+    progressColor: const Color(0xFF25D366),
+  );
   static VBubbleMediaTheme whatsappDark() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF005C4B).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF005C4B).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF202C33).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF202C33).withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFF374248),
-        progressColor: const Color(0xFF25D366),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF005C4B).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF005C4B).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF202C33).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF202C33).withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFF374248),
+    progressColor: const Color(0xFF25D366),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // MESSENGER PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMediaTheme messengerLight() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF0084FF).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF0084FF).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFFE4E6EB).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFFE4E6EB).withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFFE4E6EB),
-        progressColor: const Color(0xFF0084FF),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF0084FF).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF0084FF).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFFE4E6EB).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFFE4E6EB).withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFFE4E6EB),
+    progressColor: const Color(0xFF0084FF),
+  );
   static VBubbleMediaTheme messengerDark() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF0084FF).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF0084FF).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF3A3B3C).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF3A3B3C).withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFF4E4F50),
-        progressColor: const Color(0xFF0084FF),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF0084FF).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF0084FF).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF3A3B3C).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF3A3B3C).withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFF4E4F50),
+    progressColor: const Color(0xFF0084FF),
+  );
   // ═══════════════════════════════════════════════════════════════════════════
   // IMESSAGE PRESETS
   // ═══════════════════════════════════════════════════════════════════════════
   static VBubbleMediaTheme imessageLight() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF007AFF).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF007AFF).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFFE5E5EA).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFFE5E5EA).withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFFE5E5EA),
-        progressColor: const Color(0xFF007AFF),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF007AFF).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF007AFF).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFFE5E5EA).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFFE5E5EA).withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFFE5E5EA),
+    progressColor: const Color(0xFF007AFF),
+  );
   static VBubbleMediaTheme imessageDark() => VBubbleMediaTheme(
-        outgoing: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF0A84FF).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF0A84FF).withValues(alpha: 0.1),
-        ),
-        incoming: VDirectionalMediaTheme(
-          shimmerBaseColor: const Color(0xFF3A3A3C).withValues(alpha: 0.3),
-          shimmerHighlightColor: const Color(0xFF3A3A3C).withValues(alpha: 0.1),
-        ),
-        progressTrackColor: const Color(0xFF48484A),
-        progressColor: const Color(0xFF0A84FF),
-      );
+    outgoing: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF0A84FF).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF0A84FF).withValues(alpha: 0.1),
+    ),
+    incoming: VDirectionalMediaTheme(
+      shimmerBaseColor: const Color(0xFF3A3A3C).withValues(alpha: 0.3),
+      shimmerHighlightColor: const Color(0xFF3A3A3C).withValues(alpha: 0.1),
+    ),
+    progressTrackColor: const Color(0xFF48484A),
+    progressColor: const Color(0xFF0A84FF),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

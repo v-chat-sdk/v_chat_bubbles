@@ -66,7 +66,7 @@ const _months = [
   'Sep',
   'Oct',
   'Nov',
-  'Dec'
+  'Dec',
 ];
 
 /// Format date for display (e.g., "Jan 15, 2024")

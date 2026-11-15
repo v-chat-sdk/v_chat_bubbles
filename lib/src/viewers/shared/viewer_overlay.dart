@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 /// Overlay wrapper that auto-hides controls after a delay
@@ -68,10 +69,7 @@ class _ViewerOverlayState extends State<VViewerOverlay> {
           AnimatedOpacity(
             opacity: _isVisible ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 200),
-            child: IgnorePointer(
-              ignoring: !_isVisible,
-              child: widget.overlay,
-            ),
+            child: IgnorePointer(ignoring: !_isVisible, child: widget.overlay),
           ),
         ],
       ),
