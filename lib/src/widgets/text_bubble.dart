@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../v_chat_bubbles.dart';
 import '../core/constants.dart';

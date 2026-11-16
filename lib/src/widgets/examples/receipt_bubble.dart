@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../core/custom_bubble_types.dart';
 import '../base_bubble.dart';

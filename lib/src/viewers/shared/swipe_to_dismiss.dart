@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A widget that allows dismissing its child by swiping down
 class VSwipeToDismiss extends StatefulWidget {

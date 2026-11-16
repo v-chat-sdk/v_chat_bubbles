@@ -1,3 +1,8 @@
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
+
+# The Flutter 3.50 SDK generator still emits legacy design delegates.
+# The application supplies standalone delegates; generated SDK output is exempt
+# from deprecation rewrites until the upstream generator supports those packages.
+header: "// ignore_for_file: deprecated_member_use"

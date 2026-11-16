@@ -21,10 +21,12 @@ funding:
   - https://github.com/hatemragab
 
 environment:
-  sdk: ">=3.13.0 <4.0.0"
-  flutter: ">=3.47.0"
+  sdk: ^3.14.0
+  flutter: '>=3.50.0'
 
 dependencies:
+  material_ui: ^1.11.0
+  cupertino_ui: ^1.1.6
   flutter:
     sdk: flutter
   v_platform: ^3.0.0

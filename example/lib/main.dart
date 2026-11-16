@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'pages/style_selector_page.dart';
 
@@ -30,11 +29,7 @@ class _MyAppState extends State<MyApp> {
       title: 'v_chat_bubbles Demo',
       debugShowCheckedModeBanner: false,
       locale: _locale,
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [Locale('en'), Locale('ar')],
       theme: ThemeData(colorSchemeSeed: Colors.blue, useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),

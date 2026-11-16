@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:v_chat_voice_player/v_chat_voice_player.dart';
 
 import '../core/modern_message_models.dart';

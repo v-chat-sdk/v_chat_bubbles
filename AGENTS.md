@@ -6,15 +6,26 @@
 
 Automated tests live in `test/`. The runnable showcase is in `example/`; use it for manual checks across chat styles and platforms. Demo backgrounds are under `example/assets/`, while repository screenshots and design notes belong in `screenshots/` and `doc/`.
 
-## Build, Test & Development Commands
+## Flutter 3.50 verification workflow
 
-- `flutter pub get` resolves package dependencies.
-- `dart format .` applies the standard Dart formatter.
-- `flutter analyze` runs the `flutter_lints` rules configured in `analysis_options.yaml`.
-- `flutter test` runs all package unit and widget tests.
-- `flutter test test/bubble_components_test.dart` runs one focused suite.
-- `cd example && flutter run` launches the demo for visual and interaction testing.
-- `flutter pub publish --dry-run` validates package metadata and publish contents without releasing.
+Use the installed project-compatible Flutter 3.50/Dart 3.14 SDK. Keep direct `material_ui`/`cupertino_ui` dependencies consistent with their imports; design widgets no longer come from `flutter/material.dart` or `flutter/cupertino.dart`. Prefer neutral Flutter libraries when design widgets are unnecessary. Preserve this project's architecture and public contracts.
+
+Resolve dependencies from each affected package root with `flutter pub get --no-example`. For a design migration, run `dart fix --apply --code=migrate_design_widgets` and review its output. After every code edit, run these commands sequentially from the affected package root:
+
+```sh
+dart fix --apply
+dart format .
+flutter analyze
+```
+
+Fix and format must finish before analysis or tests. Analyzer-only verification is the default. Run a focused test or build when requested or needed to prove a specific behavior change; choose the smallest useful check. Passing analysis does not prove runtime, provider, native linking, or integration behavior. Never suppress maintained-source diagnostics to obtain a pass. Preserve tool-owned generated files.
+
+Existing web runners: `example`. When a run is requested, use the existing web development workflow with one explicitly selected target and port, then inspect it with Playwright MCP. An explicitly requested `flutter build web` is a compile check, separate from the development run. Do not add web targets merely to validate a migration.
+
+Use a reachable physical Android device only when web is unsupported and device execution is requested. No emulator or simulator is authorized. This Linux VPS cannot execute native iOS/macOS builds or assume access to a phone attached to the Mac. Observe the global 500 MB download rule and preserve existing edits, credentials, caches, and running sessions. Do not push, publish, deploy, or run native builds without task authorization.
+
+Use one handwritten class/widget per file; a StatefulWidget and its paired State may share a file. Apply SOLID without speculative abstractions. Keep UI, coordination, domain behavior, transport, persistence, and provider mechanics in their existing layers; use explicit types and correct async ownership/disposal. Do not impose another project’s state management or architecture.
+
 
 ## Coding Style & Naming Conventions
 
@@ -27,3 +38,9 @@ Tests use `flutter_test`, with `group`, `test`, and `testWidgets`. Name files `*
 ## Commit & Pull Request Guidelines
 
 History uses `vX.Y.Z: Summary` for releases and short, behavior-focused subjects for other changes; Conventional Commit prefixes are not required. Keep commits scoped. Pull requests should explain the change, link relevant issues, list validation commands, and call out compatibility concerns. Include screenshots or recordings for UI changes, and update the example, README, or changelog when public behavior changes.
+
+## Local package migration dependencies
+
+The development overrides in `pubspec_overrides.yaml`, `example/pubspec_overrides.yaml` point to migrated sibling packages in the organized workspace. Keep the relative layout when developing this migration. Hosted releases may still expose legacy Material theme types. Before distributing a checkout independently, release compatible dependency versions and update its hosted constraints; do not publish local paths or force incompatible overrides.
+
+The example’s `l10n.yaml` documents a narrow Flutter 3.50 generator exception: SDK-generated delegates still import legacy design libraries. Regenerate them with `flutter gen-l10n`; do not hand-edit generated localization code or extend this exception to maintained source.

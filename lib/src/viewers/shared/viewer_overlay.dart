@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Overlay wrapper that auto-hides controls after a delay
 class VViewerOverlay extends StatefulWidget {

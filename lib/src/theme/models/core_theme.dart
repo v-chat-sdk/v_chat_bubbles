@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Directional bubble colors for either outgoing or incoming messages
 @immutable

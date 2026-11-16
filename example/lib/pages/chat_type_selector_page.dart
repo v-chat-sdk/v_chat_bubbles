@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:v_chat_bubbles/v_chat_bubbles.dart';
 
 import 'chat_demo_page.dart';
